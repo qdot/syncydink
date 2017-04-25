@@ -1,5 +1,7 @@
 # SyncyDink
 
+[![npm](https://img.shields.io/npm/v/syncydink.svg)](https://npmjs.com/package/syncydink) [![Patreon donate button](https://img.shields.io/badge/patreon-donate-yellow.svg)](https://www.patreon.com/qdot)
+
 SyncyDink is a web based video player and encoder, using:
 
 - [video.js](http://videojs.com) for normal movies
