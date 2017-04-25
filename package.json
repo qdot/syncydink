@@ -1,0 +1,34 @@
+{
+  "name": "syncydink",
+  "version": "0.0.1",
+  "description": "2D and VR Movie Player with Haptics Integration and Synchronization",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/metafetish/syncydink.git"
+  },
+  "keywords": [
+    "movies",
+    "video",
+    "porn",
+    "teledildonics",
+    "sextoys"
+  ],
+  "author": "Kyle Machulis <kyle@machul.is>",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/metafetish/syncydink/issues"
+  },
+  "homepage": "https://github.com/metafetish/syncydink#readme",
+  "dependencies": {
+    "video.js": "^5.19.2",
+    "raunch": "^0.0.5",
+    "lovesense": "^0.0.2"
+  },
+  "devDependencies": {
+    "webpack": "^2.4.1"
+  }
+}
