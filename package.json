@@ -2,40 +2,35 @@
   "name": "syncydink",
   "version": "0.0.2",
   "description": "2D and VR Movie Player with Haptics Integration and Synchronization",
-  "main": "index.js",
-  "scripts": {
-    "build": "webpack",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/metafetish/syncydink.git"
-  },
-  "keywords": [
-    "movies",
-    "video",
-    "porn",
-    "haptics",
-    "vibration",
-    "teledildonics",
-    "sextoys",
-    "sextoy",
-    "fleshlight",
-    "bluetooth"
-  ],
   "author": "Kyle Machulis <kyle@machul.is>",
-  "license": "BSD-3-Clause",
-  "bugs": {
-    "url": "https://github.com/metafetish/syncydink/issues"
+  "private": true,
+  "scripts": {
+    "start": "cross-env NODE_ENV=development webpack-dev-server --open --hot",
+    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
   },
-  "homepage": "https://github.com/metafetish/syncydink#readme",
   "dependencies": {
-    "video.js": "^5.19.2",
-    "raunch": "^0.0.5",
-    "lovesense": "^0.0.2"
+    "vue": "^2.3.3"
   },
   "devDependencies": {
-    "html-webpack-plugin": "^2.28.0",
-    "webpack": "^2.4.1"
+    "@types/chai": "^3.5.2",
+    "@types/mocha": "^2.2.41",
+    "@types/node": "^7.0.22",
+    "chai": "^3.5.0",
+    "codecov": "^2.2.0",
+    "mocha": "^3.4.1",
+    "nyc": "^10.3.2",
+    "ts-loader": "^2.1.0",
+    "ts-node": "^3.0.4",
+    "typescript": "^2.3.3",
+    "babel-core": "^6.0.0",
+    "babel-loader": "^6.0.0",
+    "babel-preset-env": "^1.5.1",
+    "cross-env": "^3.0.0",
+    "css-loader": "^0.25.0",
+    "file-loader": "^0.9.0",
+    "vue-loader": "^12.1.0",
+    "vue-template-compiler": "^2.3.3",
+    "webpack": "^2.6.1",
+    "webpack-dev-server": "^2.4.5"
   }
 }
