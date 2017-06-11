@@ -5,8 +5,8 @@
   </div>
 </template>
 
-<script src="./ButtplugConnectionSetup.ts">
+<script lang="ts" src="./ButtplugConnectionSetup.ts">
 </script>
 
-<style src="./ButtplugConnectionSetup.less">
+<style lang="less" src="./ButtplugConnectionSetup.less">
 </style>

@@ -1,7 +1,13 @@
 import Vue from 'vue';
+import Component from 'vue-class-component';
 
-export default {
-  data () {
-    return {};
+@Component({})
+export default class ButtplugConnectionSetup extends Vue {
+  onConnect(): void {
   }
+
+  onClose(): void {
+  }
+
+  
 }

@@ -43,6 +43,10 @@ module.exports = {
         options: {
           name: '[name].[ext]?[hash]'
         }
+      },
+      {
+        test: /\.less$/,
+        loader: 'less-loader'
       }
     ]
   },
