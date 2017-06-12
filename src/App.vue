@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <buttplug-connection-setup-component></buttplug-connection-setup-component>
+    <buttplug-connection-manager-component></buttplug-connection-manager-component>
   </div>
 </template>
 

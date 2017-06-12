@@ -1,4 +1,4 @@
-import ButtplugConnectionSetupComponent from './components/ButtplugConnectionSetup/ButtplugConnectionSetup.vue'
+import ButtplugConnectionManagerComponent from './components/ButtplugConnectionManager/ButtplugConnectionManager.vue'
 
 export default {
   name: 'app',
@@ -8,6 +8,6 @@ export default {
     }
   },
   components: {
-    ButtplugConnectionSetupComponent
+    ButtplugConnectionManagerComponent
   }
 }
