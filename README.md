@@ -2,9 +2,10 @@
 
 [![npm](https://img.shields.io/npm/v/syncydink.svg)](https://npmjs.com/package/syncydink) [![Patreon donate button](https://img.shields.io/badge/patreon-donate-yellow.svg)](https://www.patreon.com/qdot)
 
-SyncyDink is a web based video player and encoder, using:
+SyncyDink is (going to be) a web based video player and encoder (once we're done with it), using:
 
-- [video.js](http://videojs.com) for normal movies
+- [vue.js](http://vuejs.org) for frontend
+- [video.js](http://videojs.com) for 2D movies
 - [aframe](http://aframe.io) for 180SBS/360 Spherical movies
 - [giftic](http://github.com/metafetish/giftic) for animated gifs
 
@@ -12,17 +13,20 @@ On top of these systems, Syncydink provides a way for users to load
 haptics files to synchronize with movies. Supported haptics hardware
 includes:
 
-- [Fleshlight Launch](http://fleshlight.com/launch) via [raunch-js](http://github.com/metafetish/raunch-js)
-- [Lovense Toys](http://www.lovense.com) via [lovesense-js](http://github.com/metafetish/lovesense-js)
-- [Vorze A10 Cyclone](http://www.vorzeinteractive.com) via [cockblender-js](http://github.com/metafetish/cockblender-js)
+- [Fleshlight Launch](http://fleshlight.com/launch)
+- [Lovense Toys](http://www.lovense.com)
+- [Vorze A10 Cyclone](http://www.vorzeinteractive.com)
+- XInput Gamepads
+- Anything else [the Buttplug library](https://buttplug.io) for your platform might support
 
 This hardware can be accessed via:
 
-- WebBluetooth in Chrome on Linux, macOS, ChromeOS, and Android 6 or higher
+- WebBluetooth in Chrome on Linux, macOS, ChromeOS, and Android 6 or higher (All except gamepads)
 - [buttplug-csharp](http://github.com/metafetish/buttplug-csharp) on Windows
 
 Supported Haptic File Formats:
 
+- [Funscript Format](https://godoc.org/github.com/funjack/launchcontrol/protocol/funscript) (json format)
 - [Feelme Format](http://feelme.com) (json format)
 - [VirtualRealPlayer Format](http://virtualrealporn.com) (ini format)
 - [RealTouchScripter Format](http://realtouchscripts.com) (RealTouch format)
@@ -30,10 +34,8 @@ Supported Haptic File Formats:
 ## Support The Project
 
 If you find this project helpful, you
-can
-[support Metafetish projects via Patreon](http://patreon.com/qdot)!
-Every donation helps us afford more hardware to reverse, document, and
-write code for!
+can [support Metafetish projects via Patreon](http://patreon.com/qdot)! Every donation helps
+us afford more hardware to reverse, document, and write code for!
 
 ## License
 
