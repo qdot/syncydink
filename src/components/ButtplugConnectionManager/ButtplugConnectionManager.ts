@@ -3,10 +3,10 @@ import Component from 'vue-class-component';
 
 @Component({})
 export default class ButtplugConnectionManager extends Vue {
-  onConnect(): void {
-  }
 
-  onClose(): void {
+  address: string;
+  Connect() {
+    this.$emit('connect', this.address);
   }
 
 }

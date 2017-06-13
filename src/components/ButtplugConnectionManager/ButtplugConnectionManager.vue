@@ -1,7 +1,7 @@
 <template>
   <div id="buttplug-connection-manager">
-    <input type="text" name="address" />
-    <input type="button" name="connect" />
+    <input v-model="address"/>
+    <button @click="Connect">Connect</button>
   </div>
 </template>
 
