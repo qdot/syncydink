@@ -1,7 +1,10 @@
 <template>
   <div id="buttplug-device-manager">
-    <ul id="buttplug-device-list">
-    </ul>
+    <select size="10">
+      <option v-for="device in devices" v-bind:value="device">
+        {{ device.Index + ": " + device.Name }}
+      </option>
+    </select>
   </div>
 </template>
 

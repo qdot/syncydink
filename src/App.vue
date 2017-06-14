@@ -1,8 +1,9 @@
 <template>
   <div id="app">
-    <buttplug-connection-manager-component v-on:connect="Connect"></buttplug-connection-manager-component>
-    <button @click="StartScanning">StartScanning</button>
-    <buttplug-log-manager-component v-bind:logMessages="logMessages" v-on:loglevel="SetLogLevel"></buttplug-log-manager-component>
+    <buttplug-connection-manager-component v-on:connect="Connect"></buttplug-connection-manager-component><br/>
+    <button @click="StartScanning">StartScanning</button><br/>
+    <buttplug-log-manager-component v-bind:logMessages="logMessages" v-on:loglevel="SetLogLevel"></buttplug-log-manager-component><br />
+    <buttplug-device-manager-component v-bind:devices="devices"></buttplug-device-manager-component>
   </div>
 </template>
 
