@@ -1,7 +1,12 @@
 <template>
   <div id="buttplug-log-manager">
-    <textarea name="buttplug-log-area"></textarea>
-    <select name="buttplug-log-level">
+    <select size="10">
+      <option v-for="message in logMessages">
+        {{ message }}
+      </option>
+    </select>
+    <br/>
+    <select v-model="logLevel" @change="LogLevelChange">
       <option value="Off">Off</option>
       <option value="Fatal">Fatal</option>
       <option value="Error">Error</option>

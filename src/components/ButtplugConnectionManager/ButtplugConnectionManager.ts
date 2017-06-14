@@ -1,7 +1,7 @@
 import Vue from 'vue';
-import Component from 'vue-class-component';
+import { Component } from 'vue-property-decorator'
 
-@Component({})
+@Component
 export default class ButtplugConnectionManager extends Vue {
   address: string = "";
   Connect() {
