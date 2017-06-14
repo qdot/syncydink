@@ -5,6 +5,8 @@
         {{ device.Index + ": " + device.Name }}
       </option>
     </select>
+    <button @click="$emit('startScanning')">Start Scanning</button><br/>
+    <button @click="$emit('stopScanning')">Stop Scanning</button><br/>
   </div>
 </template>
 

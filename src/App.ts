@@ -33,6 +33,10 @@ export default class App extends Vue {
     await this.buttplugClient.StartScanning();
   }
 
+  async StopScanning() {
+    await this.buttplugClient.StopScanning();
+  }
+
   AddLogMessage(logMessage: Log) {
     this.logMessages.push(logMessage.LogMessage);
   }
