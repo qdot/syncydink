@@ -23,6 +23,8 @@ export default class App extends Vue {
     await this.buttplugClient.Connect(address);
     this.buttplugClient.addListener('log', this.AddLogMessage);
     this.buttplugClient.addListener('deviceadded', this.AddDevice);
+    this.buttplugClient.addListener('deviceremoved', this.RemoveDevice);
+    await this.buttplugClient.RequestDeviceList();
   }
 
   async SetLogLevel(logLevel: string) {
@@ -41,7 +43,20 @@ export default class App extends Vue {
     this.logMessages.push(logMessage.LogMessage);
   }
 
+  DeviceAlreadyAdded(device: Device) : boolean {
+    return this.devices.filter((d) => { return device.Index === d.Index }).length !== 0;
+  }
+
   AddDevice(device: Device) {
-    this.devices.push(device);
+    if (!this.DeviceAlreadyAdded(device))
+    {
+      this.devices.push(device);
+    }
+  }
+
+  RemoveDevice(device: Device) {
+    if (this.devices.indexOf(device) !== -1) {
+      this.devices.splice(this.devices.indexOf(device), 1);
+    }
   }
 }
