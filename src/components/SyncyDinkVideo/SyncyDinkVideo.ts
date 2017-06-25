@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import { Prop, Model, Component } from 'vue-property-decorator';
-import videoPlayer from '../videoPlayer/player.vue';
+const videoPlayer = require('vue-video-player').videoPlayer;
 
 @Component({
   components: {

@@ -22,11 +22,6 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.js$/,
-        loader: 'babel-loader',
-        include: [path.resolve('node_modules/vue-awesome')]
-      },
-      {
         test: /\.ts$/,
         exclude: /node_modules|vue\/src/,
         loader: 'ts-loader',

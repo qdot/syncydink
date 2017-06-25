@@ -3,8 +3,8 @@ import { Prop, Component } from 'vue-property-decorator'
 import { ButtplugClient, Device, Log } from "buttplug";
 import ButtplugPanelComponent from './components/ButtplugPanel/ButtplugPanel.vue';
 import SyncyDinkVideoComponent from './components/SyncyDinkVideo/SyncyDinkVideo.vue';
-import Slideout from './components/Slideout/slideout.vue';
 import 'vue-awesome/icons/bars'
+const Slideout = require('vue-slideout').default;
 
 @Component({
   components: {
