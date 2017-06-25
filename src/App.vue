@@ -1,27 +1,27 @@
 <template>
   <div id="app">
-    <div class="bp-config-area">
-      <buttplug-connection-manager-component
-        v-on:connect="Connect" />
-    </div>
-    <div class="bp-config-area">
-      <buttplug-log-manager-component
-        v-bind:logMessages="logMessages"
-        v-on:loglevel="SetLogLevel"/>
-    </div>
-    <div class="bp-config-area">
-      <buttplug-device-manager-component
-        v-bind:devices="devices"
-        v-on:startScanning="StartScanning"
-        v-on:stopScanning="StopScanning" />
-    </div>
+    <Slideout menu="#menu" panel="#panel" :toggleSelectors="['.toggle-button']" @on-open="open">
+      <nav id="menu">
+        <buttplug-panel-component v-bind:buttplugClient='this.buttplugClient' />
+      </nav>
+      <main id="panel">
+        <header>
+          <div>
+            <button class="toggle-button">
+              <icon name="bars" scale="2"></icon>
+            </button>
+          </div>
+        </header>
+        <syncy-dink-video-component />
+      </main>
+    </Slideout>
   </div>
 </template>
 
 <script lang="ts" src="./App.ts">
 </script>
 
-<style>
+<style lang="css">
  html, body {
    margin: 0;
    padding: 0;
@@ -30,11 +30,12 @@
  }
 
  #app {
+   font-size: 10pt;
    font-family: 'Avenir', Helvetica, Arial, sans-serif;
    -webkit-font-smoothing: antialiased;
    -moz-osx-font-smoothing: grayscale;
    color: #2c3e50;
-   width: 33%;
+   width: 100%;
    height: 100%;
  }
 
@@ -73,5 +74,46 @@
 
  input {
    width: 90%;
+ }
+
+ .slideout-menu {
+   position: fixed;
+   top: 0;
+   bottom: 0;
+   width: 256px;
+   height: 100vh;
+   overflow:hidden;
+   -webkit-overflow-scrolling: touch;
+   z-index: 0;
+   display: none;
+   background-color: #1D1F20;
+   color: white;
+ }
+
+ .slideout-menu-left {
+   left: 0;
+ }
+
+ .slideout-menu-right {
+   right: 0;
+ }
+
+ .slideout-panel {
+   background-color: #fff;
+   color: white;
+   position: relative;
+   z-index: 1;
+   will-change: transform;
+   min-height: 100vh;
+ }
+
+ .slideout-open,
+ .slideout-open body,
+ .slideout-open .slideout-panel {
+   overflow: hidden;
+ }
+
+ .slideout-open .slideout-menu {
+   display: block;
  }
 </style>

@@ -1,6 +1,7 @@
 'use strict';
 var path = require('path');
 var webpack = require('webpack');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
   stats: {
@@ -21,6 +22,11 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /\.js$/,
+        loader: 'babel-loader',
+        include: [path.resolve('node_modules/vue-awesome')]
+      },
+      {
         test: /\.ts$/,
         exclude: /node_modules|vue\/src/,
         loader: 'ts-loader',
@@ -38,11 +44,15 @@ module.exports = {
         }
       },
       {
-        test: /\.(png|jpg|gif|svg)$/,
+        test: /\.(png|jpg|gif|svg|eot)$/,
         loader: 'file-loader',
         options: {
           name: '[name].[ext]?[hash]'
         }
+      },
+      {
+        test: /\.css$/,
+        loader: 'css-loader'
       },
       {
         test: /\.less$/,
@@ -78,7 +88,7 @@ if (process.env.NODE_ENV === 'production') {
         NODE_ENV: '"production"'
       }
     }),
-    new webpack.optimize.UglifyJsPlugin({
+    new UglifyJSPlugin({
       sourceMap: true,
       mangle: false,
       compress: {
