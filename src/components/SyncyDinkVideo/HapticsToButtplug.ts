@@ -31,7 +31,10 @@ export default class HapticCommandToButtplugMessage {
       speed = Math.min(Math.max(speed, 20), 80);
 
       const positionGoal = Math.floor(((currentPosition / 99) * range) + ((99 - range) / 2));
-      commands.set(aCommand.Time, new FleshlightLaunchFW12Cmd(speed, positionGoal));
+      // Set movement to happen at the PREVIOUS time, since we're moving toward
+      // the goal position with this command, and want to arrive there by the
+      // current time.
+      commands.set(lastTime, new FleshlightLaunchFW12Cmd(speed, positionGoal));
       lastTime = aCommand.Time;
       lastPosition = aCommand.Position;
     }
