@@ -1,11 +1,14 @@
 <template>
   <div id="player">
-    <input type="file" accept="video/*" @change="onFileChange"/>
-    <video-player  ref="videoPlayer"
-                   :options="playerOptions"
-                   @timeupdate="onPlayerTimeupdate($event)"
-                   @ready="playerReadied">
-    </video-player>
+    <input type="file" accept="video/*" @change="onVideoFileChange"/>
+    <input type="file" accept="*" @change="onHapticsFileChange"/>
+    <div id="video-player">
+      <video-player  ref="videoPlayer"
+                     :options="playerOptions"
+                     @timeupdate="onPlayerTimeupdate($event)"
+                     @ready="playerReadied">
+      </video-player>
+    </div>
   </div>
 </template>
 

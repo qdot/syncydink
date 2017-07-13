@@ -2,7 +2,8 @@
   <div id="app">
     <Slideout menu="#menu" panel="#panel" :toggleSelectors="['.toggle-button']" @on-open="open">
       <nav id="menu">
-        <buttplug-panel-component v-bind:buttplugClient='this.buttplugClient' />
+        <buttplug-panel-component
+          v-bind:buttplugClient='this.buttplugClient' />
       </nav>
       <main id="panel">
         <header>
@@ -12,7 +13,8 @@
             </button>
           </div>
         </header>
-        <syncy-dink-video-component />
+        <syncy-dink-video-component
+          v-on:hapticEvent="hapticEvent"/>
       </main>
     </Slideout>
   </div>

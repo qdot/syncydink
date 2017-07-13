@@ -71,7 +71,10 @@ module.exports = {
   devtool: '#eval-source-map',
   plugins: [
     new webpack.NamedModulesPlugin()
-  ]
+  ],
+  node: {
+    fs: 'empty'
+  }
 };
 
 if (process.env.NODE_ENV === 'production') {

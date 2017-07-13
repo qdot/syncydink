@@ -1,14 +1,25 @@
 import Vue from 'vue';
 import { Prop, Model, Component } from 'vue-property-decorator';
 const videoPlayer = require('vue-video-player').videoPlayer;
+import { HapticFileHandler, LoadString, LoadFile } from 'haptic-movie-file-reader';
+import { Player } from 'video.js';
+
+interface FileReaderEventTarget extends EventTarget {
+    result:string
+}
+
+interface FileReaderEvent extends Event {
+    target: FileReaderEventTarget;
+    getMessage():string;
+}
 
 @Component({
   components: {
-    videoPlayer
-  }
+    videoPlayer,
+  },
 })
 export default class SyncyDinkVideo extends Vue {
-  playerOptions = {
+  private playerOptions = {
     // component options
     start: 0,
     playsinline: false,
@@ -17,15 +28,14 @@ export default class SyncyDinkVideo extends Vue {
     language: 'en',
     playbackRates: [0.7, 1.0, 1.5, 2.0],
     sources: [{
-      //type: "video/mp4",
-      //src: "http://localhost:8080/jakeline1gb.mp4"
-      //src: "file:///home/qdot/Downloads/jakeline1gb.mp4"
     }],
   };
 
   sources = [{}];
 
-  onFileChange(event : any) {
+  _hapticsHandler : HapticFileHandler;
+
+  onVideoFileChange(event : any) {
     var files = event.target.files || event.dataTransfer.files;
     if (!files.length)
     {
@@ -34,34 +44,34 @@ export default class SyncyDinkVideo extends Vue {
     this.playerOptions.sources = [{
         type: "video/mp4",
         src: URL.createObjectURL(files[0])
-        //src: "http://localhost:8080/jakeline1gb.mp4"
-        //src: "file:///home/qdot/Downloads/jakeline1gb.mp4"
     }];
   }
-  onPlayerCanplay(player : any) {
-    console.log("can play");
-    player.updateSrc(this.sources);
+
+  onHapticsFileChange(event: any) {
+    var files = event.target.files || event.dataTransfer.files;
+    if (!files.length)
+    {
+      return;
+    }
+    LoadFile(files[0]).then((h : HapticFileHandler) => {
+      this._hapticsHandler = h;
+    });
   }
-  onPlayerPlay(player : any) {
-    console.log("can play");
-    player.updateSrc(this.sources);
-    // console.log('player play!', player)
-  }
+
   onPlayerPause(player : any) {
-    // console.log('player pause!', player)
+    // TODO: Send stop messages to haptics devices
   }
-  onPlayerTimeupdate(player: any) {
-    console.log('player time:', player);
+
+  onPlayerTimeupdate(player: Player) {
+    let cmd = this._hapticsHandler.GetValueNearestTime(Math.floor(player.currentTime() * 1000));
+    this.$emit('hapticEvent', cmd);
   }
+
   // or listen state event
-  playerStateChanged(playerCurrentState : any) {
-    console.log('player current update state', playerCurrentState)
+  playerStateChanged(playerCurrentState : Player) {
   }
 
   // player is ready
-  playerReadied(player : any) {
-    console.log('the player is readied', player)
-    // you can use it to do something...
-    // player.[methods]
+  playerReadied(player : Player) {
   }
 }
