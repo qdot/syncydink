@@ -1,7 +1,9 @@
+import { FleshlightLaunchFW12Cmd } from "buttplug";
 import Vue from "vue";
 import { Component, Model, Prop } from "vue-property-decorator";
+import HapticCommandToButtplugMessage from "./HapticsToButtplug";
 const videoPlayer = require("vue-video-player").videoPlayer;
-import { HapticFileHandler, LoadFile, LoadString } from "haptic-movie-file-reader";
+import { HapticCommand, HapticFileHandler, LoadFile, FunscriptCommand } from "haptic-movie-file-reader";
 import { Player } from "video.js";
 
 @Component({
@@ -23,6 +25,8 @@ export default class SyncyDinkVideo extends Vue {
   private sources = [{}];
 
   private _hapticsHandler: HapticFileHandler;
+  private _commands: Map<number, FleshlightLaunchFW12Cmd> = new Map();
+  private _latestTime: number = 0;
 
   private onVideoFileChange(event: any) {
     const files = event.target.files || event.dataTransfer.files;
@@ -42,6 +46,11 @@ export default class SyncyDinkVideo extends Vue {
     }
     LoadFile(files[0]).then((h: HapticFileHandler) => {
       this._hapticsHandler = h;
+      const commands = this._hapticsHandler.Commands;
+      if (commands[0].constructor.name === "FunscriptCommand") {
+        this._commands =
+          HapticCommandToButtplugMessage.FunScriptToFleshlightLaunchCommands(h.Commands as FunscriptCommand[]);
+      }
     });
   }
 
@@ -50,7 +59,12 @@ export default class SyncyDinkVideo extends Vue {
   }
 
   private onPlayerTimeupdate(player: Player) {
-    const cmd = this._hapticsHandler.GetValueNearestTime(Math.floor(player.currentTime() * 1000));
+    const cmd: HapticCommand | undefined  =
+      this._hapticsHandler.GetValueNearestTime(Math.floor(player.currentTime() * 1000));
+    if (cmd === undefined || this._latestTime === cmd.Time) {
+      return;
+    }
+    this._latestTime = cmd.Time;
     this.$emit("hapticEvent", cmd);
   }
 
