@@ -1,15 +1,16 @@
-import Vue from 'vue';
-import App from './App.vue';
 import { ButtplugClient } from "buttplug";
-const Icon = require('vue-awesome/components/Icon');
+import Vue from "vue";
+import App from "./App.vue";
+const Icon = require("vue-awesome/components/Icon");
 
-Vue.component('icon', Icon);
+Vue.component("icon", Icon);
 
+// tslint:disable-next-line no-unused-expression
 new Vue({
-  el: '#app',
-  render: h => h(App, {
+  el: "#app",
+  render: (h) => h(App, {
     props: {
-      buttplugClient: new ButtplugClient("SyncyDink Video Player")
-    }
-  })
+      buttplugClient: new ButtplugClient("SyncyDink Video Player"),
+    },
+  }),
 });

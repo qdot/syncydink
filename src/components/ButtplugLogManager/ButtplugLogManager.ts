@@ -1,15 +1,15 @@
-import Vue from 'vue';
-import { Prop, Model, Component } from 'vue-property-decorator'
+import Vue from "vue";
+import { Component, Model, Prop } from "vue-property-decorator";
 
 @Component
 export default class ButtplugLogManager extends Vue {
   @Prop()
-  logMessages: Array<string>;
+  private logMessages: string[];
 
   @Model()
-  logLevel: string = "Off";
+  private logLevel: string = "Off";
 
-  LogLevelChange() {
-    this.$emit('loglevel', this.logLevel);
+  private LogLevelChange() {
+    this.$emit("loglevel", this.logLevel);
   }
 }

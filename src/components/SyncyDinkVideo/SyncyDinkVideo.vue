@@ -5,8 +5,7 @@
     <div id="video-player">
       <video-player  ref="videoPlayer"
                      :options="playerOptions"
-                     @timeupdate="onPlayerTimeupdate($event)"
-                     @ready="playerReadied">
+                     @timeupdate="onPlayerTimeupdate($event)">
       </video-player>
     </div>
   </div>
