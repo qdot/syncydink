@@ -7,7 +7,9 @@
     "variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore", "allow-pascal-case"],
     "only-arrow-functions": [false],
     "indent": [true, "spaces", 2],
-    "no-var-requires": [false]
+    "no-var-requires": [false],
+    "ordered-imports": [false],
+    "no-console": [false]
   },
   "rulesDirectory": []
 }
