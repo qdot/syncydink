@@ -1,6 +1,6 @@
-import { ButtplugClient, Device, Log } from "buttplug";
+import { ButtplugClient, ButtplugDeviceMessage, Device, Log } from "buttplug";
 import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
+import { Component, Prop, Watch } from "vue-property-decorator";
 import ButtplugConnectionManagerComponent from "../ButtplugConnectionManager/ButtplugConnectionManager.vue";
 import ButtplugDeviceManagerComponent from "../ButtplugDeviceManager/ButtplugDeviceManager.vue";
 import ButtplugLogManagerComponent from "../ButtplugLogManager/ButtplugLogManager.vue";
@@ -13,18 +13,28 @@ import ButtplugLogManagerComponent from "../ButtplugLogManager/ButtplugLogManage
   },
 })
 export default class ButtplugPanel extends Vue {
-  @Prop()
-  private buttplugClient: ButtplugClient;
+  public logMessages: string[] = [];
+  public devices: Device[] = [];
 
-  private logMessages: string[] = [];
-  private devices: Device[] = [];
+  @Prop()
+  private buttplugMessage: ButtplugDeviceMessage;
+
+  // TODO: Pass down a property to name the client with
+  private buttplugClient: ButtplugClient = new ButtplugClient("Buttplug Panel");
+
+  @Watch("buttplugMessage")
+  private onMessageUpdate(val: ButtplugDeviceMessage, oldVal: ButtplugDeviceMessage) {
+    this.devices.forEach((aDevice) => {
+      this.buttplugClient.SendDeviceMessage(aDevice, val);
+    });
+  }
 
   private async Connect(address: string) {
     await this.buttplugClient.Connect(address);
     this.buttplugClient.addListener("log", this.AddLogMessage);
     this.buttplugClient.addListener("deviceadded", this.AddDevice);
     this.buttplugClient.addListener("deviceremoved", this.RemoveDevice);
-    await this.buttplugClient.RequestDeviceList();
+    const devices = await this.buttplugClient.RequestDeviceList();
   }
 
   private async SetLogLevel(logLevel: string) {
