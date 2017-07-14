@@ -28,7 +28,7 @@ export default class HapticCommandToButtplugMessage {
       let speed = Math.floor(25000 * Math.pow(((duration * 90) / positionDelta), -1.05));
 
       // Clamp speed on 20 <= x <= 80 so we don't crash or break the launch.
-      speed = Math.min(Math.max(speed, 20), 80);
+      speed = Math.min(Math.max(speed, 5), 90);
 
       const positionGoal = Math.floor(((currentPosition / 99) * range) + ((99 - range) / 2));
       // Set movement to happen at the PREVIOUS time, since we're moving toward
