@@ -54,18 +54,37 @@ export default class SyncyDinkVideo extends Vue {
     });
   }
 
-  private onPlayerPause(player: any) {
-    // TODO: Send stop messages to haptics devices
+  private onPlayerPlay(player: Player) {
+    this.runHapticsLoop(player);
   }
 
-  private onPlayerTimeupdate(player: Player) {
-    const cmd: HapticCommand | undefined  =
-      this._hapticsHandler.GetValueNearestTime(Math.floor(player.currentTime() * 1000));
-    if (cmd === undefined || this._latestTime === cmd.Time) {
-      return;
-    }
-    this._latestTime = cmd.Time;
-    this.$emit("hapticEvent", cmd);
+  private onPlayerPause(player: Player) {
+    // TODO: Stop all devices
+  }
+
+  private runHapticsLoop(player: Player) {
+    window.requestAnimationFrame(() => {
+      if (this._hapticsHandler === undefined) {
+        if (!player.paused()) {
+          this.runHapticsLoop(player);
+        }
+        return;
+      }
+      const cmd: HapticCommand | undefined  =
+        this._hapticsHandler.GetValueNearestTime(Math.floor(player.currentTime() * 1000));
+      if (cmd === undefined || this._latestTime === cmd.Time) {
+        if (!player.paused()) {
+          this.runHapticsLoop(player);
+        }
+        return;
+      }
+      this._latestTime = cmd.Time;
+      this.$emit("hapticEvent", cmd);
+      this.$emit("buttplugEvent", this._commands.get(cmd.Time));
+      if (!player.paused()) {
+        this.runHapticsLoop(player);
+      }
+    });
   }
 
   // or listen state event
