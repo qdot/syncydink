@@ -1,28 +1,34 @@
 <template>
   <div id="buttplug-panel">
-    <div class="bp-config-area">
-      <buttplug-connection-manager-component
-        v-on:connect="Connect" />
-    </div>
-    <div class="bp-config-area">
-      <buttplug-log-manager-component
-        v-bind:logMessages="logMessages"
-        v-on:loglevel="SetLogLevel"/>
-    </div>
-    <div class="bp-config-area">
-      <buttplug-device-manager-component
-        v-bind:devices="devices"
-        v-on:startScanning="StartScanning"
-        v-on:stopScanning="StopScanning" />
-    </div>
+    <md-list>
+      <md-subheader>Connection</md-subheader>
+      <md-list-item>
+        <buttplug-connection-manager-component
+          width="100%"
+          v-on:connect="Connect" />
+      </md-list-item>
+      <md-subheader>Devices</md-subheader>
+      <md-list-item>
+        <buttplug-device-manager-component
+          v-bind:devices="devices"
+          v-on:startScanning="StartScanning"
+          v-on:stopScanning="StopScanning" />
+      </md-list-item>
+      <md-subheader>Log Messages</md-subheader>
+      <md-list-item>
+        <buttplug-log-manager-component
+          v-bind:logMessages="logMessages"
+          v-on:loglevel="SetLogLevel"/>
+      </md-list-item>
+    </md-list>
   </div>
 </template>
 
 <script lang="ts" src="./ButtplugPanel.ts">
 </script>
 
-<style>
- #buttplug-panel {
-   width: 95%;
+<style lang="css">
+ .buttplug-sidebar {
+   min-width: 100%;
  }
 </style>
