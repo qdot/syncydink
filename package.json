@@ -14,19 +14,17 @@
   "dependencies": {
     "buttplug": "^0.0.4",
     "haptic-movie-file-reader": "^0.0.6",
-    "slideout": "^1.0.1",
     "tslint": "^5.5.0",
     "video.js": "^6.2.1",
     "vue": "^2.3.3",
     "vue-awesome": "^2.3.1",
-    "vue-slideout": "^1.5.1",
+    "vue-material": "^0.7.4",
     "vue-video-player": "^3.1.4"
   },
   "devDependencies": {
     "@types/chai": "^3.5.2",
     "@types/mocha": "^2.2.41",
     "@types/node": "^7.0.34",
-    "@types/slideout": "^0.1.18",
     "@types/video.js": "^5.16.0",
     "chai": "^3.5.0",
     "codecov": "^2.2.0",
