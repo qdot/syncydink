@@ -13,6 +13,9 @@
       @click="ScanningClicked"
       model="ScanningText"
       class="md-raised md-primary">{{ ScanningText }}</md-button>
+    <span v-show="IsScanning">
+      <md-spinner :md-size="40" md-indeterminate />
+    </span>
   </div>
 </template>
 
@@ -20,7 +23,8 @@
 </script>
 
 <style lang="css">
- .buttplug-device-checkbox label {
+ .buttplug-device-manager label {
    font-size: 14px;
  }
+
 </style>
