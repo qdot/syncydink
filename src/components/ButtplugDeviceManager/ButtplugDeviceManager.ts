@@ -6,19 +6,19 @@ import { Component, Model, Prop } from "vue-property-decorator";
 export default class ButtplugDeviceManager extends Vue {
   @Prop()
   private devices: Device[];
-  private _isScanning: boolean = false;
+  private IsScanning: boolean = false;
   @Model()
   private ScanningText: string = "Start Scanning";
 
   private ScanningClicked(ev: Event) {
-    if (!this._isScanning) {
+    if (!this.IsScanning) {
       this.$emit("startScanning");
-      this._isScanning = true;
+      this.IsScanning = true;
       this.ScanningText = "Stop Scanning";
       return;
     }
     this.$emit("stopScanning");
-    this._isScanning = false;
+    this.IsScanning = false;
     this.ScanningText = "Start Scanning";
   }
 }
