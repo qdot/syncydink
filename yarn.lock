@@ -14,10 +14,6 @@
   version "7.0.36"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-7.0.36.tgz#54286fcce8a4f7498cea1ec5fce5f5edd3521948"
 
-"@types/slideout@^0.1.18":
-  version "0.1.18"
-  resolved "https://registry.yarnpkg.com/@types/slideout/-/slideout-0.1.18.tgz#e5fe622667e06fc6f99bc64a94e3a2d4425abae7"
-
 "@types/video.js@^5.16.0":
   version "5.16.0"
   resolved "https://registry.yarnpkg.com/@types/video.js/-/video.js-5.16.0.tgz#b35085050b41b81b9425faa3616f925239685f88"
@@ -505,9 +501,9 @@ builtin-status-codes@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/builtin-status-codes/-/builtin-status-codes-3.0.0.tgz#85982878e21b98e1c66425e03d0174788f569ee8"
 
-buttplug@^0.0.4:
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/buttplug/-/buttplug-0.0.4.tgz#f0c19338ec073009d0940a7796f579492f87640a"
+buttplug@0.0.6:
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/buttplug/-/buttplug-0.0.6.tgz#f8317d6e63b8f197d6f16ab68d55e61a4a20e698"
   dependencies:
     ajv "^5.2.2"
     class-transformer "^0.1.7"
@@ -1027,10 +1023,6 @@ decamelize@^1.0.0, decamelize@^1.1.1, decamelize@^1.1.2:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/decamelize/-/decamelize-1.2.0.tgz#f6534d15148269b20352e7bee26f501f9a191290"
 
-decouple@0.0.2:
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/decouple/-/decouple-0.0.2.tgz#cb373640c37f987a5f6866724ccd424a80f9d9a2"
-
 deep-eql@^0.1.3:
   version "0.1.3"
   resolved "https://registry.yarnpkg.com/deep-eql/-/deep-eql-0.1.3.tgz#ef558acab8de25206cd713906d74e56930eb69f2"
@@ -1174,10 +1166,6 @@ elliptic@^6.0.0:
     inherits "^2.0.1"
     minimalistic-assert "^1.0.0"
     minimalistic-crypto-utils "^1.0.0"
-
-"emitter@git+https://github.com/Mango/emitter.git#0.0.7":
-  version "0.0.7"
-  resolved "git+https://github.com/Mango/emitter.git#41ab8a3956269c7ed468bde50203e15b3274152f"
 
 emojis-list@^2.0.0:
   version "2.1.0"
@@ -3638,13 +3626,6 @@ slide@^1.1.5:
   version "1.1.6"
   resolved "https://registry.yarnpkg.com/slide/-/slide-1.1.6.tgz#56eb027d65b4d2dce6cb2e2d32c4d4afc9e1d707"
 
-slideout@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/slideout/-/slideout-1.0.1.tgz#49f2fbd7e4155fe0dbe6d95938f012243565f625"
-  dependencies:
-    decouple "0.0.2"
-    emitter "git+https://github.com/Mango/emitter.git#0.0.7"
-
 sntp@1.x.x:
   version "1.0.9"
   resolved "https://registry.yarnpkg.com/sntp/-/sntp-1.0.9.tgz#6541184cc90aeea6c6e7b35e2659082443c66198"
@@ -4271,12 +4252,6 @@ vue-property-decorator@^5.1.1:
   dependencies:
     reflect-metadata "^0.1.9"
     vue-class-component "^5.0.0"
-
-vue-slideout@^1.5.1:
-  version "1.5.1"
-  resolved "https://registry.yarnpkg.com/vue-slideout/-/vue-slideout-1.5.1.tgz#a8973b7eee63f8f0fea0dc0922c6d3cb0a062d25"
-  dependencies:
-    slideout "^1.0.1"
 
 vue-style-loader@^3.0.0:
   version "3.0.1"
