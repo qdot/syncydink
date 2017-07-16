@@ -2,15 +2,15 @@
   <div id="buttplug-log-manager">
     <textarea>{{ logMessages.join("\n") }}</textarea>
     <br/>
-    <select v-model="logLevel" @change="LogLevelChange">
-      <option value="Off">Off</option>
-      <option value="Fatal">Fatal</option>
-      <option value="Error">Error</option>
-      <option value="Warn">Warn</option>
-      <option value="Info">Info</option>
-      <option value="Debug">Debug</option>
-      <option value="Trace">Trace</option>
-    </select>
+    <md-select v-model="logLevel" @change="LogLevelChange">
+      <md-option value="Off">Off</md-option>
+      <md-option value="Fatal">Fatal</md-option>
+      <md-option value="Error">Error</md-option>
+      <md-option value="Warn">Warn</md-option>
+      <md-option value="Info">Info</md-option>
+      <md-option value="Debug">Debug</md-option>
+      <md-option value="Trace">Trace</md-option>
+    </md-select>
   </div>
 </template>
 
