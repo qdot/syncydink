@@ -8,3 +8,4 @@ script:
   - yarn tslint
   - yarn build
 
+cache: yarn
