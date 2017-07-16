@@ -1,10 +1,6 @@
 <template>
   <div id="buttplug-log-manager">
-    <select size="10">
-      <option v-for="message in logMessages">
-        {{ message }}
-      </option>
-    </select>
+    <textarea>{{ logMessages.join("\n") }}</textarea>
     <br/>
     <select v-model="logLevel" @change="LogLevelChange">
       <option value="Off">Off</option>
@@ -21,5 +17,12 @@
 <script lang="ts" src="./ButtplugLogManager.ts">
 </script>
 
-<style lang="less" src="./ButtplugLogManager.less">
+<style lang="css">
+ #buttplug-log-manager textarea {
+   width:28em;
+   height:20em;
+   overflow: auto;
+   font-size: 9px;
+   white-space: pre;
+ }
 </style>
