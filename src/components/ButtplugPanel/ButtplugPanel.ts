@@ -18,6 +18,7 @@ export default class ButtplugPanel extends Vue {
 
   @Prop()
   private buttplugMessage: ButtplugDeviceMessage;
+  private isConnected: boolean = false;
 
   // TODO: Pass down a property to name the client with
   private buttplugClient: ButtplugClient = new ButtplugClient("Buttplug Panel");
@@ -31,21 +32,39 @@ export default class ButtplugPanel extends Vue {
 
   private async Connect(address: string) {
     await this.buttplugClient.Connect(address);
+    this.buttplugClient.addListener("close", () => { this.isConnected = false; });
     this.buttplugClient.addListener("log", this.AddLogMessage);
     this.buttplugClient.addListener("deviceadded", this.AddDevice);
     this.buttplugClient.addListener("deviceremoved", this.RemoveDevice);
+    this.isConnected = true;
     const devices = await this.buttplugClient.RequestDeviceList();
   }
 
+  private Disconnect() {
+    if (this.buttplugClient.Connected) {
+      this.buttplugClient.Disconnect();
+    }
+    this.isConnected = false;
+  }
+
   private async SetLogLevel(logLevel: string) {
+    if (!this.isConnected) {
+      return;
+    }
     await this.buttplugClient.RequestLog(logLevel);
   }
 
   private async StartScanning() {
+    if (!this.isConnected) {
+      return;
+    }
     await this.buttplugClient.StartScanning();
   }
 
   private async StopScanning() {
+    if (!this.isConnected) {
+      return;
+    }
     await this.buttplugClient.StopScanning();
   }
 
