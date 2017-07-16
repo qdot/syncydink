@@ -5,8 +5,11 @@
       <md-list-item class="lower-divider">
         <buttplug-connection-manager-component
           width="100%"
-          v-on:connect="Connect" />
+          v-bind:isConnected="isConnected"
+          v-on:connect="Connect"
+          v-on:disconnect="Disconnect"/>
       </md-list-item>
+      <div v-show="isConnected">
       <md-subheader>Devices</md-subheader>
       <md-list-item class="lower-divider">
         <buttplug-device-manager-component
@@ -14,12 +17,15 @@
           v-on:startScanning="StartScanning"
           v-on:stopScanning="StopScanning" />
       </md-list-item>
+      </div>
+      <div v-show="isConnected">
       <md-subheader>Log Messages</md-subheader>
       <md-list-item class="lower-divider">
         <buttplug-log-manager-component
           v-bind:logMessages="logMessages"
           v-on:loglevel="SetLogLevel"/>
       </md-list-item>
+      </div>
     </md-list>
   </div>
 </template>
