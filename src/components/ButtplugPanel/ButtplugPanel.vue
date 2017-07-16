@@ -2,20 +2,20 @@
   <div id="buttplug-panel">
     <md-list>
       <md-subheader>Connection</md-subheader>
-      <md-list-item>
+      <md-list-item class="lower-divider">
         <buttplug-connection-manager-component
           width="100%"
           v-on:connect="Connect" />
       </md-list-item>
       <md-subheader>Devices</md-subheader>
-      <md-list-item>
+      <md-list-item class="lower-divider">
         <buttplug-device-manager-component
           v-bind:devices="devices"
           v-on:startScanning="StartScanning"
           v-on:stopScanning="StopScanning" />
       </md-list-item>
       <md-subheader>Log Messages</md-subheader>
-      <md-list-item>
+      <md-list-item class="lower-divider">
         <buttplug-log-manager-component
           v-bind:logMessages="logMessages"
           v-on:loglevel="SetLogLevel"/>
@@ -28,7 +28,13 @@
 </script>
 
 <style lang="css">
+
  .buttplug-sidebar {
-   min-width: 100%;
+   min-width: 95%;
+ }
+
+ .lower-divider {
+   padding-bottom: 5px;
+   border-bottom: 1px #bbb solid;
  }
 </style>
