@@ -21,11 +21,14 @@ export default class ButtplugPanel extends Vue {
   private buttplugMessage: ButtplugDeviceMessage;
   private isConnected: boolean = false;
 
-  private buttplugClient: ButtplugClient | undefined;
+  private buttplugClient: ButtplugClient | null = null;
 
   @Watch("buttplugMessage")
   private onMessageUpdate(val: ButtplugDeviceMessage, oldVal: ButtplugDeviceMessage) {
-    if (this.buttplugClient === undefined) {
+    if (this.buttplugClient === null) {
+      return;
+    }
+    if (this.buttplugMessage === null) {
       return;
     }
     this.devices.forEach((aDevice) => {
@@ -50,31 +53,31 @@ export default class ButtplugPanel extends Vue {
   }
 
   private Disconnect() {
-    if (this.buttplugClient === undefined) {
+    if (this.buttplugClient === null) {
       return;
     }
     if (this.buttplugClient.Connected) {
       this.buttplugClient.Disconnect();
     }
-    this.buttplugClient = undefined;
+    this.buttplugClient = null;
   }
 
   private async SetLogLevel(logLevel: string) {
-    if (this.buttplugClient === undefined) {
+    if (this.buttplugClient === null) {
       return;
     }
     await this.buttplugClient.RequestLog(logLevel);
   }
 
   private async StartScanning() {
-    if (this.buttplugClient === undefined) {
+    if (this.buttplugClient === null) {
       return;
     }
     await this.buttplugClient.StartScanning();
   }
 
   private async StopScanning() {
-    if (this.buttplugClient === undefined) {
+    if (this.buttplugClient === null) {
       return;
     }
     await this.buttplugClient.StopScanning();
