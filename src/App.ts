@@ -15,11 +15,27 @@ import SyncyDinkVideoComponent from "./components/SyncyDinkVideo/SyncyDinkVideo.
 export default class App extends Vue {
   private buttplugMessage: ButtplugDeviceMessage = new FleshlightLaunchFW12Cmd(100, 0);
 
-  private buttplugEvent(ev: ButtplugDeviceMessage) {
+  private SideNavOpen() {
+    (this.$refs.leftSidenav as any).open();
+  }
+
+  private SideNavClose() {
+    (this.$refs.leftSidenav as any).close();
+  }
+
+  private NavIconOpen() {
+    (this.$refs.navicon as any).classList.add("open");
+  }
+
+  private NavIconClose() {
+    (this.$refs.navicon as any).classList.remove("open");
+  }
+
+  private ButtplugEvent(ev: ButtplugDeviceMessage) {
     this.buttplugMessage = ev;
   }
 
-  private toggleLeftSidenav() {
+  private ToggleLeftSidenav() {
     (this.$refs.leftSidenav as any).toggle();
   }
 }
