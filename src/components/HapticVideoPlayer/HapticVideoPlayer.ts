@@ -1,6 +1,6 @@
 import { FleshlightLaunchFW12Cmd } from "buttplug";
 import Vue from "vue";
-import { Component, Model, Prop } from "vue-property-decorator";
+import { Component, Model, Prop, Watch } from "vue-property-decorator";
 import HapticCommandToButtplugMessage from "./HapticsToButtplug";
 const videoPlayer = require("vue-video-player").videoPlayer;
 import { HapticCommand, HapticFileHandler, LoadFile, FunscriptCommand } from "haptic-movie-file-reader";
@@ -11,7 +11,15 @@ import { Player } from "video.js";
     videoPlayer,
   },
 })
-export default class SyncyDinkVideo extends Vue {
+export default class HapticVideoPlayer extends Vue {
+  @Prop()
+  private videoFile: File;
+
+  @Prop()
+  private hapticsFile: File;
+
+  private haveVideoFile: boolean = false;
+
   private playerOptions = {
     language: "en",
     muted: true,
@@ -28,28 +36,24 @@ export default class SyncyDinkVideo extends Vue {
   private _commands: Map<number, FleshlightLaunchFW12Cmd> = new Map();
   private _latestTime: number = 0;
 
-  private onVideoFileChange(event: any) {
-    const files = event.target.files || event.dataTransfer.files;
-    if (!files.length) {
-      return;
-    }
+  @Watch("videoFile")
+  private onVideoFileChange() {
+    this.haveVideoFile = true;
     this.playerOptions.sources = [{
-      src: URL.createObjectURL(files[0]),
+      src: URL.createObjectURL(this.videoFile),
       type: "video/mp4",
     }];
   }
 
-  private onHapticsFileChange(event: any) {
-    const files = event.target.files || event.dataTransfer.files;
-    if (!files.length) {
-      return;
-    }
-    LoadFile(files[0]).then((h: HapticFileHandler) => {
+  @Watch("hapticsFile")
+  private onHapticsFileChange() {
+    LoadFile(this.hapticsFile).then((h: HapticFileHandler) => {
       this._hapticsHandler = h;
       const commands = this._hapticsHandler.Commands;
       if (commands[0].constructor.name === "FunscriptCommand") {
         this._commands =
           HapticCommandToButtplugMessage.FunScriptToFleshlightLaunchCommands(h.Commands as FunscriptCommand[]);
+        this.$emit("hapticsLoaded", commands[0].constructor.name, this._commands.size);
       }
     });
   }

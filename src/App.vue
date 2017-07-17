@@ -11,8 +11,12 @@
           </div>
         </div>
       </header>
-      <syncy-dink-video-component
-        v-on:buttplugEvent="ButtplugEvent"/>
+      <img />
+      <haptic-video-player-component
+        v-on:buttplugEvent="ButtplugEvent"
+        v-on:hapticsLoaded="onHapticsLoaded"
+        v-bind:videoFile="this.videoFile"
+        v-bind:hapticsFile="this.hapticsFile" />
       <md-sidenav
         layout="column"
         class="md-left"
@@ -20,13 +24,29 @@
         @open="NavIconOpen"
         @close="NavIconClose">
         <md-tabs md-centered>
-          <md-tab md-iconset="fa fa-film">
+          <md-tab md-label="Video">
+            <md-input-container class="syncydink-nav-file-input">
+              <md-file
+                accept="video/*"
+                placeholder="Click to select video file"
+                @selected="onVideoFileChange" />
+            </md-input-container>
+            <md-input-container class="syncydink-nav-file-input">
+              <md-file
+                accept="*"
+                placeholder="Click to select haptics file"
+                @selected="onHapticsFileChange" />
+            </md-input-container>
+            <div v-if="this.hapticCommandsSize != 0">
+              <ul class="haptics-info">
+                <li># of Haptic Commands Loaded: {{ this.hapticCommandsSize }}</li>
+                <li>Haptics Type: {{ this.hapticCommandsType }}</li>
+              </ul>
+            </div>
+          </md-tab>
+          <md-tab md-label="Buttplug">
             <buttplug-panel-component
               v-bind:buttplugMessage='this.buttplugMessage' />
-          </md-tab>
-          <md-tab md-iconset="fa fa-film">
-          </md-tab>
-          <md-tab md-iconset="fa fa-film">
           </md-tab>
         </md-tabs>
       </md-sidenav>
@@ -61,7 +81,7 @@
  }
 
  /* Make our touch wrapper div take up the whole screen, but also make it
- fixed so that we don't have problems with readjustment snapping */
+    fixed so that we don't have problems with readjustment snapping */
  #gesture-wrapper {
    position: fixed;
    height: 100vh;
@@ -101,6 +121,11 @@
  .md-tabs .md-tab  {
    padding: 0;
  }
+
+ .haptics-info {
+   font-size: 14px;
+ }
+
  /* Taken from https://codepen.io/designcouch/pen/Atyop */
 
  #nav-icon3 {
@@ -180,4 +205,8 @@
    left: 50%;
  }
 
+ .syncydink-nav-file-input {
+   max-width: 95%;
+   margin: auto;
+ }
 </style>
