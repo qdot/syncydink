@@ -2,6 +2,7 @@ import { ButtplugClient, ButtplugDeviceMessage, Device, Log } from "buttplug";
 import Vue from "vue";
 import { Component, Prop, Watch } from "vue-property-decorator";
 import ButtplugConnectionManagerComponent from "../ButtplugConnectionManager/ButtplugConnectionManager.vue";
+import ButtplugStartConnectEvent from "../ButtplugConnectionManager/ButtplugStartConnectEvent";
 import ButtplugDeviceManagerComponent from "../ButtplugDeviceManager/ButtplugDeviceManager.vue";
 import ButtplugLogManagerComponent from "../ButtplugLogManager/ButtplugLogManager.vue";
 
@@ -20,49 +21,60 @@ export default class ButtplugPanel extends Vue {
   private buttplugMessage: ButtplugDeviceMessage;
   private isConnected: boolean = false;
 
-  // TODO: Pass down a property to name the client with
-  private buttplugClient: ButtplugClient = new ButtplugClient("Buttplug Panel");
+  private buttplugClient: ButtplugClient | undefined;
 
   @Watch("buttplugMessage")
   private onMessageUpdate(val: ButtplugDeviceMessage, oldVal: ButtplugDeviceMessage) {
+    if (this.buttplugClient === undefined) {
+      return;
+    }
     this.devices.forEach((aDevice) => {
-      this.buttplugClient.SendDeviceMessage(aDevice, val);
+      // Strict null checking doesn't like the earlier check not being in this
+      // scope, so we have to do this twice.
+      if (this.buttplugClient) {
+        this.buttplugClient.SendDeviceMessage(aDevice, val);
+      }
     });
   }
 
-  private async Connect(address: string) {
-    await this.buttplugClient.Connect(address);
-    this.buttplugClient.addListener("close", () => { this.isConnected = false; });
-    this.buttplugClient.addListener("log", this.AddLogMessage);
-    this.buttplugClient.addListener("deviceadded", this.AddDevice);
-    this.buttplugClient.addListener("deviceremoved", this.RemoveDevice);
+  private async Connect(aConnectObj: ButtplugStartConnectEvent) {
+    const buttplugClient = new ButtplugClient(aConnectObj.clientName);
+    await buttplugClient.Connect(aConnectObj.address);
+    buttplugClient.addListener("close", () => { this.isConnected = false; });
+    buttplugClient.addListener("log", this.AddLogMessage);
+    buttplugClient.addListener("deviceadded", this.AddDevice);
+    buttplugClient.addListener("deviceremoved", this.RemoveDevice);
     this.isConnected = true;
-    const devices = await this.buttplugClient.RequestDeviceList();
+    const devices = await buttplugClient.RequestDeviceList();
+    this.buttplugClient = buttplugClient;
   }
 
   private Disconnect() {
+    if (this.buttplugClient === undefined) {
+      return;
+    }
     if (this.buttplugClient.Connected) {
       this.buttplugClient.Disconnect();
     }
-    this.isConnected = false;
+    this.buttplugClient = undefined;
   }
 
   private async SetLogLevel(logLevel: string) {
-    if (!this.isConnected) {
+    if (this.buttplugClient === undefined) {
       return;
     }
     await this.buttplugClient.RequestLog(logLevel);
   }
 
   private async StartScanning() {
-    if (!this.isConnected) {
+    if (this.buttplugClient === undefined) {
       return;
     }
     await this.buttplugClient.StartScanning();
   }
 
   private async StopScanning() {
-    if (!this.isConnected) {
+    if (this.buttplugClient === undefined) {
       return;
     }
     await this.buttplugClient.StopScanning();
