@@ -14,6 +14,7 @@
       <md-list-item class="lower-divider">
         <buttplug-device-manager-component
           v-bind:devices="devices"
+          v-on:selectedDevicesChanged="OnSelectedDevicesChanged"
           v-on:startScanning="StartScanning"
           v-on:stopScanning="StopScanning" />
       </md-list-item>
