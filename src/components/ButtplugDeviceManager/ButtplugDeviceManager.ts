@@ -6,19 +6,40 @@ import { Component, Model, Prop } from "vue-property-decorator";
 export default class ButtplugDeviceManager extends Vue {
   @Prop()
   private devices: Device[];
-  private IsScanning: boolean = false;
+
   @Model()
-  private ScanningText: string = "Start Scanning";
+  private scanningText: string = "Start Scanning";
+
+  private selectedDevices: Device[] = [];
+  private isScanning: boolean = false;
+  private boxChecked: boolean = false;
 
   private ScanningClicked(ev: Event) {
-    if (!this.IsScanning) {
+    if (!this.isScanning) {
       this.$emit("startScanning");
-      this.IsScanning = true;
-      this.ScanningText = "Stop Scanning";
+      this.isScanning = true;
+      this.scanningText = "Stop Scanning";
       return;
     }
     this.$emit("stopScanning");
-    this.IsScanning = false;
-    this.ScanningText = "Start Scanning";
+    this.isScanning = false;
+    this.scanningText = "Start Scanning";
+  }
+
+  private onCheckboxChange(aChecked: boolean, aDeviceId: number) {
+    if (aChecked) {
+      for (const device of this.devices) {
+        if (device.Index === aDeviceId &&
+            this.selectedDevices.indexOf(device) === -1) {
+          this.selectedDevices.push(device);
+          break;
+        }
+      }
+    } else {
+      this.selectedDevices = this.selectedDevices.filter((d) => {
+        return d.Index !== aDeviceId;
+      });
+    }
+    this.$emit("selectedDevicesChanged", this.selectedDevices);
   }
 }

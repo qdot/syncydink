@@ -14,8 +14,9 @@ import ButtplugLogManagerComponent from "../ButtplugLogManager/ButtplugLogManage
   },
 })
 export default class ButtplugPanel extends Vue {
-  public logMessages: string[] = [];
-  public devices: Device[] = [];
+  private logMessages: string[] = [];
+  private devices: Device[] = [];
+  private selectedDevices: Device[] = [];
 
   @Prop()
   private buttplugMessage: ButtplugDeviceMessage;
@@ -31,7 +32,7 @@ export default class ButtplugPanel extends Vue {
     if (this.buttplugMessage === null) {
       return;
     }
-    this.devices.forEach((aDevice) => {
+    this.selectedDevices.forEach((aDevice) => {
       // Strict null checking doesn't like the earlier check not being in this
       // scope, so we have to do this twice.
       if (this.buttplugClient) {
@@ -101,5 +102,9 @@ export default class ButtplugPanel extends Vue {
     if (this.devices.indexOf(device) !== -1) {
       this.devices.splice(this.devices.indexOf(device), 1);
     }
+  }
+
+  private OnSelectedDevicesChanged(aDeviceList: Device[]) {
+    this.selectedDevices = aDeviceList;
   }
 }
