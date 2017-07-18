@@ -11,7 +11,6 @@
           </div>
         </div>
       </header>
-      <img />
       <haptic-video-player-component
         v-on:buttplugEvent="ButtplugEvent"
         v-on:hapticsLoaded="onHapticsLoaded"
