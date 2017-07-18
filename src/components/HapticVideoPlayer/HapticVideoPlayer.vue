@@ -24,6 +24,10 @@
  #vjs_video_3 {
    height: 100vh;
  }
+
+ #vjs_video_497 {
+   height: 100vh;
+ }
 </style>
 
 <style src="video.js/dist/video-js.min.css" lang="css">

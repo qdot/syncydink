@@ -24,7 +24,7 @@ export default class HapticVideoPlayer extends Vue {
     language: "en",
     muted: true,
     playbackRates: [0.7, 1.0, 1.5, 2.0],
-    playsinline: false,
+    playsinline: true,
     sources: [{
     }],
     start: 0,
