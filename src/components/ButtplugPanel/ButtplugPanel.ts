@@ -1,4 +1,4 @@
-import { ButtplugClient, ButtplugDeviceMessage, Device, Log } from "buttplug";
+import { ButtplugClient, ButtplugMessage, ButtplugDeviceMessage, Device, Log, StopDeviceCmd } from "buttplug";
 import Vue from "vue";
 import { Component, Prop, Watch } from "vue-property-decorator";
 import ButtplugConnectionManagerComponent from "../ButtplugConnectionManager/ButtplugConnectionManager.vue";
@@ -17,34 +17,30 @@ export default class ButtplugPanel extends Vue {
   private logMessages: string[] = [];
   private devices: Device[] = [];
   private selectedDevices: Device[] = [];
-
-  @Prop()
-  private buttplugMessage: ButtplugDeviceMessage;
   private isConnected: boolean = false;
 
   private buttplugClient: ButtplugClient | null = null;
 
-  @Watch("buttplugMessage")
-  private onMessageUpdate(val: ButtplugDeviceMessage, oldVal: ButtplugDeviceMessage) {
+  public async StopAllDevices() {
     if (this.buttplugClient === null) {
       return;
     }
-    if (this.buttplugMessage === null) {
-      return;
-    }
-    this.selectedDevices.forEach((aDevice) => {
-      // Strict null checking doesn't like the earlier check not being in this
-      // scope, so we have to do this twice.
-      if (this.buttplugClient) {
-        this.buttplugClient.SendDeviceMessage(aDevice, val);
-      }
-    });
+    await this.buttplugClient.StopAllDevices();
   }
 
-  private async Connect(aConnectObj: ButtplugStartConnectEvent) {
+  public async SendDeviceMessage(aMsg: ButtplugDeviceMessage) {
+    if (this.buttplugClient === null) {
+      return;
+    }
+    for (const aDevice of this.selectedDevices) {
+      await this.buttplugClient.SendDeviceMessage(aDevice, aMsg);
+    }
+  }
+
+  public async Connect(aConnectObj: ButtplugStartConnectEvent) {
     const buttplugClient = new ButtplugClient(aConnectObj.clientName);
     await buttplugClient.Connect(aConnectObj.address);
-    buttplugClient.addListener("close", () => { this.isConnected = false; });
+    buttplugClient.addListener("close", this.Disconnect);
     buttplugClient.addListener("log", this.AddLogMessage);
     buttplugClient.addListener("deviceadded", this.AddDevice);
     buttplugClient.addListener("deviceremoved", this.RemoveDevice);
@@ -53,7 +49,10 @@ export default class ButtplugPanel extends Vue {
     this.buttplugClient = buttplugClient;
   }
 
-  private Disconnect() {
+  public Disconnect() {
+    this.isConnected = false;
+    this.devices = [];
+    this.selectedDevices = [];
     if (this.buttplugClient === null) {
       return;
     }
@@ -63,21 +62,21 @@ export default class ButtplugPanel extends Vue {
     this.buttplugClient = null;
   }
 
-  private async SetLogLevel(logLevel: string) {
+  public async SetLogLevel(logLevel: string) {
     if (this.buttplugClient === null) {
       return;
     }
     await this.buttplugClient.RequestLog(logLevel);
   }
 
-  private async StartScanning() {
+  public async StartScanning() {
     if (this.buttplugClient === null) {
       return;
     }
     await this.buttplugClient.StartScanning();
   }
 
-  private async StopScanning() {
+  public async StopScanning() {
     if (this.buttplugClient === null) {
       return;
     }
@@ -105,6 +104,15 @@ export default class ButtplugPanel extends Vue {
   }
 
   private OnSelectedDevicesChanged(aDeviceList: Device[]) {
+    // If a device is removed from selected devices, send a stop command to it.
+    for (const aDevice of this.selectedDevices) {
+      if (aDeviceList.indexOf(aDevice) !== -1 || this.buttplugClient === null) {
+        continue;
+      }
+      console.log("Stopping " + aDevice.Name);
+      console.log(aDevice.AllowedMessages);
+      this.buttplugClient.SendDeviceMessage(aDevice, new StopDeviceCmd()).catch((e) => console.log(e));
+    }
     this.selectedDevices = aDeviceList;
   }
 }
