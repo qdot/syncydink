@@ -1,11 +1,14 @@
 import { Device } from "buttplug";
 import Vue from "vue";
-import { Component, Model, Prop } from "vue-property-decorator";
+import { Component, Model, Prop, Watch } from "vue-property-decorator";
 
 @Component
 export default class ButtplugDeviceManager extends Vue {
   @Prop()
   private devices: Device[];
+
+  @Prop()
+  private isConnected: boolean;
 
   @Model()
   private scanningText: string = "Start Scanning";
@@ -13,6 +16,15 @@ export default class ButtplugDeviceManager extends Vue {
   private selectedDevices: Device[] = [];
   private isScanning: boolean = false;
   private boxChecked: boolean = false;
+
+  @Watch("isConnected")
+  private onConnectionChange() {
+    if (this.isConnected) {
+      return;
+    }
+    this.isScanning = false;
+    this.scanningText = "Start Scanning";
+  }
 
   private ScanningClicked(ev: Event) {
     if (!this.isScanning) {

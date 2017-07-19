@@ -1,6 +1,6 @@
 <template>
   <div id="buttplug-log-manager">
-    <textarea>{{ logMessages.join("\n") }}</textarea>
+    <textarea ref="logArea">{{ logMessages.join("\n") }}</textarea>
     <br/>
     <md-select v-model="logLevel" @change="LogLevelChange">
       <md-option value="Off">Off</md-option>

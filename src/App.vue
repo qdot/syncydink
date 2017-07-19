@@ -14,6 +14,7 @@
       <haptic-video-player-component
         v-on:buttplugEvent="ButtplugEvent"
         v-on:hapticsLoaded="onHapticsLoaded"
+        v-on:videoPaused="onVideoPaused"
         v-bind:videoFile="this.videoFile"
         v-bind:hapticsFile="this.hapticsFile" />
       <md-sidenav
@@ -45,7 +46,7 @@
           </md-tab>
           <md-tab md-label="Buttplug">
             <buttplug-panel-component
-              v-bind:buttplugMessage='this.buttplugMessage' />
+              ref="buttplugPanel" />
           </md-tab>
         </md-tabs>
       </md-sidenav>

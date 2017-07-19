@@ -1,9 +1,10 @@
-import { ButtplugClient, Device, Log, ButtplugDeviceMessage, FleshlightLaunchFW12Cmd } from "buttplug";
+import { ButtplugClient, ButtplugMessage, Device, Log, ButtplugDeviceMessage, StopAllDevices } from "buttplug";
 import { HapticCommand, KiirooCommand } from "haptic-movie-file-reader";
 import Vue from "vue";
 import "vue-awesome/icons/bars";
 import { Component, Prop, Inject } from "vue-property-decorator";
 import ButtplugPanelComponent from "./components/ButtplugPanel/ButtplugPanel.vue";
+import ButtplugPanel from "./components/ButtplugPanel/ButtplugPanel";
 import HapticVideoPlayerComponent from "./components/HapticVideoPlayer/HapticVideoPlayer.vue";
 
 @Component({
@@ -17,8 +18,6 @@ export default class App extends Vue {
   private hapticsFile: File | null = null;
   private hapticCommandsSize: number = 0;
   private hapticCommandsType: string = "";
-  private buttplugMessage: ButtplugDeviceMessage | null = null;
-
   private SideNavOpen() {
     (this.$refs.leftSidenav as any).open();
   }
@@ -35,8 +34,8 @@ export default class App extends Vue {
     (this.$refs.navicon as any).classList.remove("open");
   }
 
-  private ButtplugEvent(ev: ButtplugDeviceMessage) {
-    this.buttplugMessage = ev;
+  private ButtplugEvent(aMsg: ButtplugDeviceMessage) {
+    (this.$refs.buttplugPanel as ButtplugPanel).SendDeviceMessage(aMsg);
   }
 
   private ToggleLeftSidenav() {
@@ -54,5 +53,9 @@ export default class App extends Vue {
   private onHapticsLoaded(hapticCommandsType: string, hapticCommandsSize: number) {
     this.hapticCommandsType = hapticCommandsType;
     this.hapticCommandsSize = hapticCommandsSize;
+  }
+
+  private onVideoPaused() {
+    (this.$refs.buttplugPanel as ButtplugPanel).StopAllDevices();
   }
 }
