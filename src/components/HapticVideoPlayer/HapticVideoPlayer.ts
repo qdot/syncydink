@@ -1,4 +1,4 @@
-import { FleshlightLaunchFW12Cmd } from "buttplug";
+import { ButtplugDeviceMessage, FleshlightLaunchFW12Cmd, SingleMotorVibrateCmd } from "buttplug";
 import Vue from "vue";
 import { Component, Model, Prop, Watch } from "vue-property-decorator";
 import HapticCommandToButtplugMessage from "./HapticsToButtplug";
@@ -19,6 +19,8 @@ export default class HapticVideoPlayer extends Vue {
   private hapticsFile: File;
 
   private haveVideoFile: boolean = false;
+  private lastIndexRetrieved: number = -1;
+  private lastTimeRetrieved: number = 0;
 
   private playerOptions = {
     language: "en",
@@ -32,9 +34,9 @@ export default class HapticVideoPlayer extends Vue {
 
   private sources = [{}];
 
-  private _hapticsHandler: HapticFileHandler;
-  private _commands: Map<number, FleshlightLaunchFW12Cmd> = new Map();
-  private _latestTime: number = 0;
+  // Map with entries stored by time
+  private commands: Map<number, ButtplugDeviceMessage[]> = new Map();
+  private commandTimes: number[] = [];
 
   @Watch("videoFile")
   private onVideoFileChange() {
@@ -48,13 +50,8 @@ export default class HapticVideoPlayer extends Vue {
   @Watch("hapticsFile")
   private onHapticsFileChange() {
     LoadFile(this.hapticsFile).then((h: HapticFileHandler) => {
-      this._hapticsHandler = h;
-      const commands = this._hapticsHandler.Commands;
-      if (commands[0].constructor.name === "FunscriptCommand") {
-        this._commands =
-          HapticCommandToButtplugMessage.FunScriptToFleshlightLaunchCommands(h.Commands as FunscriptCommand[]);
-        this.$emit("hapticsLoaded", commands[0].constructor.name, this._commands.size);
-      }
+      this.commands = HapticCommandToButtplugMessage.HapticCommandToButtplugMessage(h.Commands);
+      this.commandTimes = Array.from(this.commands.keys());
     });
   }
 
@@ -63,39 +60,38 @@ export default class HapticVideoPlayer extends Vue {
   }
 
   private onPlayerPause(player: Player) {
-    // TODO: Stop all devices
+    this.$emit("videoPaused");
+  }
+
+  private onPlayerSeek(player: Player) {
+    console.log("resetting");
+    // Any time we seek, reset our last known position and recalculate.
+    this.lastIndexRetrieved = -1;
   }
 
   private runHapticsLoop(player: Player) {
     window.requestAnimationFrame(() => {
-      if (this._hapticsHandler === undefined) {
-        if (!player.paused()) {
-          this.runHapticsLoop(player);
-        }
+      // If we paused before this fired, just return
+      if (player.paused() || this.commands.size === 0) {
         return;
       }
-      const cmd: HapticCommand | undefined  =
-        this._hapticsHandler.GetValueNearestTime(Math.floor(player.currentTime() * 1000));
-      if (cmd === undefined || this._latestTime === cmd.Time) {
-        if (!player.paused()) {
-          this.runHapticsLoop(player);
-        }
+      const currentTimeInMs = Math.floor(player.currentTime() * 1000);
+      if (this.lastIndexRetrieved + 1 > this.commandTimes.length) {
+        // We're at the end of our haptics data
         return;
       }
-      this._latestTime = cmd.Time;
-      this.$emit("hapticEvent", cmd);
-      this.$emit("buttplugEvent", this._commands.get(cmd.Time));
+      if (currentTimeInMs <= this.commandTimes[this.lastIndexRetrieved + 1]) {
+        this.runHapticsLoop(player);
+        return;
+      }
+      // There are faster ways to do this.
+      while (currentTimeInMs > this.commandTimes[this.lastIndexRetrieved + 1]) {
+        this.lastIndexRetrieved += 1;
+      }
+      this.$emit("hapticsEvent", this.commands.get(this.commandTimes[this.lastIndexRetrieved]));
       if (!player.paused()) {
         this.runHapticsLoop(player);
       }
     });
   }
-
-  // or listen state event
-  // private playerStateChanged(playerCurrentState: Player) {
-  // }
-
-  // player is ready
-  // private playerReadied(player: Player) {
-  // }
 }

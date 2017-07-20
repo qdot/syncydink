@@ -12,7 +12,7 @@
         </div>
       </header>
       <haptic-video-player-component
-        v-on:buttplugEvent="ButtplugEvent"
+        v-on:hapticsEvent="onHapticsEvent"
         v-on:hapticsLoaded="onHapticsLoaded"
         v-on:videoPaused="onVideoPaused"
         v-bind:videoFile="this.videoFile"

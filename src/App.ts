@@ -34,8 +34,10 @@ export default class App extends Vue {
     (this.$refs.navicon as any).classList.remove("open");
   }
 
-  private ButtplugEvent(aMsg: ButtplugDeviceMessage) {
-    (this.$refs.buttplugPanel as ButtplugPanel).SendDeviceMessage(aMsg);
+  private onHapticsEvent(aMsgs: ButtplugDeviceMessage[]) {
+    for (const aMsg of aMsgs) {
+      (this.$refs.buttplugPanel as ButtplugPanel).SendDeviceMessage(aMsg);
+    }
   }
 
   private ToggleLeftSidenav() {
