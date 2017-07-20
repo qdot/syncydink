@@ -33,7 +33,9 @@ export default class ButtplugPanel extends Vue {
       return;
     }
     for (const aDevice of this.selectedDevices) {
-      await this.buttplugClient.SendDeviceMessage(aDevice, aMsg);
+      if (aDevice.AllowedMessages.indexOf(aMsg.getType()) !== -1) {
+        await this.buttplugClient.SendDeviceMessage(aDevice, aMsg);
+      }
     }
   }
 
@@ -109,8 +111,6 @@ export default class ButtplugPanel extends Vue {
       if (aDeviceList.indexOf(aDevice) !== -1 || this.buttplugClient === null) {
         continue;
       }
-      console.log("Stopping " + aDevice.Name);
-      console.log(aDevice.AllowedMessages);
       this.buttplugClient.SendDeviceMessage(aDevice, new StopDeviceCmd()).catch((e) => console.log(e));
     }
     this.selectedDevices = aDeviceList;

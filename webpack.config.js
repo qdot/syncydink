@@ -23,7 +23,7 @@ module.exports = {
     rules: [
       {
         test: /\.ts$/,
-        exclude: /node_modules|vue\/src/,
+        exclude: /node_modules|vue\/src|tests/,
         loader: 'ts-loader',
         options: {
           appendTsSuffixTo: [/\.vue$/]
