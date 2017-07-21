@@ -6,8 +6,7 @@
         ref="videoPlayer"
         :options="playerOptions"
         @play="onPlayerPlay($event)"
-        @pause="onPlayerPause($event)"
-        @seeked="onPlayerSeek($event)">
+        @pause="onPlayerPause($event)">
       </video-player>
     </div>
   </div>

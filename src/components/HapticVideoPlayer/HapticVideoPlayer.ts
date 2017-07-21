@@ -20,7 +20,7 @@ export default class HapticVideoPlayer extends Vue {
 
   private haveVideoFile: boolean = false;
   private lastIndexRetrieved: number = -1;
-  private lastTimeRetrieved: number = 0;
+  private lastTimeChecked: number = 0;
 
   private playerOptions = {
     language: "en",
@@ -63,12 +63,6 @@ export default class HapticVideoPlayer extends Vue {
     this.$emit("videoPaused");
   }
 
-  private onPlayerSeek(player: Player) {
-    console.log("resetting");
-    // Any time we seek, reset our last known position and recalculate.
-    this.lastIndexRetrieved = -1;
-  }
-
   private runHapticsLoop(player: Player) {
     window.requestAnimationFrame(() => {
       // If we paused before this fired, just return
@@ -76,6 +70,11 @@ export default class HapticVideoPlayer extends Vue {
         return;
       }
       const currentTimeInMs = Math.floor(player.currentTime() * 1000);
+      // Backwards seek. Reset index retreived.
+      if (currentTimeInMs < this.lastTimeChecked) {
+        this.lastIndexRetrieved = -1;
+      }
+      this.lastTimeChecked = currentTimeInMs;
       if (this.lastIndexRetrieved + 1 > this.commandTimes.length) {
         // We're at the end of our haptics data
         return;
