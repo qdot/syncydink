@@ -64,8 +64,43 @@
 </script>
 
 <style src="vue-material/dist/vue-material.css"></style>
+<style src="../static/css/video-js.5.4.6.min.css"></style>
 
 <style lang="css">
+ @font-face {
+   font-family: 'Material Icons';
+   font-style: normal;
+   font-weight: 400;
+   src: local('Material Icons'),
+   local('MaterialIcons-Regular'),
+   url(../static/fonts/MaterialIcons-Regular.woff2) format('woff2');
+ }
+
+ .material-icons {
+   font-family: 'Material Icons';
+   font-weight: normal;
+   font-style: normal;
+   font-size: 24px;  /* Preferred icon size */
+   display: inline-block;
+   line-height: 1;
+   text-transform: none;
+   letter-spacing: normal;
+   word-wrap: normal;
+   white-space: nowrap;
+   direction: ltr;
+
+   /* Support for all WebKit browsers. */
+   -webkit-font-smoothing: antialiased;
+   /* Support for Safari and Chrome. */
+   text-rendering: optimizeLegibility;
+
+   /* Support for Firefox. */
+   -moz-osx-font-smoothing: grayscale;
+
+   /* Support for IE. */
+   font-feature-settings: 'liga';
+ }
+
  html, body {
    margin: 0;
    padding: 0;
@@ -74,7 +109,7 @@
  }
 
  body {
-   background-image:url(../assets/images/syncydinklogo.svg);
+   background-image:url(../static/images/syncydinklogo.svg);
    background-repeat: no-repeat;
    background-attachment: fixed;
    background-position: center;
