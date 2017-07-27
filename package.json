@@ -15,7 +15,7 @@
     "test": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' mocha --compilers ts:ts-node/register 'tests/**/*.ts'"
   },
   "dependencies": {
-    "buttplug": "^0.0.8",
+    "buttplug": "^0.0.9",
     "haptic-movie-file-reader": "^0.0.6",
     "tslint": "^5.5.0",
     "video.js": "^6.2.1",

@@ -515,9 +515,9 @@ builtin-status-codes@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/builtin-status-codes/-/builtin-status-codes-3.0.0.tgz#85982878e21b98e1c66425e03d0174788f569ee8"
 
-buttplug@^0.0.8:
-  version "0.0.8"
-  resolved "https://registry.yarnpkg.com/buttplug/-/buttplug-0.0.8.tgz#7b71254e61f048c7a92d2266804ea097ee889a52"
+buttplug@^0.0.9:
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/buttplug/-/buttplug-0.0.9.tgz#15320ddebc16b81af8adb845e7c4d40abb94f87d"
   dependencies:
     ajv "^5.2.2"
     class-transformer "^0.1.7"

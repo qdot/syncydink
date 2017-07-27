@@ -1,4 +1,4 @@
-import { ButtplugClient, ButtplugMessage, ButtplugDeviceMessage, Device, Log, StopDeviceCmd } from "buttplug";
+import { ButtplugWebsocketClient, ButtplugMessage, ButtplugDeviceMessage, Device, Log, StopDeviceCmd } from "buttplug";
 import Vue from "vue";
 import { Component, Prop, Watch } from "vue-property-decorator";
 import ButtplugConnectionManagerComponent from "../ButtplugConnectionManager/ButtplugConnectionManager.vue";
@@ -19,7 +19,7 @@ export default class ButtplugPanel extends Vue {
   private selectedDevices: Device[] = [];
   private isConnected: boolean = false;
 
-  private buttplugClient: ButtplugClient | null = null;
+  private buttplugClient: ButtplugWebsocketClient | null = null;
 
   public async StopAllDevices() {
     if (this.buttplugClient === null) {
@@ -40,7 +40,7 @@ export default class ButtplugPanel extends Vue {
   }
 
   public async Connect(aConnectObj: ButtplugStartConnectEvent) {
-    const buttplugClient = new ButtplugClient(aConnectObj.clientName);
+    const buttplugClient = new ButtplugWebsocketClient(aConnectObj.clientName);
     await buttplugClient.Connect(aConnectObj.address);
     buttplugClient.addListener("close", this.Disconnect);
     buttplugClient.addListener("log", this.AddLogMessage);
