@@ -14,11 +14,17 @@ import HapticVideoPlayerComponent from "./components/HapticVideoPlayer/HapticVid
   },
 })
 export default class App extends Vue {
+  private hasOpenedMenu: boolean = false;
   private videoFile: File | null = null;
   private hapticsFile: File | null = null;
   private hapticCommandsSize: number = 0;
   private hapticCommandsType: string = "";
   private SideNavOpen() {
+    if (!this.hasOpenedMenu) {
+      (this.$refs.hamburgerStartText as HTMLDivElement).remove();
+      (this.$refs.swipeStartText as any).remove();
+      this.hasOpenedMenu = true;
+    }
     (this.$refs.leftSidenav as any).open();
   }
 
@@ -41,6 +47,11 @@ export default class App extends Vue {
   }
 
   private ToggleLeftSidenav() {
+    if (!this.hasOpenedMenu) {
+      (this.$refs.hamburgerStartText as HTMLDivElement).remove();
+      (this.$refs.swipeStartText as any).remove();
+      this.hasOpenedMenu = true;
+    }
     (this.$refs.leftSidenav as any).toggle();
   }
 

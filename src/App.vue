@@ -10,6 +10,8 @@
             <span></span>
           </div>
         </div>
+        <div ref="hamburgerStartText" id="hamburger-start-text"><md-icon>arrow_back</md-icon> Click/Tap</div>
+        <div ref="swipeStartText" id="swipe-start-text"><md-icon>arrow_forward</md-icon> Or Swipe Right</div>
       </header>
       <haptic-video-player-component
         v-on:hapticsEvent="onHapticsEvent"
@@ -65,6 +67,13 @@
    padding: 0;
    height: 100%;
    width:100%
+ }
+
+ body {
+   background-image:url(../assets/images/syncydinklogo.svg);
+   background-repeat: no-repeat;
+   background-attachment: fixed;
+   background-position: center;
  }
 
  #app {
@@ -124,6 +133,22 @@
 
  .haptics-info {
    font-size: 14px;
+ }
+
+ #hamburger-start-text {
+   position: fixed;
+   font-size:25px;
+   z-index:50;
+   top: 33px;
+   left: 85px;
+ }
+
+ #swipe-start-text {
+   position: fixed;
+   font-size:25px;
+   z-index:50;
+   top: 50vh;
+   left: 5px;
  }
 
  /* Taken from https://codepen.io/designcouch/pen/Atyop */
