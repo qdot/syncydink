@@ -87,13 +87,19 @@ if (process.env.NODE_ENV === 'production') {
         NODE_ENV: '"production"'
       }
     }),
-    // new UglifyJSPlugin({
-    //   sourceMap: true,
-    //   mangle: false,
-    //   compress: {
-    //     warnings: false
-    //   }
-    // }),
+    new UglifyJSPlugin({
+      sourceMap: true,
+      uglifyOptions: {
+        mangle: {
+          keep_classnames: true,
+          keep_fnames: true
+        },
+        compress: {
+          keep_fnames: true,
+          warnings: false
+        }
+      }
+    }),
     new webpack.LoaderOptionsPlugin({
       minimize: true
     })
