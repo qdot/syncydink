@@ -15,6 +15,8 @@
     "test": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' mocha --compilers ts:ts-node/register 'tests/**/*.ts'"
   },
   "dependencies": {
+    "aframe": "^0.6.1",
+    "aframe-stereo-component": "^0.6.0",
     "buttplug": "^0.0.9",
     "haptic-movie-file-reader": "^0.0.6",
     "tslint": "^5.5.0",
@@ -27,6 +29,7 @@
     "vue-video-player": "^3.1.4"
   },
   "devDependencies": {
+    "@types/aframe": "^0.5.0",
     "@types/chai": "^4.0.1",
     "@types/mocha": "^2.2.41",
     "@types/node": "^7.0.34",

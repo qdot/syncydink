@@ -1,38 +1,35 @@
-import { ButtplugDeviceMessage, FleshlightLaunchFW12Cmd, SingleMotorVibrateCmd } from "buttplug";
 import Vue from "vue";
 import { Component, Model, Prop, Watch } from "vue-property-decorator";
+import { ButtplugDeviceMessage, FleshlightLaunchFW12Cmd, SingleMotorVibrateCmd } from "buttplug";
 import HapticCommandToButtplugMessage from "./HapticsToButtplug";
-const videoPlayer = require("vue-video-player").videoPlayer;
 import { HapticCommand, HapticFileHandler, LoadFile, FunscriptCommand } from "haptic-movie-file-reader";
 import { Player } from "video.js";
+import IVideoComponent from "./IVideoComponent";
+import VideoPlayer from "../VideoPlayer/VideoPlayer";
+import VideoPlayerComponent from "../VideoPlayer/VideoPlayer.vue";
 
 @Component({
   components: {
-    videoPlayer,
+    VideoPlayerComponent,
   },
 })
 export default class HapticVideoPlayer extends Vue {
   @Prop()
   private videoFile: File;
 
+  private internalVideoFile: File | null = null;
+
   @Prop()
   private hapticsFile: File;
 
+  @Prop()
+  private vrMode: boolean;
+
+  private currentPlayer: IVideoComponent = (this.$refs.videoJSPlayer as VideoPlayer);
+  private isPaused: boolean = true;
   private haveVideoFile: boolean = false;
   private lastIndexRetrieved: number = -1;
   private lastTimeChecked: number = 0;
-
-  private playerOptions = {
-    language: "en",
-    muted: true,
-    playbackRates: [0.7, 1.0, 1.5, 2.0],
-    playsinline: true,
-    sources: [{
-    }],
-    start: 0,
-  };
-
-  private sources = [{}];
 
   // Map with entries stored by time
   private commands: Map<number, ButtplugDeviceMessage[]> = new Map();
@@ -41,10 +38,9 @@ export default class HapticVideoPlayer extends Vue {
   @Watch("videoFile")
   private onVideoFileChange() {
     this.haveVideoFile = true;
-    this.playerOptions.sources = [{
-      src: URL.createObjectURL(this.videoFile),
-      type: "video/mp4",
-    }];
+    process.nextTick(() => {
+      this.internalVideoFile = this.videoFile;
+    });
   }
 
   @Watch("hapticsFile")
@@ -55,21 +51,23 @@ export default class HapticVideoPlayer extends Vue {
     });
   }
 
-  private onPlayerPlay(player: Player) {
-    this.runHapticsLoop(player);
+  private onPlay() {
+    this.isPaused = false;
+    this.runHapticsLoop();
   }
 
-  private onPlayerPause(player: Player) {
+  private onPause() {
+    this.isPaused = true;
     this.$emit("videoPaused");
   }
 
-  private runHapticsLoop(player: Player) {
+  private runHapticsLoop() {
     window.requestAnimationFrame(() => {
       // If we paused before this fired, just return
-      if (player.paused() || this.commands.size === 0) {
+      if (this.isPaused || this.commands.size === 0) {
         return;
       }
-      const currentTimeInMs = Math.floor(player.currentTime() * 1000);
+      const currentTimeInMs = this.currentPlayer.CurrentTimeInMS();
       // Backwards seek. Reset index retreived.
       if (currentTimeInMs < this.lastTimeChecked) {
         this.lastIndexRetrieved = -1;
@@ -80,7 +78,7 @@ export default class HapticVideoPlayer extends Vue {
         return;
       }
       if (currentTimeInMs <= this.commandTimes[this.lastIndexRetrieved + 1]) {
-        this.runHapticsLoop(player);
+        this.runHapticsLoop();
         return;
       }
       // There are faster ways to do this.
@@ -88,8 +86,8 @@ export default class HapticVideoPlayer extends Vue {
         this.lastIndexRetrieved += 1;
       }
       this.$emit("hapticsEvent", this.commands.get(this.commandTimes[this.lastIndexRetrieved]));
-      if (!player.paused()) {
-        this.runHapticsLoop(player);
+      if (!this.isPaused) {
+        this.runHapticsLoop();
       }
     });
   }

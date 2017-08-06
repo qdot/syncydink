@@ -14,13 +14,14 @@
         <div ref="swipeStartText" id="swipe-start-text"><md-icon>arrow_forward</md-icon> Or Swipe Right</div>
         <div ref="patreonButton" id="patreon-button">
           <!-- I could either let patreon bring in ALL OF FUCKING REACT to render a button, or I could just cut it up and use this. -->
-          <div data-reactroot="" class="_2KV-widgets-shared--patreonWidgetWrapper"><a class="sc-bxivhb ffInCX" color="primary" type="button" href="https://www.patreon.com/bePatron?u=2860444&amp;redirect_uri=http%3A%2F%2Fbuttplug.world%2Ftest.html&amp;utm_medium=widget" role="button"><div class="sc-htpNat gdWQYu"><div class="sc-gzVnrw dJCpyC" display="flex" wrap="nowrap" direction="[object Object]"><div class="sc-dnqmqq llsQFn"><span class="sc-htoDjs fqfmvk"><svg viewBox="0 0 569 546" version="1.1" xmlns="http://www.w3.org/2000/svg"><title>Patreon logo</title><g><circle data-color="1" id="Oval" cx="362.589996" cy="204.589996" r="204.589996"></circle><rect data-color="2" id="Rectangle" x="0" y="0" width="100" height="545.799988"></rect></g></svg></span></div><div class="sc-gqjmRU fFOxVX" width="1.5"></div><!-- react-text: 13 -->Become a patron<!-- /react-text --></div></div></a></div>
+          <div data-reactroot="" class="_2KV-widgets-shared--patreonWidgetWrapper"><a class="sc-bxivhb ffInCX" color="primary" type="button" href="https://www.patreon.com/bePatron?u=2860444&amp;redirect_uri=http%3A%2F%2Fbuttplug.world%2Ftest.html&amp;utm_medium=widget" role="button"><div class="sc-htpNat gdWQYu"><div class="sc-gzVnrw dJCpyC" display="flex" wrap="nowrap" direction="[object Object]"><div class="sc-dnqmqq llsQFn"><span class="sc-htoDjs fqfmvk"><svg viewBox="0 0 569 546" version="1.1" xmlns="http://www.w3.org/2000/svg"><title>Patreon logo</title><g><circle data-color="1" id="Oval" cx="362.589996" cy="204.589996" r="204.589996"></circle><rect data-color="2" id="Rectangle" x="0" y="0" width="100" height="545.799988"></rect></g></svg></span></div><div class="sc-gqjmRU fFOxVX" width="1.5"></div><!-- react-text: 13 -->Give us money<!-- /react-text --></div></div></a></div>
         </div>
       </header>
       <haptic-video-player-component
         v-on:hapticsEvent="onHapticsEvent"
         v-on:hapticsLoaded="onHapticsLoaded"
         v-on:videoPaused="onVideoPaused"
+        v-bind:vrMode="this.vrMode"
         v-bind:videoFile="this.videoFile"
         v-bind:hapticsFile="this.hapticsFile" />
       <md-sidenav
@@ -48,6 +49,10 @@
                 <li># of Haptic Commands Loaded: {{ this.hapticCommandsSize }}</li>
                 <li>Haptics Type: {{ this.hapticCommandsType }}</li>
               </ul>
+            </div>
+            <div>
+              <md-radio v-model="videoMode" id="video-mode-2d" name="video-mode-group" md-value="2d" class="md-primary" selected>2D</md-radio>
+              <md-radio v-model="videoMode" id="video-mode-vr" name="video-mode-group" md-value="vr" class="md-primary">VR</md-radio>
             </div>
           </md-tab>
           <md-tab md-label="Buttplug">

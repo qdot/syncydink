@@ -2,7 +2,7 @@ import { ButtplugClient, ButtplugMessage, Device, Log, ButtplugDeviceMessage, St
 import { HapticCommand, KiirooCommand } from "haptic-movie-file-reader";
 import Vue from "vue";
 import "vue-awesome/icons/bars";
-import { Component, Prop, Inject } from "vue-property-decorator";
+import { Component, Watch } from "vue-property-decorator";
 import ButtplugPanelComponent from "./components/ButtplugPanel/ButtplugPanel.vue";
 import ButtplugPanel from "./components/ButtplugPanel/ButtplugPanel";
 import HapticVideoPlayerComponent from "./components/HapticVideoPlayer/HapticVideoPlayer.vue";
@@ -16,6 +16,8 @@ import HapticVideoPlayerComponent from "./components/HapticVideoPlayer/HapticVid
 export default class App extends Vue {
   private hasOpenedMenu: boolean = false;
   private videoFile: File | null = null;
+  private videoMode: string = "2d";
+  private vrMode: boolean = false;
   private hapticsFile: File | null = null;
   private hapticCommandsSize: number = 0;
   private hapticCommandsType: string = "";
@@ -26,6 +28,15 @@ export default class App extends Vue {
       this.hasOpenedMenu = true;
     }
     (this.$refs.leftSidenav as any).open();
+  }
+
+  @Watch("videoMode")
+  private onVRMode() {
+    if (this.videoMode === "vr") {
+      this.vrMode = true;
+      return;
+    }
+    this.vrMode = false;
   }
 
   private SideNavClose() {

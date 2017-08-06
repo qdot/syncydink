@@ -1,14 +1,12 @@
 <template>
   <div id="haptic-video-player">
-    <div id="video-player"
-         v-if="haveVideoFile">
-      <video-player
-        ref="videoPlayer"
-        :options="playerOptions"
-        @play="onPlayerPlay($event)"
-        @pause="onPlayerPause($event)">
-      </video-player>
-    </div>
+    <video-player-component
+      ref="videoJSPlayer"
+      v-bind:videoFile="this.internalVideoFile"
+      v-bind:vrMode="this.vrMode"
+      v-on:videoPlaying="onPlay"
+      v-on:videoPaused="onPause"
+      v-if="haveVideoFile"></video-player-component>
   </div>
 </template>
 
@@ -16,19 +14,8 @@
 </script>
 
 <style lang="css">
- #player {
+ #haptic-video-player {
    width: 100%;
    height: 100%;
  }
-
- #vjs_video_3 {
-   height: 100vh;
- }
-
- #vjs_video_497 {
-   height: 100vh;
- }
-</style>
-
-<style src="video.js/dist/video-js.min.css" lang="css">
 </style>
