@@ -1,5 +1,5 @@
 import { ButtplugDeviceMessage, FleshlightLaunchFW12Cmd, SingleMotorVibrateCmd } from "buttplug";
-import { FunscriptCommand, HapticFileHandler, HapticCommand } from "haptic-movie-file-reader";
+import { FunscriptCommand, HapticFileHandler, HapticCommand, KiirooCommand } from "haptic-movie-file-reader";
 
 export default class HapticCommandToButtplugMessage {
 
@@ -15,6 +15,11 @@ export default class HapticCommandToButtplugMessage {
       const vibratorCommands =
         HapticCommandToButtplugMessage.FunscriptToSingleMotorVibrateCommands(aCommands as FunscriptCommand[]);
       buttplugCommands = HapticCommandToButtplugMessage.ZipCommandMaps([launchCommands, vibratorCommands]);
+    }
+    case "KiirooCommand": {
+      const launchCommands =
+        HapticCommandToButtplugMessage.KiirooToFleshlightLaunchCommands(aCommands as KiirooCommand[]);
+      buttplugCommands = launchCommands;
     }
     }
 
@@ -164,6 +169,65 @@ export default class HapticCommandToButtplugMessage {
     }
     // Make sure we stop the vibrator at the end
     commands.set(lastTime + 100, [new SingleMotorVibrateCmd(0)]);
+    return commands;
+  }
+
+  private static KiirooToFleshlightLaunchCommands(aCommands: KiirooCommand[]):
+  Map<number, ButtplugDeviceMessage[]> {
+    let lastTime: number = 0;
+    let lastPosition: number = 0;
+    let lastSpeed: number = 0;
+    let currentTime: number;
+    let currentPosition: number;
+    let currentSpeed: number = 0;
+    let timeDelta: number;
+    let limitedSpeed: number = 0;
+    const commands: Map<number, ButtplugDeviceMessage[]> = new Map();
+    for (const aCommand of aCommands) {
+      // if this is our first element, save off and continue.
+      if (lastTime < 0) {
+        lastTime = aCommand.Time;
+        lastPosition = aCommand.Position;
+        continue;
+      }
+      currentTime = aCommand.Time;
+      currentPosition = aCommand.Position;
+
+      timeDelta = currentTime - lastTime;
+
+      if (timeDelta > 2000) {
+        currentSpeed = 50;
+      } else if (timeDelta > 1000) {
+        currentSpeed = 20;
+      } else {
+        currentSpeed = 100 - ((currentSpeed / 100) + (currentSpeed / 100 * .1));
+        if (currentSpeed > lastSpeed) {
+          currentSpeed = lastSpeed + ((currentSpeed - lastSpeed) / 6);
+        } else {
+          currentSpeed = lastSpeed - (currentSpeed / 2);
+        }
+      }
+      currentSpeed = Math.floor(currentSpeed);
+      if (currentSpeed < 20) {
+        currentSpeed = 20;
+      }
+
+      lastTime = aCommand.Time;
+      lastPosition = aCommand.Position;
+      lastSpeed = currentSpeed;
+
+      if (timeDelta <= 150) {
+        if (limitedSpeed === 0) {
+          limitedSpeed = currentSpeed;
+        }
+        commands.set(currentTime, [new FleshlightLaunchFW12Cmd(limitedSpeed, currentPosition > 2 ? 5 : 95)]);
+        continue;
+      }
+      limitedSpeed = 0;
+      commands.set(currentTime, [new FleshlightLaunchFW12Cmd(currentSpeed, currentPosition > 2 ? 5 : 95)]);
+      continue;
+
+    }
     return commands;
   }
 }
