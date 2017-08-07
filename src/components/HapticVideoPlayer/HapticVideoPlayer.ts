@@ -25,7 +25,7 @@ export default class HapticVideoPlayer extends Vue {
   @Prop()
   private vrMode: boolean;
 
-  private currentPlayer: IVideoComponent = (this.$refs.videoJSPlayer as VideoPlayer);
+  private currentPlayer: IVideoComponent = (this.$refs.videoPlayer as VideoPlayer);
   private isPaused: boolean = true;
   private haveVideoFile: boolean = false;
   private lastIndexRetrieved: number = -1;
@@ -39,6 +39,8 @@ export default class HapticVideoPlayer extends Vue {
   private onVideoFileChange() {
     this.haveVideoFile = true;
     process.nextTick(() => {
+      // At this point we'll definitely as a video player
+      this.currentPlayer = (this.$refs.videoPlayer as VideoPlayer);
       this.internalVideoFile = this.videoFile;
     });
   }

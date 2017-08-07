@@ -1,7 +1,7 @@
 <template>
   <div id="haptic-video-player">
     <video-player-component
-      ref="videoJSPlayer"
+      ref="videoPlayer"
       v-bind:videoFile="this.internalVideoFile"
       v-bind:vrMode="this.vrMode"
       v-on:videoPlaying="onPlay"
