@@ -19,7 +19,9 @@ export default class HapticCommandToButtplugMessage {
     case "KiirooCommand": {
       const launchCommands =
         HapticCommandToButtplugMessage.KiirooToFleshlightLaunchCommands(aCommands as KiirooCommand[]);
-      buttplugCommands = launchCommands;
+      const vibratorCommands =
+        HapticCommandToButtplugMessage.KiirooToSingleMotorVibrateCommands(aCommands as KiirooCommand[]);
+      buttplugCommands = HapticCommandToButtplugMessage.ZipCommandMaps([launchCommands, vibratorCommands]);
     }
     }
 
@@ -124,9 +126,6 @@ export default class HapticCommandToButtplugMessage {
     return commands;
   }
 
-  // For now, we can process to FleshlightLaunch first, then process to
-  // vibration. This means all of the timing work is already done for us, and we
-  // just need to do vibration frame interpolation
   private static FunscriptToSingleMotorVibrateCommands(aCommands: FunscriptCommand[]):
   Map<number, ButtplugDeviceMessage[]> {
     let lastTime: number = 0;
@@ -155,6 +154,12 @@ export default class HapticCommandToButtplugMessage {
       currentPosition = aCommand.Position;
 
       timeDelta = currentTime - lastTime;
+      // Set a maximum time delta, otherwise we'll have ramps that can last
+      // multiple minutes.
+      if (timeDelta > 5000) {
+        timeDelta = 5000;
+        commands.set(lastTime + timeDelta + 1, [new SingleMotorVibrateCmd(0)]);
+      }
 
       timeSteps = Math.floor(timeDelta / density);
       posStep = ((currentPosition - lastPosition) / 100) / timeSteps;
@@ -228,6 +233,59 @@ export default class HapticCommandToButtplugMessage {
       continue;
 
     }
+    return commands;
+  }
+
+  private static KiirooToSingleMotorVibrateCommands(aCommands: KiirooCommand[]):
+  Map<number, ButtplugDeviceMessage[]> {
+    let lastTime: number = 0;
+    let lastPosition: number = 0;
+
+    // amount of time (in milliseconds) to put between every interpolated vibration command
+    const density = 75;
+    const commands: Map<number, ButtplugDeviceMessage[]> = new Map();
+
+    let currentTime: number;
+    let currentPosition: number;
+
+    let timeDelta: number;
+
+    let timeSteps: number;
+    let posStep: number;
+    let step: number;
+
+    for (const aCommand of aCommands) {
+      if (lastTime < 0) {
+        lastTime = aCommand.Time;
+        lastPosition = 100 - (aCommand.Position * 25);
+        continue;
+      }
+      currentTime = aCommand.Time;
+      // Convert to 0-100
+      currentPosition = 100 - (aCommand.Position * 25);
+
+      timeDelta = currentTime - lastTime;
+
+      // Set a maximum time delta, otherwise we'll have ramps that can last
+      // multiple minutes.
+      if (timeDelta > 5000) {
+        timeDelta = 5000;
+        commands.set(lastTime + timeDelta + 1, [new SingleMotorVibrateCmd(0)]);
+      }
+
+      timeSteps = Math.floor(timeDelta / density);
+      posStep = ((currentPosition - lastPosition) / 100) / timeSteps;
+      step = 0;
+      while (lastTime + (step * density) < currentTime) {
+        commands.set(lastTime + (step * density),
+                     [new SingleMotorVibrateCmd((lastPosition * 0.01) + (posStep * step))]);
+        step += 1;
+      }
+      lastTime = currentTime;
+      lastPosition = currentPosition;
+    }
+    // Make sure we stop the vibrator at the end
+    commands.set(lastTime + 100, [new SingleMotorVibrateCmd(0)]);
     return commands;
   }
 }
