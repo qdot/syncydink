@@ -15,6 +15,7 @@ export default class HapticCommandToButtplugMessage {
       const vibratorCommands =
         HapticCommandToButtplugMessage.FunscriptToSingleMotorVibrateCommands(aCommands as FunscriptCommand[]);
       buttplugCommands = HapticCommandToButtplugMessage.ZipCommandMaps([launchCommands, vibratorCommands]);
+      break;
     }
     case "KiirooCommand": {
       const launchCommands =
@@ -22,6 +23,7 @@ export default class HapticCommandToButtplugMessage {
       const vibratorCommands =
         HapticCommandToButtplugMessage.KiirooToSingleMotorVibrateCommands(aCommands as KiirooCommand[]);
       buttplugCommands = HapticCommandToButtplugMessage.ZipCommandMaps([launchCommands, vibratorCommands]);
+      break;
     }
     }
 
