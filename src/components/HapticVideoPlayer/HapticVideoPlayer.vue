@@ -3,7 +3,7 @@
     <video-player-component
       ref="videoPlayer"
       v-bind:videoFile="this.internalVideoFile"
-      v-bind:vrMode="this.vrMode"
+      v-bind:videoMode="this.videoMode"
       v-on:videoPlaying="onPlay"
       v-on:videoPaused="onPause"
       v-if="haveVideoFile"></video-player-component>

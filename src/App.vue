@@ -21,7 +21,7 @@
         v-on:hapticsEvent="onHapticsEvent"
         v-on:hapticsLoaded="onHapticsLoaded"
         v-on:videoPaused="onVideoPaused"
-        v-bind:vrMode="this.vrMode"
+        v-bind:videoMode="this.videoMode"
         v-bind:videoFile="this.videoFile"
         v-bind:hapticsFile="this.hapticsFile" />
       <md-sidenav
@@ -52,6 +52,7 @@
             </div>
             <div>
               <md-radio v-model="videoMode" id="video-mode-2d" name="video-mode-group" md-value="2d" class="md-primary" selected>2D</md-radio>
+              <md-radio v-model="videoMode" id="video-mode-vr" name="video-mode-group" md-value="split" class="md-primary">2D/VR Split</md-radio>
               <md-radio v-model="videoMode" id="video-mode-vr" name="video-mode-group" md-value="vr" class="md-primary">VR</md-radio>
             </div>
           </md-tab>

@@ -17,9 +17,13 @@ export default class VideoPlayer extends Vue implements IVideoComponent {
   @Prop()
   private videoFile: File;
   @Prop()
-  private vrMode: boolean = false;
+  private videoMode: string = "2d";
   private videoElementId: string | null = null;
   private currentPlayer: Player | null = null;
+  private show2DVideo: boolean = true;
+  private showVRVideo: boolean = false;
+  private fullScreenClass: string = "full-screen";
+  private halfScreenClass: string = "half-screen";
 
   private playerOptions = {
     language: "en",
@@ -28,13 +32,20 @@ export default class VideoPlayer extends Vue implements IVideoComponent {
     playsinline: true,
     sources: [{
     }],
+    height: Math.max(document.documentElement.clientHeight, window.innerHeight || 0),
     start: 0,
   };
 
   public mounted() {
+    // Horrible hack since buggyfill doesn't work for android chrome. Just lose
+    // like 8 units from viewport height.
+    if (/Android/i.test(navigator.userAgent)) {
+      this.fullScreenClass = "full-screen-android";
+      this.halfScreenClass = "half-screen-android";
+    }
     const videojs = document.querySelector(".video-js");
     if (videojs !== null) {
-      videojs.classList.add("full-screen");
+      videojs.classList.add(this.fullScreenClass);
     }
   }
 
@@ -47,20 +58,43 @@ export default class VideoPlayer extends Vue implements IVideoComponent {
 
   private updateVRSource() {
     const videojs = document.querySelector(".video-js");
-    if (!this.vrMode) {
+    console.log(videojs);
+    const vr = document.querySelector("#vr-player");
+    switch (this.videoMode) {
+    case "2d":
       if (videojs !== null) {
-        videojs.classList.remove("half-screen");
-        videojs.classList.add("full-screen");
+        console.log("removing!");
+        videojs.classList.remove(this.halfScreenClass);
+        console.log("adding!");
+        videojs.classList.add(this.fullScreenClass);
       }
+      return;
+    case "split":
+      this.show2DVideo = true;
+      // Make the video frame take half the window, VR take the other half. Hacky.
+      if (videojs !== null) {
+        videojs.classList.remove(this.fullScreenClass);
+        videojs.classList.add(this.halfScreenClass);
+      }
+      if (vr !== null) {
+        vr.classList.remove(this.fullScreenClass);
+        vr.classList.add(this.halfScreenClass);
+      }
+      break;
+    case "vr":
+      this.show2DVideo = false;
+      if (vr !== null) {
+        vr.classList.remove(this.halfScreenClass);
+        vr.classList.add(this.fullScreenClass);
+      }
+      break;
+    }
+    if (vr === null) {
       return;
     }
     if (!AFRAME.components.hasOwnProperty("stereo")) {
       AFRAME.registerComponent("stereo", asc.stereo_component);
       AFRAME.registerComponent("stereocam", asc.stereocam_component);
-    }
-    // Make the video frame take half the window, VR take the other half. Hacky.
-    if (videojs !== null) {
-      videojs.classList.add("half-screen");
     }
     process.nextTick(() => {
       const scene = document.querySelector("a-scene");
@@ -105,9 +139,23 @@ export default class VideoPlayer extends Vue implements IVideoComponent {
     });
   }
 
-  @Watch("vrMode")
+  @Watch("videoMode")
   private onVRModeChange() {
-    this.updateVRSource();
+    switch (this.videoMode) {
+    case "2d":
+      this.show2DVideo = true;
+      this.showVRVideo = false;
+      break;
+    case "split":
+      this.show2DVideo = true;
+      this.showVRVideo = true;
+      break;
+    case "vr":
+      this.show2DVideo = false;
+      this.showVRVideo = true;
+      break;
+    }
+    process.nextTick(() => this.updateVRSource());
   }
 
   @Watch("videoFile")

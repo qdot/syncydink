@@ -17,7 +17,6 @@ export default class App extends Vue {
   private hasOpenedMenu: boolean = false;
   private videoFile: File | null = null;
   private videoMode: string = "2d";
-  private vrMode: boolean = false;
   private hapticsFile: File | null = null;
   private hapticCommandsSize: number = 0;
   private hapticCommandsType: string = "";
@@ -28,15 +27,6 @@ export default class App extends Vue {
       this.hasOpenedMenu = true;
     }
     (this.$refs.leftSidenav as any).open();
-  }
-
-  @Watch("videoMode")
-  private onVRMode() {
-    if (this.videoMode === "vr") {
-      this.vrMode = true;
-      return;
-    }
-    this.vrMode = false;
   }
 
   private SideNavClose() {

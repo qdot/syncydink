@@ -23,7 +23,7 @@ export default class HapticVideoPlayer extends Vue {
   private hapticsFile: File;
 
   @Prop()
-  private vrMode: boolean;
+  private videoMode: string;
 
   private currentPlayer: IVideoComponent = (this.$refs.videoPlayer as VideoPlayer);
   private isPaused: boolean = true;
