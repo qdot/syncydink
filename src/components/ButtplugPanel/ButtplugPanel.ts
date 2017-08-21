@@ -1,4 +1,5 @@
-import { ButtplugWebsocketClient, ButtplugMessage, ButtplugDeviceMessage, Device, Log, StopDeviceCmd } from "buttplug";
+import { ButtplugClient, ButtplugWebsocketClient, ButtplugBrowserClient, ButtplugMessage,
+         ButtplugDeviceMessage, Device, Log, StopDeviceCmd } from "buttplug";
 import Vue from "vue";
 import { Component, Prop, Watch } from "vue-property-decorator";
 import ButtplugConnectionManagerComponent from "../ButtplugConnectionManager/ButtplugConnectionManager.vue";
@@ -19,7 +20,7 @@ export default class ButtplugPanel extends Vue {
   private selectedDevices: Device[] = [];
   private isConnected: boolean = false;
 
-  private buttplugClient: ButtplugWebsocketClient | null = null;
+  private buttplugClient: ButtplugClient | null = null;
 
   public async StopAllDevices() {
     if (this.buttplugClient === null) {
@@ -39,16 +40,16 @@ export default class ButtplugPanel extends Vue {
     }
   }
 
-  public async Connect(aConnectObj: ButtplugStartConnectEvent) {
+  public async ConnectWebsocket(aConnectObj: ButtplugStartConnectEvent) {
     const buttplugClient = new ButtplugWebsocketClient(aConnectObj.clientName);
     await buttplugClient.Connect(aConnectObj.address);
-    buttplugClient.addListener("close", this.Disconnect);
-    buttplugClient.addListener("log", this.AddLogMessage);
-    buttplugClient.addListener("deviceadded", this.AddDevice);
-    buttplugClient.addListener("deviceremoved", this.RemoveDevice);
-    this.isConnected = true;
-    const devices = await buttplugClient.RequestDeviceList();
-    this.buttplugClient = buttplugClient;
+    await this.InitializeConnection(buttplugClient);
+  }
+
+  public async ConnectLocal(aConnectObj: ButtplugStartConnectEvent) {
+    const buttplugClient = new ButtplugBrowserClient(aConnectObj.clientName);
+    await buttplugClient.Connect(aConnectObj.address);
+    await this.InitializeConnection(buttplugClient);
   }
 
   public Disconnect() {
@@ -83,6 +84,16 @@ export default class ButtplugPanel extends Vue {
       return;
     }
     await this.buttplugClient.StopScanning();
+  }
+
+  private async InitializeConnection(aButtplugClient: ButtplugClient) {
+    aButtplugClient.addListener("close", this.Disconnect);
+    aButtplugClient.addListener("log", this.AddLogMessage);
+    aButtplugClient.addListener("deviceadded", this.AddDevice);
+    aButtplugClient.addListener("deviceremoved", this.RemoveDevice);
+    this.isConnected = true;
+    const devices = await aButtplugClient.RequestDeviceList();
+    this.buttplugClient = aButtplugClient;
   }
 
   private AddLogMessage(logMessage: Log) {

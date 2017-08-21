@@ -8,7 +8,9 @@
       <label id="form-label">Server Address</label>
       <md-input class="form-text md-block" v-model="address"/>
     </md-input-container>
-    <md-button class="md-raised md-primary" @click="Connect">{{ ConnectText }}</md-button>
+    <md-button v-if="!isConnected" class="md-raised md-primary" @click="ConnectWebsocket">Connect Websocket</md-button>
+    <md-button v-if="!isConnected" class="md-raised md-primary" @click="ConnectLocal">Connect Local</md-button>
+    <md-button v-if="isConnected" ref="DisconnectButton" class="md-raised md-primary" @click="Disconnect">Disconnect</md-button>
   </div>
 </template>
 

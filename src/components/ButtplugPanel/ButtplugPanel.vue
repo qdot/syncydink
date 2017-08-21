@@ -6,7 +6,8 @@
         <buttplug-connection-manager-component
           width="100%"
           v-bind:isConnected="isConnected"
-          v-on:connect="Connect"
+          v-on:connectwebsocket="ConnectWebsocket"
+          v-on:connectlocal="ConnectLocal"
           v-on:disconnect="Disconnect"/>
       </md-list-item>
       <div v-show="isConnected">

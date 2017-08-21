@@ -7,19 +7,15 @@ export default class ButtplugConnectionManager extends Vue {
   private isConnected: boolean;
   private clientName: string = "Syncydink Video Player";
   private address: string = "ws://localhost:12345/buttplug";
-  private Connect() {
-    if (this.isConnected) {
-      this.$emit("disconnect");
-      return;
-    }
-    this.$emit("connect", {address: this.address,
-                           clientName: this.clientName});
+  private ConnectWebsocket() {
+    this.$emit("connectwebsocket", {address: this.address,
+                                    clientName: this.clientName});
   }
-
-  get ConnectText(): string {
-    if (this.isConnected === true) {
-      return "Disconnect";
-    }
-    return "Connect";
+  private ConnectLocal() {
+    this.$emit("connectlocal", {address: this.address,
+                                clientName: this.clientName});
+  }
+  private Disconnect() {
+    this.$emit("disconnect");
   }
 }
