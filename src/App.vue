@@ -51,14 +51,25 @@
               </ul>
             </div>
             <div>
-              <md-radio v-model="videoMode" id="video-mode-2d" name="video-mode-group" md-value="2d" class="md-primary" selected>2D</md-radio>
-              <md-radio v-model="videoMode" id="video-mode-vr" name="video-mode-group" md-value="split" class="md-primary">2D/VR Split</md-radio>
-              <md-radio v-model="videoMode" id="video-mode-vr" name="video-mode-group" md-value="vr" class="md-primary">VR</md-radio>
+              <md-list>
+                <md-list-item><md-radio v-model="videoMode" id="video-mode-2d" name="video-mode-group" md-value="2d" class="md-primary" selected>2D</md-radio></md-list-item>
+                <md-list-item><md-radio v-model="videoMode" id="video-mode-vr" name="video-mode-group" md-value="split" class="md-primary">2D/VR Split</md-radio></md-list-item>
+                <md-list-item><md-radio v-model="videoMode" id="video-mode-vr" name="video-mode-group" md-value="vr" class="md-primary">VR</md-radio></md-list-item>
+              </md-list>
             </div>
           </md-tab>
           <md-tab md-label="Buttplug">
             <buttplug-panel-component
               ref="buttplugPanel" />
+          </md-tab>
+          <md-tab md-label="About">
+            <md-list class="md-double-line">
+              <md-list-item><b>Syncydink Version 20170829</b></md-list-item>
+              <md-list-item><div class="md-list-text-container">Developed By<a href="https://metafetish.com">Metafetish</a></div></md-list-item>
+              <md-list-item><div class="md-list-text-container">Need help?<a href="https://metafetish.club/t/tutorial-syncydink-v20170821/82">Tutorial available!</a></div></md-list-item>
+              <md-list-item><div class="md-list-text-container">Open Source!<a href="https://github.com/metafetish/syncydink">Code available on Github</a></div></md-list-item>
+              <md-list-item><div class="md-list-text-container">We Like Money!<a href="https://patreon.com/qdot">Visit Our Patreon</a></div></md-list-item>
+            </md-list>
           </md-tab>
         </md-tabs>
       </md-sidenav>
