@@ -1,8 +1,8 @@
 <template>
   <div id="app">
-    <v-touch id="gesture-wrapper" v-on:swiperight="SideNavOpen" v-on:swipeleft="SideNavClose">
+    <v-touch id="gesture-wrapper" v-on:swiperight="SideNavRightSwipe" v-on:swipeleft="SideNavLeftSwipe">
       <header>
-        <div id="nav-icon" @click="ToggleLeftSidenav">
+        <div id="nav-icon" @click="ToggleLeftSideNav">
           <div id="nav-icon3" ref="navicon">
             <span></span>
             <span></span>
@@ -13,8 +13,7 @@
         <div ref="hamburgerStartText" id="hamburger-start-text"><md-icon>arrow_back</md-icon> Click/Tap</div>
         <div ref="swipeStartText" id="swipe-start-text"><md-icon>arrow_forward</md-icon> Or Swipe Right</div>
         <div ref="patreonButton" id="patreon-button">
-          <!-- I could either let patreon bring in ALL OF FUCKING REACT to render a button, or I could just cut it up and use this. -->
-          <div data-reactroot="" class="_2KV-widgets-shared--patreonWidgetWrapper"><a class="sc-bxivhb ffInCX" color="primary" type="button" href="https://www.patreon.com/bePatron?u=2860444&amp;redirect_uri=http%3A%2F%2Fbuttplug.world%2Ftest.html&amp;utm_medium=widget" role="button"><div class="sc-htpNat gdWQYu"><div class="sc-gzVnrw dJCpyC" display="flex" wrap="nowrap" direction="[object Object]"><div class="sc-dnqmqq llsQFn"><span class="sc-htoDjs fqfmvk"><svg viewBox="0 0 569 546" version="1.1" xmlns="http://www.w3.org/2000/svg"><title>Patreon logo</title><g><circle data-color="1" id="Oval" cx="362.589996" cy="204.589996" r="204.589996"></circle><rect data-color="2" id="Rectangle" x="0" y="0" width="100" height="545.799988"></rect></g></svg></span></div><div class="sc-gqjmRU fFOxVX" width="1.5"></div><!-- react-text: 13 -->Give us money<!-- /react-text --></div></div></a></div>
+          <div data-reactroot="" class="_2KV-widgets-shared--patreonWidgetWrapper"><a class="sc-bxivhb ffInCX" color="primary" type="button" href="https://www.patreon.com/bePatron?u=2860444&amp;redirect_uri=http%3A%2F%2Fbuttplug.world%2Ftest.html&amp;utm_medium=widget" role="button"><div class="sc-htpNat gdWQYu"><div class="sc-gzVnrw dJCpyC" display="flex" wrap="nowrap" direction="[object Object]"><div class="sc-dnqmqq llsQFn"><span class="sc-htoDjs fqfmvk"><svg viewBox="0 0 569 546" version="1.1" xmlns="http://www.w3.org/2000/svg"><title>Patreon logo</title><g><circle data-color="1" id="Oval" cx="362.589996" cy="204.589996" r="204.589996"></circle><rect data-color="2" id="Rectangle" x="0" y="0" width="100" height="545.799988"></rect></g></svg></span></div><div class="sc-gqjmRU fFOxVX" width="1.5"></div>>Give us money</div></div></a></div>
         </div>
       </header>
       <haptic-video-player-component
@@ -27,7 +26,8 @@
       <md-sidenav
         layout="column"
         class="md-left"
-        ref="leftSidenav"
+        id="leftSideNavElement"
+        ref="leftSideNav"
         @open="NavIconOpen"
         @close="NavIconClose">
         <md-tabs md-centered>
@@ -70,6 +70,16 @@
               <md-list-item><div class="md-list-text-container">Open Source!<a href="https://github.com/metafetish/syncydink">Code available on Github</a></div></md-list-item>
               <md-list-item><div class="md-list-text-container">We Like Money!<a href="https://patreon.com/qdot">Visit Our Patreon</a></div></md-list-item>
             </md-list>
+          </md-tab>
+        </md-tabs>
+      </md-sidenav>
+      <md-sidenav
+        layout="column"
+        class="md-right"
+        id="rightSideNavElement"
+        ref="rightSideNav">
+        <md-tabs md-centered>
+          <md-tab md-label="Encoder">
           </md-tab>
         </md-tabs>
       </md-sidenav>

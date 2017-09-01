@@ -63,9 +63,7 @@ export default class VideoPlayer extends Vue implements IVideoComponent {
     switch (this.videoMode) {
     case "2d":
       if (videojs !== null) {
-        console.log("removing!");
         videojs.classList.remove(this.halfScreenClass);
-        console.log("adding!");
         videojs.classList.add(this.fullScreenClass);
       }
       return;

@@ -20,17 +20,38 @@ export default class App extends Vue {
   private hapticsFile: File | null = null;
   private hapticCommandsSize: number = 0;
   private hapticCommandsType: string = "";
-  private SideNavOpen() {
+  private SideNavRightSwipe() {
     if (!this.hasOpenedMenu) {
       (this.$refs.hamburgerStartText as HTMLDivElement).remove();
       (this.$refs.swipeStartText as any).remove();
       this.hasOpenedMenu = true;
     }
-    (this.$refs.leftSidenav as any).open();
+    const leftSideNavElement = document.getElementById("leftSideNavElement")!;
+    const rightSideNavElement = document.getElementById("rightSideNavElement")!;
+
+    if (!leftSideNavElement.classList.contains("md-active") &&
+        !rightSideNavElement.classList.contains("md-active")) {
+      (this.$refs.leftSideNav as any).open();
+    } else if (rightSideNavElement.classList.contains("md-active")) {
+      (this.$refs.rightSideNav as any).close();
+    }
   }
 
-  private SideNavClose() {
-    (this.$refs.leftSidenav as any).close();
+  private SideNavLeftSwipe() {
+    if (!this.hasOpenedMenu) {
+      (this.$refs.hamburgerStartText as HTMLDivElement).remove();
+      (this.$refs.swipeStartText as any).remove();
+      this.hasOpenedMenu = true;
+    }
+    const leftSideNav = document.getElementById("leftSideNavElement")!;
+    const rightSideNav = document.getElementById("rightSideNavElement")!;
+
+    if (!leftSideNav.classList.contains("md-active") &&
+        !rightSideNav.classList.contains("md-active")) {
+      (this.$refs.rightSideNav as any).open();
+    } else if (leftSideNav.classList.contains("md-active")) {
+      (this.$refs.leftSideNav as any).close();
+    }
   }
 
   private NavIconOpen() {
@@ -47,13 +68,13 @@ export default class App extends Vue {
     }
   }
 
-  private ToggleLeftSidenav() {
+  private ToggleLeftSideNav() {
     if (!this.hasOpenedMenu) {
       (this.$refs.hamburgerStartText as HTMLDivElement).remove();
       (this.$refs.swipeStartText as any).remove();
       this.hasOpenedMenu = true;
     }
-    (this.$refs.leftSidenav as any).toggle();
+    (this.$refs.leftSideNav as any).toggle();
   }
 
   private onVideoFileChange(videoFile: FileList) {
