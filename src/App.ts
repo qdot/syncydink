@@ -9,11 +9,13 @@ import ButtplugPanel from "./components/ButtplugPanel/ButtplugPanel";
 import { Player } from "video.js";
 import VideoPlayer from "./components/VideoPlayer/VideoPlayer";
 import VideoPlayerComponent from "./components/VideoPlayer/VideoPlayer.vue";
+import VideoEncoderComponent from "./components/VideoEncoder/VideoEncoder.vue";
 
 @Component({
   components: {
     ButtplugPanelComponent,
     VideoPlayerComponent,
+    VideoEncoderComponent,
   },
 })
 export default class App extends Vue {
