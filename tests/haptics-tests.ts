@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import "mocha";
 import { ButtplugDeviceMessage, FleshlightLaunchFW12Cmd, SingleMotorVibrateCmd, KiirooCmd } from "buttplug";
-import HapticCommandToButtplugMessage from "../src/components/HapticVideoPlayer/HapticsToButtplug";
+import HapticCommandToButtplugMessage from "../src/utils/HapticsToButtplug";
 
 const testFunscript = '{"version":"1.0",\
 "inverted":false,\

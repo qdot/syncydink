@@ -2,7 +2,6 @@ import Vue from "vue";
 import { Component, Model, Prop, Watch } from "vue-property-decorator";
 const videoPlayer = require("vue-video-player").videoPlayer;
 import { Player } from "video.js";
-import IVideoComponent from "../HapticVideoPlayer/IVideoComponent";
 // Have to bring in aframe here to make sure we initialize before our
 // component.
 import "aframe";
@@ -13,7 +12,7 @@ const asc = require("aframe-stereo-component");
     videoPlayer,
   },
 })
-export default class VideoPlayer extends Vue implements IVideoComponent {
+export default class VideoPlayer extends Vue {
   @Prop()
   private videoFile: File;
   @Prop()
@@ -58,7 +57,6 @@ export default class VideoPlayer extends Vue implements IVideoComponent {
 
   private updateVRSource() {
     const videojs = document.querySelector(".video-js");
-    console.log(videojs);
     const vr = document.querySelector("#vr-player");
     switch (this.videoMode) {
     case "2d":
