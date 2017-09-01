@@ -9,6 +9,11 @@
 </script>
 
 <style lang="css">
+ #video-encoder {
+   width: 100%;
+   height: 150px;
+ }
+
  #graph div {
    font: 10px sans-serif;
    background-color: steelblue;

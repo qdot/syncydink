@@ -42,7 +42,7 @@ export default class VideoPlayer extends Vue {
       this.fullScreenClass = "full-screen-android";
       this.halfScreenClass = "half-screen-android";
     }
-    const videojs = document.querySelector(".video-js");
+    const videojs = document.querySelector("#twod-player");
     if (videojs !== null) {
       videojs.classList.add(this.fullScreenClass);
     }
@@ -56,7 +56,7 @@ export default class VideoPlayer extends Vue {
   }
 
   private updateVRSource() {
-    const videojs = document.querySelector(".video-js");
+    const videojs = document.querySelector("#twod-player");
     const vr = document.querySelector("#vr-player");
     switch (this.videoMode) {
     case "2d":
@@ -164,6 +164,9 @@ export default class VideoPlayer extends Vue {
       type: "video/mp4",
     }];
     process.nextTick(() => {
+      // Reset player height to accommodate for encoder
+      this.currentPlayer = (this.$refs.videoPlayer as any).player as Player;
+      this.currentPlayer.height(this.currentPlayer.height() - 150);
       // Get the ID for our video tag, so we can add it as a material source to
       // aframe if VR is selected.
       const playerElement = (this.$refs.videoPlayer as Vue).$el;

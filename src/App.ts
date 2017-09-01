@@ -25,7 +25,6 @@ export default class App extends Vue {
   private hapticsFile: File | null = null;
   private hapticCommandsSize: number = 0;
   private hapticCommandsType: string = "";
-
   private currentPlayer: VideoPlayer = (this.$refs.videoPlayer as VideoPlayer);
   private isPaused: boolean = true;
   private haveVideoFile: boolean = false;
@@ -35,6 +34,7 @@ export default class App extends Vue {
   // Map with entries stored by time
   private commands: Map<number, ButtplugDeviceMessage[]> = new Map();
   private commandTimes: number[] = [];
+  private showEncoder: boolean = true;
 
   private SideNavRightSwipe() {
     if (!this.hasOpenedMenu) {

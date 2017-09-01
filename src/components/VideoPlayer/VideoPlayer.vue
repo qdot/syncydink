@@ -1,6 +1,6 @@
 <template>
-  <div id="video-player" class="full-screen">
-    <div>
+  <div id="video-player">
+    <div id="twod-player">
       <video-player
         id="videojs-player"
         ref="videoPlayer"
@@ -21,25 +21,30 @@
 </script>
 
 <style lang="css">
- .full-screen {
-   width: 100vw;
-   height: 100vh;
- }
+ /* #videojs-player {
+    width: 100%;
+    height: 100%;
+    }
 
- .half-screen {
-   width: 100vw;
-   height: 50vh;
- }
+    .full-screen {
+    width: 100%;
+    height: 100%;
+    }
 
- .full-screen-android {
-   width: 100vw;
-   height: 84vh;
- }
+    .half-screen {
+    width: 100vw;
+    height: 50vh;
+    }
 
- .half-screen-android {
-   width: 100vw;
-   height: 42vh;
- }
+    .full-screen-android {
+    width: 100vw;
+    height: 84vh;
+    }
+
+    .half-screen-android {
+    width: 100vw;
+    height: 42vh;
+    } */
 </style>
 
 <style src="video.js/dist/video-js.min.css" lang="css">
