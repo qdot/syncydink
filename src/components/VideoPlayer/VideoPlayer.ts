@@ -51,12 +51,15 @@ export default class VideoPlayer extends Vue {
 
   @Watch("videoHeight")
   private onHeightUpdate() {
-    this.currentPlayer!.height(this.videoHeight);
+    if (!this.currentPlayer) {
+      return;
+    }
+    this.currentPlayer.height(this.videoHeight);
   }
 
   private updateVRSource() {
-    const videojs = document.querySelector("#twod-player")!;
-    const vr = document.querySelector("#vr-player")!;
+    const videojs = document.getElementById("twod-player")!;
+    const vr = document.getElementById("vr-player")!;
     switch (this.videoMode) {
     case "2d":
       videojs.classList.remove(this.halfScreenClass);

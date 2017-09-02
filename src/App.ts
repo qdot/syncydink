@@ -32,6 +32,7 @@ export default class App extends Vue {
   private haveVideoFile: boolean = false;
   private lastIndexRetrieved: number = -1;
   private lastTimeChecked: number = 0;
+  private currentPlayTime: number = 0;
 
   // Map with entries stored by time
   private hapticsCommands: FunscriptCommand[] = [];
@@ -135,22 +136,22 @@ export default class App extends Vue {
       if (this.isPaused || this.commands.size === 0) {
         return;
       }
-      const currentTimeInMs = this.currentPlayer.CurrentTimeInMS();
+      this.currentPlayTime = this.currentPlayer.CurrentTimeInMS();
       // Backwards seek. Reset index retreived.
-      if (currentTimeInMs < this.lastTimeChecked) {
+      if (this.currentPlayTime < this.lastTimeChecked) {
         this.lastIndexRetrieved = -1;
       }
-      this.lastTimeChecked = currentTimeInMs;
+      this.lastTimeChecked = this.currentPlayTime;
       if (this.lastIndexRetrieved + 1 > this.commandTimes.length) {
         // We're at the end of our haptics data
         return;
       }
-      if (currentTimeInMs <= this.commandTimes[this.lastIndexRetrieved + 1]) {
+      if (this.currentPlayTime <= this.commandTimes[this.lastIndexRetrieved + 1]) {
         this.runHapticsLoop();
         return;
       }
       // There are faster ways to do this.
-      while (currentTimeInMs > this.commandTimes[this.lastIndexRetrieved + 1]) {
+      while (this.currentPlayTime > this.commandTimes[this.lastIndexRetrieved + 1]) {
         this.lastIndexRetrieved += 1;
       }
       const msgs = this.commands.get(this.commandTimes[this.lastIndexRetrieved]);

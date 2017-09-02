@@ -14,18 +14,49 @@
    height: 150px;
  }
 
+ #encoder-timeline {
+   background: #000;
+   stroke: #888;
+   border: 1px solid #000;
+ }
+
+ #encoder-timeline text {
+   stroke: none;
+   fill: #fff;
+   font-weight: bold;
+ }
+
+ .domain {
+   stroke: #fff;
+ }
+
+ .tick line {
+   stroke: #fff;
+ }
+
+ .tick text {
+   stroke: none;
+   fill: #fff;
+ }
+
+ #axis line {
+   stroke: #fff;
+ }
+
+ #axis path {
+   stroke: #fff;
+ }
+
  #graph div {
    font: 10px sans-serif;
-   background-color: steelblue;
    text-align: right;
    padding: 3px;
    margin: 1px;
    color: white;
  }
 
- #line {
+ .graph-line {
    stroke: steelblue;
-   fill: none;
    stroke-width: 3px;
    shape-rendering: auto;
  }

@@ -30,6 +30,7 @@
           id="video-encoder"
           ref="videoEncoder"
           v-bind:hapticsCommands="this.hapticsCommands"
+          v-bind:currentPlayTime="this.currentPlayTime"
           v-show="this.showEncoder" />
       </div>
       <md-sidenav
