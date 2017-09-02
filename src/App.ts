@@ -3,12 +3,13 @@ import { HapticCommand, KiirooCommand, HapticFileHandler, LoadFile, FunscriptCom
 import HapticCommandToButtplugMessage from "./utils/HapticsToButtplug";
 import Vue from "vue";
 import "vue-awesome/icons/bars";
-import { Component, Watch } from "vue-property-decorator";
+import { Component } from "vue-property-decorator";
 import ButtplugPanelComponent from "./components/ButtplugPanel/ButtplugPanel.vue";
 import ButtplugPanel from "./components/ButtplugPanel/ButtplugPanel";
 import { Player } from "video.js";
 import VideoPlayer from "./components/VideoPlayer/VideoPlayer";
 import VideoPlayerComponent from "./components/VideoPlayer/VideoPlayer.vue";
+import VideoEncoder from "./components/VideoEncoder/VideoEncoder";
 import VideoEncoderComponent from "./components/VideoEncoder/VideoEncoder.vue";
 
 @Component({
@@ -32,9 +33,10 @@ export default class App extends Vue {
   private lastTimeChecked: number = 0;
 
   // Map with entries stored by time
+  private hapticsCommands: FunscriptCommand[] = [];
   private commands: Map<number, ButtplugDeviceMessage[]> = new Map();
   private commandTimes: number[] = [];
-  private showEncoder: boolean = true;
+  private showEncoder: boolean = false;
 
   private SideNavRightSwipe() {
     if (!this.hasOpenedMenu) {
@@ -100,6 +102,7 @@ export default class App extends Vue {
   private onHapticsFileChange(hapticsFile: FileList) {
     this.hapticsFile = hapticsFile[0];
     LoadFile(this.hapticsFile).then((h: HapticFileHandler) => {
+      this.hapticsCommands = h.Commands as FunscriptCommand[];
       this.commands = HapticCommandToButtplugMessage.HapticCommandToButtplugMessage(h.Commands);
       this.commandTimes = Array.from(this.commands.keys());
     });
@@ -154,5 +157,11 @@ export default class App extends Vue {
         this.runHapticsLoop();
       }
     });
+  }
+
+  private onShowTimelineChange(aChecked: boolean) {
+    // It seems like v-show is a really bad way to do this, but I can't figure
+    // out how to set up props on v-if.
+    this.showEncoder = aChecked;
   }
 }
