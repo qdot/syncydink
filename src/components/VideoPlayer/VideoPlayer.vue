@@ -21,30 +21,15 @@
 </script>
 
 <style lang="css">
- /* #videojs-player {
-    width: 100%;
-    height: 100%;
-    }
+ .full-screen {
+   width: 100%;
+   height: 100%;
+ }
 
-    .full-screen {
-    width: 100%;
-    height: 100%;
-    }
-
-    .half-screen {
-    width: 100vw;
-    height: 50vh;
-    }
-
-    .full-screen-android {
-    width: 100vw;
-    height: 84vh;
-    }
-
-    .half-screen-android {
-    width: 100vw;
-    height: 42vh;
-    } */
+ .half-screen {
+   width: 100%;
+   height: 50%;
+ }
 </style>
 
 <style src="video.js/dist/video-js.min.css" lang="css">

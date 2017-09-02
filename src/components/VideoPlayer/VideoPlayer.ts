@@ -17,6 +17,8 @@ export default class VideoPlayer extends Vue {
   private videoFile: File;
   @Prop()
   private videoMode: string = "2d";
+  @Prop()
+  private videoHeight: 0;
   private videoElementId: string | null = null;
   private currentPlayer: Player | null = null;
   private show2DVideo: boolean = true;
@@ -29,19 +31,11 @@ export default class VideoPlayer extends Vue {
     muted: true,
     playbackRates: [0.7, 1.0, 1.5, 2.0],
     playsinline: true,
-    sources: [{
-    }],
-    height: Math.max(document.documentElement.clientHeight, window.innerHeight || 0),
+    sources: [{}],
     start: 0,
   };
 
   public mounted() {
-    // Horrible hack since buggyfill doesn't work for android chrome. Just lose
-    // like 8 units from viewport height.
-    if (/Android/i.test(navigator.userAgent)) {
-      this.fullScreenClass = "full-screen-android";
-      this.halfScreenClass = "half-screen-android";
-    }
     const videojs = document.querySelector("#twod-player");
     if (videojs !== null) {
       videojs.classList.add(this.fullScreenClass);
@@ -55,34 +49,35 @@ export default class VideoPlayer extends Vue {
     return Math.floor(this.currentPlayer.currentTime() * 1000);
   }
 
+  @Watch("videoHeight")
+  private onHeightUpdate() {
+    this.currentPlayer!.height(this.videoHeight);
+  }
+
   private updateVRSource() {
-    const videojs = document.querySelector("#twod-player");
-    const vr = document.querySelector("#vr-player");
+    const videojs = document.querySelector("#twod-player")!;
+    const vr = document.querySelector("#vr-player")!;
     switch (this.videoMode) {
     case "2d":
-      if (videojs !== null) {
-        videojs.classList.remove(this.halfScreenClass);
-        videojs.classList.add(this.fullScreenClass);
-      }
+      videojs.classList.remove(this.halfScreenClass);
+      videojs.classList.add(this.fullScreenClass);
+      this.currentPlayer!.height(this.videoHeight);
       return;
     case "split":
       this.show2DVideo = true;
       // Make the video frame take half the window, VR take the other half. Hacky.
-      if (videojs !== null) {
-        videojs.classList.remove(this.fullScreenClass);
-        videojs.classList.add(this.halfScreenClass);
-      }
-      if (vr !== null) {
-        vr.classList.remove(this.fullScreenClass);
-        vr.classList.add(this.halfScreenClass);
-      }
+      videojs.classList.remove(this.fullScreenClass);
+      videojs.classList.add(this.halfScreenClass);
+      this.currentPlayer!.height(videojs.offsetHeight);
+      vr.classList.remove(this.fullScreenClass);
+      vr.classList.add(this.halfScreenClass);
       break;
     case "vr":
       this.show2DVideo = false;
-      if (vr !== null) {
-        vr.classList.remove(this.halfScreenClass);
-        vr.classList.add(this.fullScreenClass);
-      }
+      videojs!.classList.remove(this.halfScreenClass);
+      videojs!.classList.remove(this.fullScreenClass);
+      vr.classList.remove(this.halfScreenClass);
+      vr.classList.add(this.fullScreenClass);
       break;
     }
     if (vr === null) {
@@ -164,18 +159,17 @@ export default class VideoPlayer extends Vue {
       type: "video/mp4",
     }];
     process.nextTick(() => {
-      // Reset player height to accommodate for encoder
-      this.currentPlayer = (this.$refs.videoPlayer as any).player as Player;
-      this.currentPlayer.height(this.currentPlayer.height() - 150);
       // Get the ID for our video tag, so we can add it as a material source to
       // aframe if VR is selected.
       const playerElement = (this.$refs.videoPlayer as Vue).$el;
+      this.currentPlayer = (this.$refs.videoPlayer as any).player;
       const videoElement = playerElement.querySelector("video");
       if (videoElement === undefined || videoElement === null) {
         console.log("Can't find video element for aframe setup?");
         return;
       }
       this.videoElementId = videoElement.id;
+      this.currentPlayer!.height(document.getElementById("twod-player")!.offsetHeight);
       this.updateVRSource();
     });
   }

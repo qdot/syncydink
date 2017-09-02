@@ -22,6 +22,7 @@
           ref="videoPlayer"
           v-bind:videoFile="this.videoFile"
           v-bind:videoMode="this.videoMode"
+          v-bind:videoHeight="this.videoHeight"
           v-on:videoPlaying="onPlay"
           v-on:videoPaused="onPause"
           v-if="haveVideoFile" />
@@ -61,7 +62,7 @@
             <div>
               <md-list>
                 <md-list-item><md-radio v-model="videoMode" id="video-mode-2d" name="video-mode-group" md-value="2d" class="md-primary" selected>2D</md-radio></md-list-item>
-                <md-list-item><md-radio v-model="videoMode" id="video-mode-vr" name="video-mode-group" md-value="split" class="md-primary">2D/VR Split</md-radio></md-list-item>
+                <md-list-item><md-radio v-model="videoMode" id="video-mode-vr" name="video-mode-group" md-value="split" class="md-primary">2D/VR Split (Buggy!)</md-radio></md-list-item>
                 <md-list-item><md-radio v-model="videoMode" id="video-mode-vr" name="video-mode-group" md-value="vr" class="md-primary">VR</md-radio></md-list-item>
               </md-list>
             </div>

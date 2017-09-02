@@ -23,6 +23,7 @@ export default class App extends Vue {
   private hasOpenedMenu: boolean = false;
   private videoFile: File | null = null;
   private videoMode: string = "2d";
+  private videoHeight: number = 0;
   private hapticsFile: File | null = null;
   private hapticCommandsSize: number = 0;
   private hapticCommandsType: string = "";
@@ -37,6 +38,10 @@ export default class App extends Vue {
   private commands: Map<number, ButtplugDeviceMessage[]> = new Map();
   private commandTimes: number[] = [];
   private showEncoder: boolean = false;
+
+  public mounted() {
+    window.addEventListener("resize", () => this.setVideoHeight());
+  }
 
   private SideNavRightSwipe() {
     if (!this.hasOpenedMenu) {
@@ -96,6 +101,7 @@ export default class App extends Vue {
       this.currentPlayer = (this.$refs.videoPlayer as VideoPlayer);
       // Set our video file after this so the prop updates
       this.videoFile = videoFile[0];
+      this.setVideoHeight();
     });
   }
 
@@ -159,9 +165,21 @@ export default class App extends Vue {
     });
   }
 
+  // Video.js needs to have height set explicitly in order to recalculate aspect
+  // ratios. Fluid doesn't seem to work well for this, so we're just trying to
+  // catch all resizes and send the info accordingly.
+  private setVideoHeight() {
+    const videoContainer = document.getElementById("video-container")!;
+    const videoEncoder = document.getElementById("video-encoder")!;
+    this.videoHeight = videoContainer.offsetHeight - videoEncoder.offsetHeight;
+  }
+
   private onShowTimelineChange(aChecked: boolean) {
     // It seems like v-show is a really bad way to do this, but I can't figure
     // out how to set up props on v-if.
     this.showEncoder = aChecked;
+    process.nextTick(() => {
+      this.setVideoHeight();
+    });
   }
 }
