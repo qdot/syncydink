@@ -31,7 +31,7 @@
           ref="videoEncoder"
           v-bind:hapticsCommands="this.hapticsCommands"
           v-bind:currentPlayTime="this.currentPlayTime"
-          v-show="this.showEncoder" />
+          v-if="this.showEncoder" />
       </div>
       <md-sidenav
         layout="column"

@@ -30,13 +30,15 @@
    stroke: #fff;
  }
 
- .tick line {
-   stroke: #fff;
- }
-
  .tick text {
    stroke: none;
    fill: #fff;
+ }
+
+ .play-head {
+   stroke: #f00;
+   stroke-width: 3px;
+   shape-rendering: auto;
  }
 
  #axis line {
@@ -53,6 +55,9 @@
    padding: 3px;
    margin: 1px;
    color: white;
+   height: 200px;
+   width: 1920px;
+   overflow: scroll;
  }
 
  .graph-line {

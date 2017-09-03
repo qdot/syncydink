@@ -24,31 +24,57 @@ export default class VideoEncoder extends Vue {
   @Prop()
   private currentPlayTime: number;
 
+  public mounted() {
+    this.buildTimeline();
+    // window.addEventListener("resize", () => this.onResize);
+  }
+
+  private onResize() {
+    const graphdiv = document.getElementById("graph")!;
+    this.xScale.range([0, graphdiv.clientWidth]);
+  }
+
   private buildTimeline() {
+    const graphdiv = document.getElementById("graph")!;
     // If we have to rebuild from scratch, clear all svgs first
     d3.select("#graph").selectAll("svg").remove();
     this.svg = d3.select("#graph")
       .append("svg")
       .attr("id", "encoder-timeline")
       .attr("width", "100%")
-      .attr("height", "150px");
+      .attr("height", "100%");
 
-    this.dataExtent = (d3 as any).extent(this.hapticsCommands, function(d: FunscriptCommand) { return d.Time; });
     // Typing definition for d3.extent is wrong
+    this.dataExtent = (d3 as any).extent(this.hapticsCommands, function(d: FunscriptCommand) { return d.Time; });
+
     this.xScale = d3.scaleLinear()
       .domain(this.dataExtent)
-      .range([0, 1920]);
+      .range([0, graphdiv.clientWidth]);
 
     this.yScale = d3.scaleLinear()
       .domain([100, 0])
-      .range([0, 100]);
+      .range([0, graphdiv.clientHeight]);
 
-    this.xAxis = d3.axisBottom(this.xScale);
-    this.yAxis = d3.axisLeft(this.yScale);
+    this.xAxis = d3.axisTop(this.xScale);
+    this.yAxis = d3.axisRight(this.yScale)
+      .tickSize(graphdiv.clientWidth);
+
+    const customYAxis = (g: any) => {
+      g.call(this.yAxis);
+      g.select(".domain").remove();
+      g.selectAll(".tick:not(:first-of-type) line")
+        .attr("stroke", "#777")
+        .attr("stroke-dasharray", "2,4");
+      g.attr("transform", function() {
+        return "translate(" + 0 + "," + 20 + ")";
+      });
+    };
+    this.svg.append("g").call(customYAxis);
+
     this.xAxisDisplay = this.svg.append("g")
       .classed("axis", true)
       .attr("transform", function() {
-        return "translate(" + 0 + "," + (150 - 20) + ")";
+        return "translate(" + 0 + "," + 20 + ")";
       })
       .call(this.xAxis);
 
@@ -62,7 +88,7 @@ export default class VideoEncoder extends Vue {
       .attr("fill", "none")
       .attr("stroke", "steelblue")
       .attr("transform", function() {
-        return "translate(" + 0 + "," + 0 + ")";
+        return "translate(" + 0 + "," + 20 + ")";
       });
 
     const circles = this.svg.append("g")
@@ -74,19 +100,24 @@ export default class VideoEncoder extends Vue {
       .attr("fill", "white")
       .attr("r", 4)
       .attr("cx", (d: any) => this.xScale(d.Time))
-      .attr("cy", (d: any) => this.yScale(d.Position));
+      .attr("cy", (d: any) => this.yScale(d.Position))
+      .attr("transform", function() {
+        return "translate(" + 0 + "," + 20 + ")";
+      })
+      .on("mouseover", (d: any) => d3.select(d3.event.currentTarget).attr("fill", "red"))
+      .on("mouseout", (d: any) => d3.select(d3.event.currentTarget).attr("fill", "white"));
 
     this.playLine = d3.line()
       .x((d: [number, number]) => this.xScale(d[0]))
       .y((d: [number, number]) => this.yScale(d[1]));
 
     this.playCursor = this.svg.append("path")
-      .attr("id", "line")
+      .classed("play-head", true)
       .attr("d", this.playLine([[0, 0], [0, 100]]))
       .attr("fill", "none")
       .attr("stroke", "red")
       .attr("transform", function() {
-        return "translate(" + 0 + "," + 0 + ")";
+        return "translate(" + 0 + "," + 20 + ")";
       });
 
     const zoom = d3.zoom()
@@ -101,6 +132,9 @@ export default class VideoEncoder extends Vue {
         circles.attr("cx", function(d: any) { return newxScale(d.Time); });
         this.line.x(function(d: any) { return newxScale(d.Time); });
         this.playLine.x(function(d: [number, number]) { return newxScale(d[0]); });
+        if (this.currentPlayTime !== undefined) {
+          this.updateCurrentPlayTime();
+        }
         path.attr("d", this.line(this.hapticsCommands as any)!);
       });
     this.svg.call(zoom);
