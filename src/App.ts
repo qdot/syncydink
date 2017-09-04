@@ -173,8 +173,8 @@ export default class App extends Vue {
     const videoContainer = document.getElementById("video-container")!;
     const videoEncoder = document.getElementById("video-encoder")!;
     this.videoHeight = videoEncoder === null ?
-      videoContainer.offsetHeight :
-      videoContainer.offsetHeight - videoEncoder.offsetHeight;
+      videoContainer.clientHeight :
+      videoContainer.clientHeight - videoEncoder.clientHeight;
   }
 
   private onShowTimelineChange(aChecked: boolean) {

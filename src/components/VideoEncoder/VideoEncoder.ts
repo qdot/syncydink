@@ -2,21 +2,25 @@ import Vue from "vue";
 import { Component, Model, Prop, Watch } from "vue-property-decorator";
 import * as d3 from "d3";
 import { HapticCommand, HapticFileHandler, LoadString, LoadFile, FunscriptCommand } from "haptic-movie-file-reader";
+import * as Mousetrap from "mousetrap";
 
 @Component({})
 export default class VideoEncoder extends Vue {
 
-  private svg: any;
+  private svgXAxis: any;
+  private svgBody: any;
   private xScale: d3.ScaleLinear<number, number>;
   private xDisplayScale: d3.ScaleLinear<number, number>;
   private yScale: d3.ScaleLinear<number, number>;
   private line: d3.Line<[number, number]>;
+  private dataExtent: [number, number];
+
+  // Everything below is a selection with a complex type, so make them anys and
+  // hope we don't regret it later.
   private circles: any;
   private path: any;
-  private dataExtent: [number, number];
   private xAxis: any;
   private yAxis: any;
-  // This ends up being a very complicated selection, so call it any. I am lazy.
   private xAxisDisplay: any;
   private playCursor: any;
   private playLine: d3.Line<[number, number]>;
@@ -26,14 +30,29 @@ export default class VideoEncoder extends Vue {
   private hapticsValues: Array<[number, number]> = [];
 
   @Prop()
-  private currentPlayTime: number;
+  private currentPlayTime: number = 0;
 
   public mounted() {
     this.buildTimeline();
-    // window.addEventListener("resize", () => this.onResize);
+    for (const i of [...Array(10).keys()]) {
+      Mousetrap.bind(i.toString(), () => this.addNodeAtPoint(i * 10));
+    }
   }
 
-  private updateCircles() {
+  public beforeDestroy() {
+    for (const i of [...Array(10).keys()]) {
+      Mousetrap.unbind(i.toString());
+    }
+  }
+
+  private addNodeAtPoint(value: number) {
+    this.hapticsValues.push([this.currentPlayTime, value]);
+    this.hapticsValues.sort((a, b) => a[0] > b[0] ? 1 : -1);
+    this.updateGraph();
+  }
+
+  private updateGraph() {
+    this.path.attr("d", this.line(this.hapticsValues));
     // Additions aren't working without full removal?!
     this.circles
       .selectAll("circle").remove();
@@ -52,8 +71,8 @@ export default class VideoEncoder extends Vue {
       .on("mouseover", (d: any) => d3.select(d3.event.currentTarget).attr("fill", "red"))
       .on("mouseout", (d: any) => d3.select(d3.event.currentTarget).attr("fill", "white"))
       .call(d3.drag()
-            .on("drag", this.dragged(this)))
-      .merge(this.circles);
+            .on("drag", this.dragged(this)));
+
   }
 
   private dragged(self: VideoEncoder) {
@@ -112,8 +131,8 @@ export default class VideoEncoder extends Vue {
       }
       i += 1;
     }
-    this.path.attr("d", this.line(this.hapticsValues));
-    this.updateCircles();
+
+    this.updateGraph();
   }
 
   private buildTimeline() {
@@ -123,14 +142,12 @@ export default class VideoEncoder extends Vue {
       this.hapticsValues.push([cmd.Time, cmd.Position]);
     }
 
-    const graphdiv = document.getElementById("graph")!;
+    const graphdiv = document.getElementById("graph-body")!;
     // If we have to rebuild from scratch, clear all svgs first
     d3.select("#graph").selectAll("svg").remove();
-    this.svg = d3.select("#graph")
+    this.svgBody = d3.select("#graph-body")
       .append("svg")
-      .attr("id", "encoder-timeline")
       .attr("width", "100%")
-      .attr("height", "100%")
       .on("dblclick", () => this.onDblClick());
     // Typing definition for d3.extent is wrong
     this.dataExtent = (d3 as any).extent(this.hapticsValues, function(d: [number, number]) { return d[0]; });
@@ -144,8 +161,10 @@ export default class VideoEncoder extends Vue {
     this.yScale = d3.scaleLinear()
       .domain([100, 0])
       .range([0, graphdiv.clientHeight]);
+    console.log("Client height " + graphdiv.clientHeight);
 
-    this.xAxis = d3.axisTop(this.xScale);
+    this.xAxis = d3.axisTop(this.xScale)
+      .tickFormat((d: number) => `${d / 1000.0}s`);
     this.yAxis = d3.axisRight(this.yScale)
       .tickSize(graphdiv.clientWidth);
 
@@ -155,43 +174,43 @@ export default class VideoEncoder extends Vue {
       g.selectAll(".tick:not(:first-of-type) line")
         .attr("stroke", "#777")
         .attr("stroke-dasharray", "2,4");
-      g.attr("transform", function() {
-        return "translate(" + 0 + "," + 20 + ")";
-      });
     };
-    this.svg.append("g").call(customYAxis);
+    this.svgBody.append("g").call(customYAxis);
 
-    this.xAxisDisplay = this.svg.append("g")
+    this.svgXAxis = d3.select("#graph-x-axis")
+      .append("svg")
+      .attr("width", "100%")
+      .attr("height", "20px")
+      .attr("background", "#000");
+
+    this.xAxisDisplay = this.svgXAxis.append("g")
       .classed("axis", true)
+      .call(this.xAxis)
       .attr("transform", function() {
-        return "translate(" + 0 + "," + 20 + ")";
-      })
-      .call(this.xAxis);
+        return "translate(" + 0 + "," + 19 + ")";
+      });
 
     this.line = d3.line()
-      .x((d: [number, number]) => this.xScale(d[0]))
+      .x((d: [number, number]) => this.xDisplayScale(d[0]))
       .y((d: [number, number]) => this.yScale(d[1]));
 
-    this.path = this.svg.append("path")
+    this.path = this.svgBody.append("path")
       .classed("graph-line", true)
       .attr("d", this.line(this.hapticsValues)!)
       .attr("fill", "none")
       .attr("stroke", "steelblue");
-    // .attr("transform", function() {
-    //   return "translate(" + 0 + "," + 20 + ")";
-    // });
 
-    this.circles = this.svg.append("g");
+    this.circles = this.svgBody.append("g");
 
-    this.updateCircles();
+    this.updateGraph();
 
     this.playLine = d3.line()
-      .x((d: [number, number]) => this.xScale(d[0]))
+      .x((d: [number, number]) => this.xDisplayScale(d[0]))
       .y((d: [number, number]) => this.yScale(d[1]));
 
-    this.playCursor = this.svg.append("path")
+    this.playCursor = this.svgBody.append("path")
       .classed("play-head", true)
-      .attr("d", this.playLine([[0, 0], [0, 100]]))
+      .attr("d", this.playLine([[0, 0], [0, this.yScale(100)]]))
       .attr("fill", "none")
       .attr("stroke", "red")
       .attr("transform", function() {
@@ -207,20 +226,19 @@ export default class VideoEncoder extends Vue {
       .on("zoom", () => {
         this.xDisplayScale = d3.event.transform.rescaleX(this.xScale);
 
-        this.xAxisDisplay.transition()
-          .duration(10)
+        this.xAxisDisplay
           .call((this.xAxis as any).scale(this.xDisplayScale));
         this.circles
           .selectAll("circle")
           .attr("cx", (d: [number, number]) => this.xDisplayScale(d[0]));
-        this.line.x((d: [number, number]) => this.xDisplayScale(d[0]));
-        this.playLine.x((d: [number, number]) => this.xDisplayScale(d[0]));
+        this.path.attr("d", this.line(this.hapticsValues)!);
         if (this.currentPlayTime !== undefined) {
           this.updateCurrentPlayTime();
         }
-        this.path.attr("d", this.line(this.hapticsValues)!);
       });
-    this.svg.call(zoom);
+    this.svgBody.call(zoom);
+    // Scale all the way out to start.
+    zoom.scaleTo(this.svgBody, 0.95);
   }
 
   @Watch("hapticsCommands")

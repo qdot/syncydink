@@ -12,7 +12,7 @@
         </div>
         <div ref="hamburgerStartText" id="hamburger-start-text"><md-icon>arrow_back</md-icon> Click/Tap</div>
         <div ref="swipeStartText" id="swipe-start-text"><md-icon>arrow_forward</md-icon> Or Swipe Right</div>
-        <div ref="patreonButton" id="patreon-button">
+        <div ref="patreonButton" id="patreon-button" v-if="!haveVideoFile">
           <div data-reactroot="" class="_2KV-widgets-shared--patreonWidgetWrapper"><a class="sc-bxivhb ffInCX" color="primary" type="button" href="https://www.patreon.com/bePatron?u=2860444&amp;redirect_uri=http%3A%2F%2Fbuttplug.world%2Ftest.html&amp;utm_medium=widget" role="button"><div class="sc-htpNat gdWQYu"><div class="sc-gzVnrw dJCpyC" display="flex" wrap="nowrap" direction="[object Object]"><div class="sc-dnqmqq llsQFn"><span class="sc-htoDjs fqfmvk"><svg viewBox="0 0 569 546" version="1.1" xmlns="http://www.w3.org/2000/svg"><title>Patreon logo</title><g><circle data-color="1" id="Oval" cx="362.589996" cy="204.589996" r="204.589996"></circle><rect data-color="2" id="Rectangle" x="0" y="0" width="100" height="545.799988"></rect></g></svg></span></div><div class="sc-gqjmRU fFOxVX" width="1.5"></div>Give us money</div></div></a></div>
         </div>
       </header>
@@ -20,18 +20,20 @@
         <video-player-component
           id="video-player"
           ref="videoPlayer"
-          v-bind:videoFile="this.videoFile"
-          v-bind:videoMode="this.videoMode"
-          v-bind:videoHeight="this.videoHeight"
-          v-on:videoPlaying="onPlay"
-          v-on:videoPaused="onPause"
-          v-if="haveVideoFile" />
+          v-if="haveVideoFile"
+          :videoFile="this.videoFile"
+          :videoMode="this.videoMode"
+          :videoHeight="this.videoHeight"
+          @videoPlaying="onPlay"
+          @videoPaused="onPause"
+        />
         <video-encoder-component
           id="video-encoder"
           ref="videoEncoder"
-          v-bind:hapticsCommands="this.hapticsCommands"
-          v-bind:currentPlayTime="this.currentPlayTime"
-          v-if="this.showEncoder" />
+          v-if="this.showEncoder"
+          :hapticsCommands="this.hapticsCommands"
+          :currentPlayTime="this.currentPlayTime"
+        />
       </div>
       <md-sidenav
         layout="column"
@@ -167,8 +169,7 @@
  }
 
  #video-encoder {
-   max-height: 150px;
-   flex: 1 1 auto;
+   flex: 1 0 auto;
  }
 
  #app {
