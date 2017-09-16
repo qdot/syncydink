@@ -11,6 +11,7 @@ import VideoPlayer from "./components/VideoPlayer/VideoPlayer";
 import VideoPlayerComponent from "./components/VideoPlayer/VideoPlayer.vue";
 import VideoEncoder from "./components/VideoEncoder/VideoEncoder";
 import VideoEncoderComponent from "./components/VideoEncoder/VideoEncoder.vue";
+import * as Mousetrap from "mousetrap";
 
 @Component({
   components: {
@@ -33,6 +34,7 @@ export default class App extends Vue {
   private lastIndexRetrieved: number = -1;
   private lastTimeChecked: number = 0;
   private currentPlayTime: number = 0;
+  private desiredPlayTime: number = 0;
 
   // Map with entries stored by time
   private hapticsCommands: FunscriptCommand[] = [];
@@ -42,6 +44,19 @@ export default class App extends Vue {
 
   public mounted() {
     window.addEventListener("resize", () => this.setVideoHeight());
+    Mousetrap.bind("right", () => this.advanceFrame(1));
+    Mousetrap.bind("left", () => this.advanceFrame(-1));
+    // Horrible hack since buggyfill doesn't work for android chrome. Just lose
+    // like 16 units from viewport height. Remove this once the android fix
+    // lands in the buggyfill.
+    if (/Android/i.test(navigator.userAgent)) {
+      document.getElementById("gesture-wrapper")!.style.height = "84vh";
+    }
+  }
+
+  private advanceFrame(direction: number) {
+    this.currentPlayTime = this.currentPlayer.CurrentTimeInMS();
+    this.desiredPlayTime = (this.currentPlayTime / 1000.0) + (1.0 / 60.0) * direction;
   }
 
   private SideNavRightSwipe() {

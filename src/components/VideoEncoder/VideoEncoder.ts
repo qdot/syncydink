@@ -183,6 +183,7 @@ export default class VideoEncoder extends Vue {
       .attr("height", "20px")
       .attr("background", "#000");
 
+    // This still needs to be translated?
     this.xAxisDisplay = this.svgXAxis.append("g")
       .classed("axis", true)
       .call(this.xAxis)
@@ -212,10 +213,7 @@ export default class VideoEncoder extends Vue {
       .classed("play-head", true)
       .attr("d", this.playLine([[0, 0], [0, this.yScale(100)]]))
       .attr("fill", "none")
-      .attr("stroke", "red")
-      .attr("transform", function() {
-        return "translate(" + 0 + "," + 20 + ")";
-      });
+      .attr("stroke", "red");
 
     const zoom = d3.zoom()
       .filter(() => {

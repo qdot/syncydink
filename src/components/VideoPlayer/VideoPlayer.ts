@@ -19,6 +19,9 @@ export default class VideoPlayer extends Vue {
   private videoMode: string = "2d";
   @Prop()
   private videoHeight: 0;
+  @Prop()
+  private desiredPlayTime: number;
+
   private videoElementId: string | null = null;
   private currentPlayer: Player | null = null;
   private show2DVideo: boolean = true;
@@ -47,6 +50,14 @@ export default class VideoPlayer extends Vue {
       return 0;
     }
     return Math.floor(this.currentPlayer.currentTime() * 1000);
+  }
+
+  @Watch("desiredPlayTime")
+  private onAdvanceFrame() {
+    if (this.currentPlayer === null) {
+      return;
+    }
+    this.currentPlayer.currentTime(this.desiredPlayTime);
   }
 
   @Watch("videoHeight")

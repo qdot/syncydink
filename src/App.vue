@@ -145,20 +145,32 @@
  html, body {
    margin: 0;
    padding: 0;
-   height: 100%;
-   width:100%
+   height: 100vh;
+   width: 100vw;
  }
 
  body {
    background-image:url(../static/images/syncydinklogo.svg);
    background-repeat: no-repeat;
-   background-attachment: fixed;
    background-position: center;
  }
 
+ #app {
+   height: 100%;
+   width: 100%;
+   font-size: 16px;
+   font-weight: 400;
+   text-align: left;
+   text-transform: none;
+   font-family: Roboto,Noto Sans,Noto,sans-serif;
+   -webkit-font-smoothing: antialiased;
+   -moz-osx-font-smoothing: grayscale;
+   color: #2c3e50;
+ }
+
  #video-container {
-   height: 100vh;
-   width: 100vw;
+   height: 100%;
+   width: 100%;
    display: flex;
    flex-direction: column;
    justify-content: space-between;
@@ -172,25 +184,12 @@
    flex: 1 0 auto;
  }
 
- #app {
-   height: 100vh;
-   width: 100vw;
-   font-size: 16px;
-   font-weight: 400;
-   text-align: left;
-   text-transform: none;
-   font-family: Roboto,Noto Sans,Noto,sans-serif;
-   -webkit-font-smoothing: antialiased;
-   -moz-osx-font-smoothing: grayscale;
-   color: #2c3e50;
- }
-
  /* Make our touch wrapper div take up the whole screen, but also make it
     fixed so that we don't have problems with readjustment snapping */
  #gesture-wrapper {
    position: fixed;
-   height: 100vh;
-   width: 100vw;
+   height: 100%;
+   width: 100%;
  }
 
  h1, h2 {
@@ -243,7 +242,7 @@
    position: fixed;
    font-size:25px;
    z-index:50;
-   top: 50vh;
+   top: 50%;
    left: 5px;
  }
 
