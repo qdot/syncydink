@@ -4,8 +4,6 @@ import HapticCommandToButtplugMessage from "./utils/HapticsToButtplug";
 import Vue from "vue";
 import "vue-awesome/icons/bars";
 import { Component } from "vue-property-decorator";
-import ButtplugPanelComponent from "./components/ButtplugPanel/ButtplugPanel.vue";
-import ButtplugPanel from "./components/ButtplugPanel/ButtplugPanel";
 import { Player } from "video.js";
 import VideoPlayer from "./components/VideoPlayer/VideoPlayer";
 import VideoPlayerComponent from "./components/VideoPlayer/VideoPlayer.vue";
@@ -15,12 +13,12 @@ import * as Mousetrap from "mousetrap";
 
 @Component({
   components: {
-    ButtplugPanelComponent,
     VideoPlayerComponent,
     VideoEncoderComponent,
   },
 })
 export default class App extends Vue {
+  private devices: Device[] = [];
   private hasOpenedMenu: boolean = false;
   private videoFile: File | null = null;
   private videoMode: string = "2d";
@@ -142,7 +140,7 @@ export default class App extends Vue {
 
   private onPause() {
     this.isPaused = true;
-    (this.$refs.buttplugPanel as ButtplugPanel).StopAllDevices();
+    (Vue as any).Buttplug.StopAllDevices();
   }
 
   private runHapticsLoop() {
@@ -172,7 +170,12 @@ export default class App extends Vue {
       const msgs = this.commands.get(this.commandTimes[this.lastIndexRetrieved]);
       if (msgs !== undefined) {
         for (const aMsg of msgs) {
-          (this.$refs.buttplugPanel as ButtplugPanel).SendDeviceMessage(aMsg);
+          for (const device of this.devices) {
+            if (device.AllowedMessages.indexOf(aMsg.getType()) === -1) {
+              continue;
+            }
+            (Vue as any).Buttplug.SendDeviceMessage(device, aMsg);
+          }
         }
       }
       if (!this.isPaused) {
@@ -199,5 +202,13 @@ export default class App extends Vue {
     process.nextTick(() => {
       this.setVideoHeight();
     });
+  }
+
+  private OnDeviceConnected(aDevice: Device) {
+    this.devices.push(aDevice);
+  }
+
+  private OnDeviceDisconnected(aDevice: Device) {
+    this.devices = this.devices.filter((device) => device.Index !== aDevice.Index);
   }
 }

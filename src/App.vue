@@ -71,8 +71,11 @@
             </div>
           </md-tab>
           <md-tab md-label="Buttplug">
-            <buttplug-panel-component
-              ref="buttplugPanel" />
+            <buttplug-panel
+              ref="buttplugPanel"
+              @deviceconnected="OnDeviceConnected"
+              @devicedisconnected="OnDeviceDisconnected"
+            />
           </md-tab>
           <md-tab md-label="About">
             <md-list class="md-double-line">

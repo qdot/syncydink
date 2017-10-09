@@ -3,12 +3,16 @@ import App from "./App.vue";
 const Icon = require("vue-awesome/components/Icon");
 const VueMaterial = require("vue-material");
 const VueTouch = require("vue-touch");
+import * as ButtplugPanel from "vue-buttplug-material-component";
 
 // Fix viewport scaling on iOS
 require("viewport-units-buggyfill").init();
 
+console.log(ButtplugPanel);
+
 Vue.use(VueTouch);
 Vue.use(VueMaterial);
+Vue.use(ButtplugPanel);
 Vue.component("icon", Icon);
 
 // Ignore AFrame custom elements
