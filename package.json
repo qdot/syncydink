@@ -18,7 +18,7 @@
   "dependencies": {
     "aframe": "^0.6.1",
     "aframe-stereo-component": "^0.6.0",
-    "buttplug": "^0.2.0",
+    "buttplug": "^0.2.1",
     "d3": "^4.10.0",
     "haptic-movie-file-reader": "^0.0.6",
     "mousetrap": "^1.6.1",
