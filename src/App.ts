@@ -140,7 +140,9 @@ export default class App extends Vue {
 
   private onPause() {
     this.isPaused = true;
-    (Vue as any).Buttplug.StopAllDevices();
+    if (this.devices.length > 0) {
+      (Vue as any).Buttplug.StopAllDevices();
+    }
   }
 
   private runHapticsLoop() {
