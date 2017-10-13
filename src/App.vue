@@ -3,11 +3,11 @@
     <v-touch id="gesture-wrapper" v-on:swiperight="SideNavOpen" v-on:swipeleft="SideNavClose">
       <header>
         <transition name="slide-fade">
-          <div id="sidetab-aligner"  @click="ToggleLeftSideNav" v-if="!this.leftSideNavOpened">
-            <div id="sidetab-arrow">
+          <div id="sidetab-aligner" v-if="!this.leftSideNavOpened">
+            <div id="sidetab-arrow" @click="ToggleLeftSideNav">
               <md-icon>play_arrow</md-icon>
             </div>
-            <div id="sidetab">
+            <div id="sidetab" @click="ToggleLeftSideNav">
             </div>
           </div>
         </transition>
@@ -29,6 +29,7 @@
           :loopVideo="this.loopVideo"
           @videoPlaying="onPlay"
           @videoPaused="onPause"
+          @timeUpdate="onTimeUpdate"
         />
         <video-encoder-component
           id="video-encoder"
@@ -36,6 +37,9 @@
           v-if="this.showEncoder"
           :hapticsCommands="this.hapticsCommands"
           :currentPlayTime="this.currentPlayTime"
+          @play="onPlay"
+          @pause="onPause"
+          @timeUpdate="onTimeUpdate"
         />
       </div>
       <md-sidenav
@@ -101,18 +105,6 @@
               <md-list-item><div class="md-list-text-container">Open Source!<a href="https://github.com/metafetish/syncydink">Code available on Github</a></div></md-list-item>
               <md-list-item><div class="md-list-text-container">We Like Money!<a href="https://patreon.com/qdot">Visit Our Patreon</a></div></md-list-item>
             </md-list>
-          </md-tab>
-        </md-tabs>
-      </md-sidenav>
-      <md-sidenav
-        layout="column"
-        class="md-right"
-        id="rightSideNavElement"
-        ref="rightSideNav">
-        <md-tabs md-centered>
-          <md-tab md-label="Encoder">
-            <md-checkbox
-              @change="onShowTimelineChange($event)">Show Timeline</md-checkbox>
           </md-tab>
         </md-tabs>
       </md-sidenav>
@@ -274,6 +266,7 @@
 	 left: 0px;
 	 position: fixed;
    z-index: 1000;
+   pointer-events: none;
  }
 
  #sidetab {
@@ -287,9 +280,10 @@
 	 margin: 0;
 	 padding: 0;
 	 position: fixed;
-	 display:block;
+	 display: block;
    z-index: 1001;
    cursor: pointer;
+   pointer-events: all;
  }
 
  #sidetab-arrow {
@@ -298,6 +292,7 @@
    text-align: right;
    z-index: 1002;
    cursor: pointer;
+   pointer-events: all;
  }
 
  .syncydink-nav-file-input {

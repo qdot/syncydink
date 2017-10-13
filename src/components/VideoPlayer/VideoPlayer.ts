@@ -48,7 +48,7 @@ export default class VideoPlayer extends Vue {
     }
   }
 
-  public CurrentTimeInMS(): number {
+  private CurrentTimeInMS(): number {
     if (this.currentPlayer === null) {
       return 0;
     }
@@ -203,10 +203,21 @@ export default class VideoPlayer extends Vue {
   private onPlayerPlay(player: Player) {
     this.currentPlayer = player;
     this.$emit("videoPlaying");
+    this.runTimeUpdateLoop();
   }
 
   private onPlayerPause(player: Player) {
     this.currentPlayer = player;
     this.$emit("videoPaused");
+  }
+
+  private runTimeUpdateLoop() {
+    window.requestAnimationFrame(() => {
+      if (this.currentPlayer!.paused()) {
+        return;
+      }
+      this.$emit("timeUpdate", this.CurrentTimeInMS());
+      this.runTimeUpdateLoop();
+    });
   }
 }

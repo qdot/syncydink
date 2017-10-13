@@ -31,6 +31,10 @@ export default class VideoEncoder extends Vue {
 
   @Prop()
   private currentPlayTime: number = 0;
+  private lastUpdateTime: number = 0;
+
+  private hapticsPlaying: boolean = false;
+  private hapticsLooped: boolean = true;
 
   public mounted() {
     this.buildTimeline();
@@ -69,9 +73,9 @@ export default class VideoEncoder extends Vue {
     //   return "translate(" + 0 + "," + 20 + ")";
     // })
       .on("mouseover", (d: any) => d3.select(d3.event.currentTarget).attr("fill", "red"))
-      .on("mouseout", (d: any) => d3.select(d3.event.currentTarget).attr("fill", "white"))
-      .call(d3.drag()
-            .on("drag", this.dragged(this)));
+      .on("mouseout", (d: any) => d3.select(d3.event.currentTarget).attr("fill", "white"));
+    // .call(d3.drag()
+    //       .on("drag", this.dragged(this)));
 
   }
 
@@ -119,21 +123,21 @@ export default class VideoEncoder extends Vue {
     this.xScale.range([0, graphdiv.clientWidth]);
   }
 
-  private onDblClick() {
-    let i = 0;
-    const moveX = Math.floor(this.xDisplayScale.invert(d3.event.x));
-    const moveY = Math.floor(this.yScale.invert(d3.event.y));
-    const newNode: [number, number] = [moveX, moveY];
-    for (const n of this.hapticsValues) {
-      if (n[0] > moveX) {
-        this.hapticsValues.splice(i, 0, newNode);
-        break;
-      }
-      i += 1;
-    }
+  // private onDblClick() {
+  //   let i = 0;
+  //   const moveX = Math.floor(this.xDisplayScale.invert(d3.event.x));
+  //   const moveY = Math.floor(this.yScale.invert(d3.event.y));
+  //   const newNode: [number, number] = [moveX, moveY];
+  //   for (const n of this.hapticsValues) {
+  //     if (n[0] > moveX) {
+  //       this.hapticsValues.splice(i, 0, newNode);
+  //       break;
+  //     }
+  //     i += 1;
+  //   }
 
-    this.updateGraph();
-  }
+  //   this.updateGraph();
+  // }
 
   private buildTimeline() {
 
@@ -147,8 +151,8 @@ export default class VideoEncoder extends Vue {
     d3.select("#graph").selectAll("svg").remove();
     this.svgBody = d3.select("#graph-body")
       .append("svg")
-      .attr("width", "100%")
-      .on("dblclick", () => this.onDblClick());
+      .attr("width", "100%");
+    // .on("dblclick", () => this.onDblClick());
     // Typing definition for d3.extent is wrong
     this.dataExtent = (d3 as any).extent(this.hapticsValues, function(d: [number, number]) { return d[0]; });
 
@@ -248,4 +252,43 @@ export default class VideoEncoder extends Vue {
   private updateCurrentPlayTime() {
     this.playCursor.attr("d", this.playLine([[this.currentPlayTime, 0], [this.currentPlayTime, 100]]));
   }
+
+  private ToggleHapticsPlayback() {
+    this.hapticsPlaying = !this.hapticsPlaying;
+    this.$emit(this.hapticsPlaying ? "play" : "pause");
+    if (this.hapticsPlaying) {
+      this.runTimeUpdateLoop();
+    }
+  }
+
+  private ToggleHapticsLooped() {
+    this.hapticsLooped = !this.hapticsLooped;
+  }
+
+  private runTimeUpdateLoop() {
+    window.requestAnimationFrame(() => {
+      if (!this.hapticsPlaying) {
+        this.lastUpdateTime = 0;
+        return;
+      }
+      if (this.lastUpdateTime === 0) {
+        this.lastUpdateTime = Date.now();
+        this.runTimeUpdateLoop();
+        return;
+      }
+      const currentUpdateTime = Date.now();
+      let newPlayTime = (this.currentPlayTime + (currentUpdateTime - this.lastUpdateTime));
+      if (newPlayTime > this.hapticsValues[this.hapticsValues.length - 1][0]) {
+        if (!this.hapticsLooped) {
+          return;
+        }
+        this.lastUpdateTime = 0;
+        newPlayTime = 0;
+      }
+      this.lastUpdateTime = currentUpdateTime;
+      this.$emit("timeUpdate", newPlayTime);
+      this.runTimeUpdateLoop();
+    });
+  }
+
 }

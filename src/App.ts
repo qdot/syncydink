@@ -27,7 +27,6 @@ export default class App extends Vue {
   private hapticsFile: File | null = null;
   private hapticCommandsSize: number = 0;
   private hapticCommandsType: string = "";
-  private currentPlayer: VideoPlayer = (this.$refs.videoPlayer as VideoPlayer);
   private isPaused: boolean = true;
   private haveVideoFile: boolean = false;
   private lastIndexRetrieved: number = -1;
@@ -54,8 +53,11 @@ export default class App extends Vue {
     }
   }
 
+  private onTimeUpdate(time: number) {
+    this.currentPlayTime = time;
+  }
+
   private advanceFrame(direction: number) {
-    this.currentPlayTime = this.currentPlayer.CurrentTimeInMS();
     this.desiredPlayTime = (this.currentPlayTime / 1000.0) + (1.0 / 60.0) * direction;
   }
 
@@ -88,8 +90,6 @@ export default class App extends Vue {
   private onVideoFileChange(videoFile: FileList) {
     this.haveVideoFile = true;
     process.nextTick(() => {
-      // At this point we'll definitely have a video player
-      this.currentPlayer = (this.$refs.videoPlayer as VideoPlayer);
       // Set our video file after this so the prop updates
       this.videoFile = videoFile[0];
       this.setVideoHeight();
@@ -128,7 +128,6 @@ export default class App extends Vue {
       if (this.isPaused || this.commands.size === 0) {
         return;
       }
-      this.currentPlayTime = this.currentPlayer.CurrentTimeInMS();
       // Backwards seek. Reset index retreived.
       if (this.currentPlayTime < this.lastTimeChecked) {
         this.lastIndexRetrieved = -1;
