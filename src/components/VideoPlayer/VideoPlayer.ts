@@ -21,6 +21,8 @@ export default class VideoPlayer extends Vue {
   private videoHeight: 0;
   @Prop()
   private desiredPlayTime: number;
+  @Prop()
+  private loopVideo: boolean;
 
   private videoElementId: string | null = null;
   private currentPlayer: Player | null = null;
@@ -36,6 +38,7 @@ export default class VideoPlayer extends Vue {
     playsinline: true,
     sources: [{}],
     start: 0,
+    loop: this.loopVideo,
   };
 
   public mounted() {
@@ -66,6 +69,15 @@ export default class VideoPlayer extends Vue {
       return;
     }
     this.currentPlayer.height(this.videoHeight);
+  }
+
+  @Watch("loopVideo")
+  private onLoopVideoChange() {
+    if (!this.currentPlayer) {
+      return;
+    }
+    this.playerOptions.loop = this.loopVideo;
+    this.onVideoFileChange();
   }
 
   private updateVRSource() {

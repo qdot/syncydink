@@ -24,6 +24,7 @@
           :videoFile="this.videoFile"
           :videoMode="this.videoMode"
           :videoHeight="this.videoHeight"
+          :loopVideo="this.loopVideo"
           @videoPlaying="onPlay"
           @videoPaused="onPause"
         />
@@ -50,12 +51,17 @@
                 placeholder="Click to select video file"
                 @selected="onVideoFileChange" />
             </md-input-container>
+            <md-checkbox
+              v-model="loopVideo"
+              @change="onLoopVideoChange($event)" checked>Loop Video</md-checkbox>
             <md-input-container class="syncydink-nav-file-input">
               <md-file
                 accept="*"
                 placeholder="Click to select haptics file"
                 @selected="onHapticsFileChange" />
             </md-input-container>
+            <md-checkbox
+              @change="onShowTimelineChange($event)">Show Haptics Timeline</md-checkbox>
             <div v-if="this.hapticCommandsSize != 0">
               <ul class="haptics-info">
                 <li># of Haptic Commands Loaded: {{ this.hapticCommandsSize }}</li>

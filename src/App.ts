@@ -23,6 +23,7 @@ export default class App extends Vue {
   private videoFile: File | null = null;
   private videoMode: string = "2d";
   private videoHeight: number = 0;
+  private loopVideo: boolean = true;
   private hapticsFile: File | null = null;
   private hapticCommandsSize: number = 0;
   private hapticCommandsType: string = "";
@@ -204,6 +205,10 @@ export default class App extends Vue {
     process.nextTick(() => {
       this.setVideoHeight();
     });
+  }
+
+  private onLoopVideoChange(aChecked: boolean) {
+    this.loopVideo = aChecked;
   }
 
   private OnDeviceConnected(aDevice: Device) {
