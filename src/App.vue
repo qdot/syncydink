@@ -1,22 +1,24 @@
 <template>
   <div id="app">
-    <v-touch id="gesture-wrapper" v-on:swiperight="SideNavRightSwipe" v-on:swipeleft="SideNavLeftSwipe">
+    <v-touch id="gesture-wrapper" v-on:swiperight="SideNavOpen" v-on:swipeleft="SideNavClose">
       <header>
-        <div id="nav-icon" @click="ToggleLeftSideNav">
-          <div id="nav-icon3" ref="navicon">
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
+        <transition name="slide-fade">
+          <div id="sidetab-aligner"  @click="ToggleLeftSideNav" v-if="!this.leftSideNavOpened">
+            <div id="sidetab-arrow">
+              <md-icon>play_arrow</md-icon>
+            </div>
+            <div id="sidetab">
+            </div>
           </div>
-        </div>
-        <div ref="hamburgerStartText" id="hamburger-start-text"><md-icon>arrow_back</md-icon> Click/Tap</div>
-        <div ref="swipeStartText" id="swipe-start-text"><md-icon>arrow_forward</md-icon> Or Swipe Right</div>
+        </transition>
         <div ref="patreonButton" id="patreon-button" v-if="!haveVideoFile">
           <div data-reactroot="" class="_2KV-widgets-shared--patreonWidgetWrapper"><a class="sc-bxivhb ffInCX" color="primary" type="button" href="https://www.patreon.com/bePatron?u=2860444&amp;redirect_uri=http%3A%2F%2Fbuttplug.world%2Ftest.html&amp;utm_medium=widget" role="button"><div class="sc-htpNat gdWQYu"><div class="sc-gzVnrw dJCpyC" display="flex" wrap="nowrap" direction="[object Object]"><div class="sc-dnqmqq llsQFn"><span class="sc-htoDjs fqfmvk"><svg viewBox="0 0 569 546" version="1.1" xmlns="http://www.w3.org/2000/svg"><title>Patreon logo</title><g><circle data-color="1" id="Oval" cx="362.589996" cy="204.589996" r="204.589996"></circle><rect data-color="2" id="Rectangle" x="0" y="0" width="100" height="545.799988"></rect></g></svg></span></div><div class="sc-gqjmRU fFOxVX" width="1.5"></div>Give us money</div></div></a></div>
         </div>
       </header>
       <div id="video-container">
+        <div v-if="!this.hasOpenedMenu" class="select-message">
+          <p>Click on the tab on the left or swipe right to select movie/haptics files and connect to Buttplug.</p>
+        </div>
         <video-player-component
           id="video-player"
           ref="videoPlayer"
@@ -39,41 +41,49 @@
       <md-sidenav
         layout="column"
         class="md-left"
-        id="leftSideNavElement"
+        id="left-side-nav-element"
         ref="leftSideNav"
-        @open="NavIconOpen"
-        @close="NavIconClose">
+        @open="OnLeftSideNavOpen"
+        @close="OnLeftSideNavClose">
         <md-tabs md-centered>
           <md-tab md-label="Video">
-            <md-input-container class="syncydink-nav-file-input">
-              <md-file
-                accept="video/*"
-                placeholder="Click to select video file"
-                @selected="onVideoFileChange" />
-            </md-input-container>
-            <md-checkbox
-              v-model="loopVideo"
-              @change="onLoopVideoChange($event)" checked>Loop Video</md-checkbox>
-            <md-input-container class="syncydink-nav-file-input">
-              <md-file
-                accept="*"
-                placeholder="Click to select haptics file"
-                @selected="onHapticsFileChange" />
-            </md-input-container>
-            <md-checkbox
-              @change="onShowTimelineChange($event)">Show Haptics Timeline</md-checkbox>
-            <div v-if="this.hapticCommandsSize != 0">
-              <ul class="haptics-info">
-                <li># of Haptic Commands Loaded: {{ this.hapticCommandsSize }}</li>
-                <li>Haptics Type: {{ this.hapticCommandsType }}</li>
-              </ul>
+            <div class="sidebar-form">
+              <md-subheader>Video</md-subheader>
+              <md-input-container class="syncydink-nav-file-input">
+                <md-file
+                  accept="video/*"
+                  placeholder="Click to select video file"
+                  @selected="onVideoFileChange" />
+              </md-input-container>
+              <md-checkbox
+                v-model="loopVideo"
+                @change="onLoopVideoChange($event)" checked>Loop Video</md-checkbox>
+              <div>
+                <md-subheader>Video Mode</md-subheader>
+                <md-list>
+                  <md-list-item><md-radio v-model="videoMode" id="video-mode-2d" name="video-mode-group" md-value="2d" class="md-primary" selected>2D</md-radio></md-list-item>
+                  <md-list-item><md-radio v-model="videoMode" id="video-mode-vr" name="video-mode-group" md-value="split" class="md-primary">2D/VR Split (Buggy!)</md-radio></md-list-item>
+                  <md-list-item><md-radio v-model="videoMode" id="video-mode-vr" name="video-mode-group" md-value="vr" class="md-primary">VR</md-radio></md-list-item>
+                </md-list>
+              </div>
             </div>
-            <div>
-              <md-list>
-                <md-list-item><md-radio v-model="videoMode" id="video-mode-2d" name="video-mode-group" md-value="2d" class="md-primary" selected>2D</md-radio></md-list-item>
-                <md-list-item><md-radio v-model="videoMode" id="video-mode-vr" name="video-mode-group" md-value="split" class="md-primary">2D/VR Split (Buggy!)</md-radio></md-list-item>
-                <md-list-item><md-radio v-model="videoMode" id="video-mode-vr" name="video-mode-group" md-value="vr" class="md-primary">VR</md-radio></md-list-item>
-              </md-list>
+            <md-divider />
+            <div class="sidebar-form">
+              <md-subheader>Haptics</md-subheader>
+              <md-input-container class="syncydink-nav-file-input">
+                <md-file
+                  accept="*"
+                  placeholder="Click to select haptics file"
+                  @selected="onHapticsFileChange" />
+              </md-input-container>
+              <md-checkbox
+                @change="onShowTimelineChange($event)">Show Haptics Timeline</md-checkbox>
+              <div v-if="this.hapticCommandsSize != 0">
+                <ul class="haptics-info">
+                  <li># of Haptic Commands Loaded: {{ this.hapticCommandsSize }}</li>
+                  <li>Haptics Type: {{ this.hapticCommandsType }}</li>
+                </ul>
+              </div>
             </div>
           </md-tab>
           <md-tab md-label="Buttplug">
@@ -239,99 +249,55 @@
    font-size: 14px;
  }
 
- #hamburger-start-text {
-   position: fixed;
-   font-size:25px;
-   z-index:50;
-   top: 33px;
-   left: 85px;
+ .sidebar-form {
+   margin-left: 5px;
  }
 
- #swipe-start-text {
-   position: fixed;
-   font-size:25px;
-   z-index:50;
-   top: 50%;
-   left: 5px;
+ .sidebar-form .md-checkbox {
+   margin-left: 10px;
  }
 
- /* Taken from https://codepen.io/designcouch/pen/Atyop */
+ .sidebar-form .md-list-item-container {
+   min-height: 36px;
+ }
 
- #nav-icon3 {
-   width: 60px;
-   height: 45px;
-   position: fixed;
-   z-index:50;
-   top: 20px;
-   left: 20px;
-   -webkit-transform: rotate(0deg);
-   -moz-transform: rotate(0deg);
-   -o-transform: rotate(0deg);
-   transform: rotate(0deg);
-   -webkit-transition: .5s ease-in-out;
-   -moz-transition: .5s ease-in-out;
-   -o-transition: .5s ease-in-out;
-   transition: .5s ease-in-out;
+ .sidebar-form .md-radio {
+   margin-top: 8px;
+   margin-bottom: 8px;
+ }
+
+ #sidetab-aligner {
+   height: 100vh;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+	 left: 0px;
+	 position: fixed;
+   z-index: 1000;
+ }
+
+ #sidetab {
+	 background: #000;
+   border: 2px solid #000;
+	 height: 75px;
+   left: 0;
+	 width: 25px;
+   border-top-right-radius: 15px;
+   border-bottom-right-radius: 15px;
+	 margin: 0;
+	 padding: 0;
+	 position: fixed;
+	 display:block;
+   z-index: 1001;
    cursor: pointer;
  }
 
- #nav-icon3 span {
-   display: block;
-   position: absolute;
-   height: 9px;
-   width: 100%;
-   background: #3f51b5;
-   border-radius: 9px;
-   opacity: 1;
-   left: 0;
-   -webkit-transform: rotate(0deg);
-   -moz-transform: rotate(0deg);
-   -o-transform: rotate(0deg);
-   transform: rotate(0deg);
-   -webkit-transition: .25s ease-in-out;
-   -moz-transition: .25s ease-in-out;
-   -o-transition: .25s ease-in-out;
-   transition: .25s ease-in-out;
- }
-
- /* Icon 3 */
-
- #nav-icon3 span:nth-child(1) {
-   top: 0px;
- }
-
- #nav-icon3 span:nth-child(2),#nav-icon3 span:nth-child(3) {
-   top: 18px;
- }
-
- #nav-icon3 span:nth-child(4) {
-   top: 36px;
- }
-
- #nav-icon3.open span:nth-child(1) {
-   top: 18px;
-   width: 0%;
-   left: 50%;
- }
-
- #nav-icon3.open span:nth-child(2) {
-   -webkit-transform: rotate(45deg);
-   -moz-transform: rotate(45deg);
-   -o-transform: rotate(45deg);
-   transform: rotate(45deg);
- }
-
- #nav-icon3.open span:nth-child(3) {
-   -webkit-transform: rotate(-45deg);
-   -moz-transform: rotate(-45deg);
-   -o-transform: rotate(-45deg);
-   transform: rotate(-45deg);
- }
-
- #nav-icon3.open span:nth-child(4) {
-   top: 18px;
-   width: 0%;
-   left: 50%;
+ #sidetab-arrow {
+   color: #fff;
+   margin: auto;
+   text-align: right;
+   z-index: 1002;
+   cursor: pointer;
  }
 
  .syncydink-nav-file-input {
@@ -376,5 +342,34 @@
  /* sc-component-id: sc-gqjmRU */
  .sc-gqjmRU {}
  .fFOxVX{width:0.75rem;height:1px;}
+
+ /* Enter and leave animations can use different */
+ /* durations and timing functions.              */
+ .slide-fade-enter-active {
+   transition: all .3s ease;
+ }
+ .slide-fade-leave-active {
+   transition: all .3s ease;
+ }
+ .slide-fade-enter, .slide-fade-leave-to
+ /* .slide-fade-leave-active below version 2.1.8 */ {
+   transform: translateX(-20px);
+   opacity: 0;
+ }
+
+ .select-message {
+   display: flex;
+   height: 100vh;
+   align-items: center;
+   justify-content: center;
+   font-size: 25px;
+   width: 100%;
+ }
+
+ .select-message p {
+   width: 25%;
+   line-height: 120%;
+   text-align: center;
+ }
 
 </style>

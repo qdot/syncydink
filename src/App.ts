@@ -34,6 +34,7 @@ export default class App extends Vue {
   private lastTimeChecked: number = 0;
   private currentPlayTime: number = 0;
   private desiredPlayTime: number = 0;
+  private leftSideNavOpened: boolean = false;
 
   // Map with entries stored by time
   private hapticsCommands: FunscriptCommand[] = [];
@@ -58,55 +59,30 @@ export default class App extends Vue {
     this.desiredPlayTime = (this.currentPlayTime / 1000.0) + (1.0 / 60.0) * direction;
   }
 
-  private SideNavRightSwipe() {
+  private SideNavOpen() {
     if (!this.hasOpenedMenu) {
-      (this.$refs.hamburgerStartText as HTMLDivElement).remove();
-      (this.$refs.swipeStartText as any).remove();
       this.hasOpenedMenu = true;
     }
-    const leftSideNavElement = document.getElementById("leftSideNavElement")!;
-    const rightSideNavElement = document.getElementById("rightSideNavElement")!;
-
-    if (!leftSideNavElement.classList.contains("md-active") &&
-        !rightSideNavElement.classList.contains("md-active")) {
-      (this.$refs.leftSideNav as any).open();
-    } else if (rightSideNavElement.classList.contains("md-active")) {
-      (this.$refs.rightSideNav as any).close();
-    }
+    (this.$refs.leftSideNav as any).open();
   }
 
-  private SideNavLeftSwipe() {
-    if (!this.hasOpenedMenu) {
-      (this.$refs.hamburgerStartText as HTMLDivElement).remove();
-      (this.$refs.swipeStartText as any).remove();
-      this.hasOpenedMenu = true;
-    }
-    const leftSideNav = document.getElementById("leftSideNavElement")!;
-    const rightSideNav = document.getElementById("rightSideNavElement")!;
-
-    if (!leftSideNav.classList.contains("md-active") &&
-        !rightSideNav.classList.contains("md-active")) {
-      (this.$refs.rightSideNav as any).open();
-    } else if (leftSideNav.classList.contains("md-active")) {
-      (this.$refs.leftSideNav as any).close();
-    }
-  }
-
-  private NavIconOpen() {
-    (this.$refs.navicon as any).classList.add("open");
-  }
-
-  private NavIconClose() {
-    (this.$refs.navicon as any).classList.remove("open");
+  private SideNavClose() {
+    (this.$refs.leftSideNav as any).close();
   }
 
   private ToggleLeftSideNav() {
     if (!this.hasOpenedMenu) {
-      (this.$refs.hamburgerStartText as HTMLDivElement).remove();
-      (this.$refs.swipeStartText as any).remove();
       this.hasOpenedMenu = true;
     }
     (this.$refs.leftSideNav as any).toggle();
+  }
+
+  private OnLeftSideNavOpen() {
+    this.leftSideNavOpened = true;
+  }
+
+  private OnLeftSideNavClose() {
+    this.leftSideNavOpened = false;
   }
 
   private onVideoFileChange(videoFile: FileList) {
