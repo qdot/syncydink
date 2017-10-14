@@ -34,6 +34,7 @@
           @videoPlaying="onPlay"
           @videoPaused="onPause"
           @timeUpdate="onTimeUpdate"
+          @videoLoaded="onVideoLoaded"
         />
         <video-encoder-component
           id="video-encoder"

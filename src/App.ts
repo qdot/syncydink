@@ -106,6 +106,14 @@ export default class App extends Vue {
     });
   }
 
+  private onVideoLoaded(duration: number) {
+    if (this.hapticsCommands.length === 0) {
+      console.log(duration);
+      this.hapticsCommands.push(new FunscriptCommand(0, 0));
+      this.hapticsCommands.push(new FunscriptCommand(duration, 0));
+    }
+  }
+
   private onHapticsFileChange(hapticsFile: FileList) {
     this.hapticsFile = hapticsFile[0];
     LoadFile(this.hapticsFile).then((h: HapticFileHandler) => {

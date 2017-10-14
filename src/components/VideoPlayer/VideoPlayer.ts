@@ -186,20 +186,22 @@ export default class VideoPlayer extends Vue {
       src: URL.createObjectURL(this.videoFile),
       type: "video/mp4",
     }];
-    process.nextTick(() => {
-      // Get the ID for our video tag, so we can add it as a material source to
-      // aframe if VR is selected.
-      const playerElement = (this.$refs.videoPlayer as Vue).$el;
-      this.currentPlayer = (this.$refs.videoPlayer as any).player;
-      const videoElement = playerElement.querySelector("video");
-      if (videoElement === undefined || videoElement === null) {
-        console.log("Can't find video element for aframe setup?");
-        return;
-      }
-      this.videoElementId = videoElement.id;
-      this.currentPlayer!.height(document.getElementById("twod-player")!.offsetHeight);
-      this.updateVRSource();
-    });
+  }
+
+  private onPlayerReady() {
+    // Get the ID for our video tag, so we can add it as a material source to
+    // aframe if VR is selected.
+    const playerElement = (this.$refs.videoPlayer as Vue).$el;
+    this.currentPlayer = (this.$refs.videoPlayer as any).player;
+    const videoElement = playerElement.querySelector("video");
+    if (videoElement === undefined || videoElement === null) {
+      console.log("Can't find video element for aframe setup?");
+      return;
+    }
+    this.videoElementId = videoElement.id;
+    this.currentPlayer!.height(document.getElementById("twod-player")!.offsetHeight);
+    this.updateVRSource();
+    this.$emit("videoLoaded", this.currentPlayer!.duration() * 1000);
   }
 
   private onPlayerPlay(player: Player) {

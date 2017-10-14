@@ -190,7 +190,6 @@ export default class VideoEncoder extends Vue {
     this.yScale = d3.scaleLinear()
       .domain([100, 0])
       .range([0, graphdiv.clientHeight]);
-    console.log("Client height " + graphdiv.clientHeight);
 
     this.xAxis = d3.axisTop(this.xScale)
       .tickFormat((d: number) => `${d / 1000.0}s`);

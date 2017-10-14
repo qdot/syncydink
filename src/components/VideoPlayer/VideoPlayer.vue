@@ -7,7 +7,8 @@
         v-show="this.show2DVideo"
         :options="playerOptions"
         @play="onPlayerPlay($event)"
-        @pause="onPlayerPause($event)">
+        @pause="onPlayerPause($event)"
+        @loadeddata="onPlayerReady($event)">
       </video-player>
     </div>
     <div id="vr-player" v-if="this.showVRVideo">
