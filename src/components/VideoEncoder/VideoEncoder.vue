@@ -19,6 +19,12 @@
             <md-icon
               v-if="!this.hapticsLooped">sync_disabled</md-icon>
           </li>
+          <li @click="ToggleHapticsLocked">
+            <md-icon
+              v-if="this.hapticsLocked">lock_outline</md-icon>
+            <md-icon
+              v-if="!this.hapticsLocked">lock_open</md-icon>
+          </li>
         </ul>
       </div>
     </div>
@@ -101,6 +107,7 @@
    color: #ccc;
    border-right: 1px solid #fff;
    cursor: pointer;
+   text-align: center;
  }
 
  .encoder-button-bar ul > li:hover {
