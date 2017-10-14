@@ -34,7 +34,7 @@ export default class App extends Vue {
   private currentPlayTime: number = 0;
   private desiredPlayTime: number = 0;
   private leftSideNavOpened: boolean = false;
-
+  private isDragging: boolean = false;
   // Map with entries stored by time
   private hapticsCommands: FunscriptCommand[] = [];
   private commands: Map<number, ButtplugDeviceMessage[]> = new Map();
@@ -57,12 +57,21 @@ export default class App extends Vue {
     this.currentPlayTime = time;
   }
 
+  private onInputTimeUpdate(time: number) {
+    this.desiredPlayTime = time;
+    this.currentPlayTime = this.desiredPlayTime;
+  }
+
   private advanceFrame(direction: number) {
     this.desiredPlayTime = (this.currentPlayTime) + (((1.0 / 60.0) * direction) * 1000);
     this.currentPlayTime = this.desiredPlayTime;
   }
 
   private SideNavOpen() {
+    // If a subcomponent is dragging something, ignore the gesture.
+    if (this.isDragging) {
+      return;
+    }
     if (!this.hasOpenedMenu) {
       this.hasOpenedMenu = true;
     }
@@ -193,5 +202,13 @@ export default class App extends Vue {
 
   private OnDeviceDisconnected(aDevice: Device) {
     this.devices = this.devices.filter((device) => device.Index !== aDevice.Index);
+  }
+
+  private onDragStart() {
+    this.isDragging = true;
+  }
+
+  private onDragStop() {
+    this.isDragging = false;
   }
 }

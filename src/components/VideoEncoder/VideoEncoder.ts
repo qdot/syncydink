@@ -22,7 +22,7 @@ export default class VideoEncoder extends Vue {
   private xAxis: any;
   private yAxis: any;
   private xAxisDisplay: any;
-  private playCursor: any;
+  private playhead: any;
   private playLine: d3.Line<[number, number]>;
 
   @Prop()
@@ -73,10 +73,12 @@ export default class VideoEncoder extends Vue {
       .on("mouseover", (d: any) => d3.select(d3.event.currentTarget).attr("fill", "red"))
       .on("mouseout", (d: any) => d3.select(d3.event.currentTarget).attr("fill", "white"))
       .call(d3.drag()
-            .on("drag", this.dragged(this)));
+            .on("start", () => this.$emit("dragStart"))
+            .on("end", () => this.$emit("dragStop"))
+            .on("drag", this.nodeDragged(this)));
   }
 
-  private dragged(self: VideoEncoder) {
+  private nodeDragged(self: VideoEncoder) {
     return function(this: SVGCircleElement, d: [number, number], i: number) {
       if (self.hapticsLocked) {
         return;
@@ -123,7 +125,26 @@ export default class VideoEncoder extends Vue {
     this.xScale.range([0, graphdiv.clientWidth]);
   }
 
-  private onDblClick() {
+  private updatePlayheadPositionFromEvent() {
+    const moveX = this.xDisplayScale.invert(d3.event.x);
+    this.playhead.attr("d", this.playLine([[moveX, 0], [moveX, 100]]));
+    this.$emit("inputTimeUpdate", moveX);
+  }
+
+  private playheadDragged(self: VideoEncoder) {
+    return function(this: any, d: [number, number], i: number) {
+      self.updatePlayheadPositionFromEvent();
+    };
+  }
+
+  private onBodyClick() {
+    this.updatePlayheadPositionFromEvent();
+    const moveX = this.xDisplayScale.invert(d3.event.x);
+    this.currentPlayTime
+    this.$emit("inputTimeUpdate", moveX);
+  }
+
+  private onBodyDblClick() {
     if (this.hapticsLocked) {
       return;
     }
@@ -155,7 +176,8 @@ export default class VideoEncoder extends Vue {
     this.svgBody = d3.select("#graph-body")
       .append("svg")
       .attr("width", "100%")
-      .on("dblclick", () => this.onDblClick());
+      .on("dblclick", () => this.onBodyDblClick())
+      .on("click", () => this.onBodyClick());
     // Typing definition for d3.extent is wrong
     this.dataExtent = (d3 as any).extent(this.hapticsValues, function(d: [number, number]) { return d[0]; });
 
@@ -216,11 +238,22 @@ export default class VideoEncoder extends Vue {
       .x((d: [number, number]) => this.xDisplayScale(d[0]))
       .y((d: [number, number]) => this.yScale(d[1]));
 
-    this.playCursor = this.svgBody.append("path")
+    // Emit events to turn off gestures while dragging playhead.
+    const playheadDrag = d3.drag()
+      .on("drag", this.playheadDragged(this))
+      .on("start", () => this.$emit("dragStart"))
+      .on("end", () => {
+        this.onBodyClick();
+        this.$emit("dragStop");
+      });
+
+    this.playhead = this.svgBody.append("path")
       .classed("play-head", true)
-      .attr("d", this.playLine([[0, 0], [0, this.yScale(100)]]))
+      .attr("d", this.playLine([[this.currentPlayTime, 0], [this.currentPlayTime, 100]]))
       .attr("fill", "none")
-      .attr("stroke", "red");
+      .attr("stroke", "red")
+      .attr("cursor", "col-resize")
+      .call(playheadDrag);
 
     const zoom = d3.zoom()
       .filter(() => {
@@ -228,6 +261,8 @@ export default class VideoEncoder extends Vue {
       })
       .scaleExtent([.95, 50])
       .translateExtent([[this.xScale(-1000), 0], [this.xScale(this.dataExtent[1] + 1000), this.yScale(100)]])
+      .on("start", () => this.$emit("dragStart"))
+      .on("end", () => this.$emit("dragStop"))
       .on("zoom", () => {
         this.xDisplayScale = d3.event.transform.rescaleX(this.xScale);
 
@@ -253,7 +288,7 @@ export default class VideoEncoder extends Vue {
 
   @Watch("currentPlayTime")
   private updateCurrentPlayTime() {
-    this.playCursor.attr("d", this.playLine([[this.currentPlayTime, 0], [this.currentPlayTime, 100]]));
+    this.playhead.attr("d", this.playLine([[this.currentPlayTime, 0], [this.currentPlayTime, 100]]));
   }
 
   private ToggleHapticsPlayback() {

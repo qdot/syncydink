@@ -1,6 +1,9 @@
 <template>
   <div id="app">
-    <v-touch id="gesture-wrapper" v-on:swiperight="SideNavOpen" v-on:swipeleft="SideNavClose">
+    <v-touch
+      id="gesture-wrapper"
+      @swiperight="SideNavOpen"
+      @swipeleft="SideNavClose">
       <header>
         <transition name="slide-fade">
           <div id="sidetab-aligner" v-if="!this.leftSideNavOpened">
@@ -41,6 +44,9 @@
           @play="onPlay"
           @pause="onPause"
           @timeUpdate="onTimeUpdate"
+          @inputTimeUpdate="onInputTimeUpdate"
+          @dragStart="onDragStart"
+          @dragStop="onDragStop"
         />
       </div>
       <md-sidenav
