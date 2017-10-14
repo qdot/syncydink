@@ -140,7 +140,6 @@ export default class VideoEncoder extends Vue {
   private onBodyClick() {
     this.updatePlayheadPositionFromEvent();
     const moveX = this.xDisplayScale.invert(d3.event.x);
-    this.currentPlayTime
     this.$emit("inputTimeUpdate", moveX);
   }
 
