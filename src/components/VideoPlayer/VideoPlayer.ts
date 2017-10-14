@@ -18,11 +18,13 @@ export default class VideoPlayer extends Vue {
   @Prop()
   private videoMode: string = "2d";
   @Prop()
-  private videoHeight: 0;
+  private videoHeight: number;
   @Prop()
   private desiredPlayTime: number;
   @Prop()
   private loopVideo: boolean;
+  @Prop()
+  private currentPlayTime: number;
 
   private videoElementId: string | null = null;
   private currentPlayer: Player | null = null;
@@ -60,7 +62,7 @@ export default class VideoPlayer extends Vue {
     if (this.currentPlayer === null) {
       return;
     }
-    this.currentPlayer.currentTime(this.desiredPlayTime);
+    this.currentPlayer.currentTime(this.desiredPlayTime / 1000);
   }
 
   @Watch("videoHeight")

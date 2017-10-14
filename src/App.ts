@@ -58,7 +58,8 @@ export default class App extends Vue {
   }
 
   private advanceFrame(direction: number) {
-    this.desiredPlayTime = (this.currentPlayTime / 1000.0) + (1.0 / 60.0) * direction;
+    this.desiredPlayTime = (this.currentPlayTime) + (((1.0 / 60.0) * direction) * 1000);
+    this.currentPlayTime = this.desiredPlayTime;
   }
 
   private SideNavOpen() {

@@ -27,6 +27,7 @@
           :videoMode="this.videoMode"
           :videoHeight="this.videoHeight"
           :loopVideo="this.loopVideo"
+          :desiredPlayTime="this.desiredPlayTime"
           @videoPlaying="onPlay"
           @videoPaused="onPause"
           @timeUpdate="onTimeUpdate"
