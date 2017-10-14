@@ -30,7 +30,7 @@
     "vue-buttplug-material-component": "^0.0.2",
     "vue-material": "^0.7.5",
     "vue-touch": "next",
-    "vue-video-player": "^4.0.4"
+    "vue-video-player": "^3.1.4"
   },
   "devDependencies": {
     "@types/aframe": "^0.5.0",

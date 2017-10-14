@@ -2574,6 +2574,13 @@ global-prefix@^0.1.4:
     is-windows "^0.2.0"
     which "^1.2.12"
 
+global@4.3.0:
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/global/-/global-4.3.0.tgz#ef7ec4beead579b454f5ebd5e7f303db54f42a2b"
+  dependencies:
+    min-document "^2.6.1"
+    process "~0.5.1"
+
 global@4.3.2, global@^4.3.1, global@~4.3.0:
   version "4.3.2"
   resolved "https://registry.yarnpkg.com/global/-/global-4.3.2.tgz#e76989268a6c74c38908b1305b10fc0e394e9d0f"
@@ -3537,7 +3544,7 @@ mimic-fn@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/mimic-fn/-/mimic-fn-1.1.0.tgz#e667783d92e89dbd342818b5230b9d62a672ad18"
 
-min-document@^2.19.0:
+min-document@^2.19.0, min-document@^2.6.1:
   version "2.19.0"
   resolved "https://registry.yarnpkg.com/min-document/-/min-document-2.19.0.tgz#7bd282e3f5842ed295bb748cdd9f1ffa2c824685"
   dependencies:
@@ -5732,7 +5739,21 @@ verror@1.10.0:
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
 
-video.js@^6.2.4, video.js@^6.2.8:
+video.js@^5.11.7:
+  version "5.20.4"
+  resolved "https://registry.yarnpkg.com/video.js/-/video.js-5.20.4.tgz#85d58129e568527ccc179f95f485f547ee3c2e06"
+  dependencies:
+    babel-runtime "^6.9.2"
+    global "4.3.0"
+    safe-json-parse "4.0.0"
+    tsml "1.0.1"
+    videojs-font "2.0.0"
+    videojs-ie8 "1.1.2"
+    videojs-swf "5.4.1"
+    videojs-vtt.js "0.12.4"
+    xhr "2.2.2"
+
+video.js@^6.2.8:
   version "6.3.3"
   resolved "https://registry.yarnpkg.com/video.js/-/video.js-6.3.3.tgz#e91f9fbb18062d2fd8c0e162db96d95caf78e3d4"
   dependencies:
@@ -5754,6 +5775,10 @@ videojs-ie8@1.1.2:
   resolved "https://registry.yarnpkg.com/videojs-ie8/-/videojs-ie8-1.1.2.tgz#a23d3d8608ad7192b69c6077fc4eb848998d35d9"
   dependencies:
     es5-shim "^4.5.1"
+
+videojs-swf@5.4.1:
+  version "5.4.1"
+  resolved "https://registry.yarnpkg.com/videojs-swf/-/videojs-swf-5.4.1.tgz#2077ef71c749f2c7823ef49babae4dd2acb08f87"
 
 videojs-vtt.js@0.12.4:
   version "0.12.4"
@@ -5847,11 +5872,11 @@ vue-touch@next:
     rollup-plugin-commonjs "^7.0.0"
     rollup-plugin-node-resolve "^2.0.0"
 
-vue-video-player@^4.0.4:
-  version "4.0.4"
-  resolved "https://registry.yarnpkg.com/vue-video-player/-/vue-video-player-4.0.4.tgz#026f8360f5c0b9555b91f5901368408c1defbc76"
+vue-video-player@^3.1.4:
+  version "3.1.4"
+  resolved "https://registry.yarnpkg.com/vue-video-player/-/vue-video-player-3.1.4.tgz#7009b06dcec439b3ea645183217d314cbf0d37fd"
   dependencies:
-    video.js "^6.2.4"
+    video.js "^5.11.7"
 
 vue@^2.5.2:
   version "2.5.2"
@@ -6066,6 +6091,15 @@ xhr-request@^1.0.1:
     timed-out "^2.0.0"
     url-set-query "^1.0.0"
     xhr "^2.0.4"
+
+xhr@2.2.2:
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/xhr/-/xhr-2.2.2.tgz#2ee72571869f8686d41559a9ea286c18971435ff"
+  dependencies:
+    global "~4.3.0"
+    is-function "^1.0.1"
+    parse-headers "^2.0.0"
+    xtend "^4.0.0"
 
 xhr@2.4.0, xhr@^2.0.1, xhr@^2.0.4:
   version "2.4.0"
