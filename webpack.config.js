@@ -57,7 +57,7 @@ module.exports = {
     ]
   },
   resolve: {
-    extensions: [".ts", ".js", ".vue"],
+    extensions: [".ts", ".js", ".vue", ".json"],
     alias: {
       'vue$': path.resolve('./node_modules/vue/dist/vue.esm.js'),
       'vue-material$': path.resolve('./node_modules/vue-material/dist/vue-material.js'),
