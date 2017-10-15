@@ -6,6 +6,7 @@ import FleshlightLaunchSimulatorComponent from "./FleshlightLaunchSimulator/Fles
 import VibratorSimulatorComponent from "./VibratorSimulator/VibratorSimulator.vue";
 const fleshlightSmallIcon = require("../../../static/images/fleshlight-small.png");
 const hushSmallIcon = require("../../../static/images/hush-250.png");
+const noraSmallIcon = require("../../../static/images/nora-250.png");
 
 @Component({
   components: {
@@ -19,6 +20,7 @@ export default class ButtplugSimulator extends Vue {
   private currentMessages: ButtplugMessage[];
   @Prop()
   private paused: boolean;
+  private vibratorImageURL: string = "";
   private modes: any = [
     {
       name: "Fleshlight Launch",
@@ -28,6 +30,10 @@ export default class ButtplugSimulator extends Vue {
       name: "Lovense Hush",
       imageurl: hushSmallIcon,
     },
+    {
+      name: "Lovense Nora",
+      imageurl: noraSmallIcon,
+    },
   ];
   private fleshlightMode: boolean = true;
 
@@ -36,6 +42,7 @@ export default class ButtplugSimulator extends Vue {
       this.fleshlightMode = true;
     } else {
       this.fleshlightMode = false;
+      this.vibratorImageURL = mode.imageurl;
     }
   }
 }

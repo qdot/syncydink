@@ -9,7 +9,8 @@
       <vibrator-simulator-component
         v-if="!fleshlightMode"
         :paused="this.paused"
-        :currentMessages="this.currentMessages">
+        :currentMessages="this.currentMessages"
+        :vibratorImage="this.vibratorImageURL">
       </vibrator-simulator-component>
     </div>
     <div class="simulator-button-container">

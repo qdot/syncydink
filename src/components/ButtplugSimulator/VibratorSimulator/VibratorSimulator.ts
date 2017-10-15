@@ -5,7 +5,7 @@ import * as TWEEN from "@tweenjs/tween.js";
 
 @Component({})
 export default class VibratorSimulator extends Vue {
-  // @Prop()
+  @Prop()
   private vibratorImage: any = require("../../../../static/images/hush-250.png");
   @Prop()
   private currentMessages: ButtplugMessage[];
