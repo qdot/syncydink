@@ -1,5 +1,5 @@
 <template>
-  <div id="video-player">
+  <div>
     <div id="twod-player">
       <video-player
         id="videojs-player"
@@ -23,8 +23,7 @@
 
 <style lang="css">
  .full-screen {
-   width: 100%;
-   height: 100%;
+   flex: 1;
  }
 
  .half-screen {

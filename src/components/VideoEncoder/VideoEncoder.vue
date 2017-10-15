@@ -74,8 +74,10 @@
  }
 
  #video-encoder {
-   width: 100%;
-   min-height: 120px;
+   /* The video encoder should be able to shrink, but allowing 
+      it to grow causes it to take up too much space */
+   flex-grow: 0;
+   flex-shrink: 1;
  }
 
  #encoder-timeline {

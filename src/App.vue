@@ -22,7 +22,7 @@
         <div v-if="!this.hasOpenedMenu" class="select-message">
           <p>Click on the tab on the left or swipe right to select movie/haptics files and connect to Buttplug.</p>
         </div>
-        <div class="video-simulator-container">
+        <div class="video-simulator-container" v-if="haveVideoFile || showEncoder || showSimulator">
           <video-player-component
             id="video-player"
             ref="videoPlayer"
@@ -47,7 +47,7 @@
         <video-encoder-component
           id="video-encoder"
           ref="videoEncoder"
-          v-if="this.showEncoder"
+          v-if="showEncoder"
           :hapticsCommands="this.hapticsCommands"
           :currentPlayTime="this.currentPlayTime"
           @play="onPlay"
@@ -174,19 +174,20 @@
  html, body {
    margin: 0;
    padding: 0;
-   height: 100vh;
-   width: 100vw;
+   display: flex;
+   flex: 1;
  }
 
  body {
    background-image:url(../static/images/syncydinklogo.svg);
    background-repeat: no-repeat;
    background-position: center;
+   display: flex;
  }
 
  #app {
-   height: 100%;
-   width: 100%;
+   display: flex;
+   flex: 1;
    font-size: 16px;
    font-weight: 400;
    text-align: left;
@@ -198,9 +199,8 @@
  }
 
  #video-container {
-   height: 100%;
-   width: 100%;
    display: flex;
+   flex: 1;
    flex-direction: column;
    justify-content: space-between;
  }
@@ -216,9 +216,8 @@
  /* Make our touch wrapper div take up the whole screen, but also make it
     fixed so that we don't have problems with readjustment snapping */
  #gesture-wrapper {
-   position: fixed;
-   height: 100%;
-   width: 100%;
+   display: flex;
+   flex: 1;
  }
 
  h1, h2 {
@@ -371,32 +370,35 @@
  }
 
  .select-message {
+   flex: 1;
    display: flex;
-   height: 100vh;
    align-items: center;
    justify-content: center;
    font-size: 25px;
-   width: 100%;
  }
 
  .select-message p {
-   width: 25%;
+   max-width: 30%;
    line-height: 120%;
    text-align: center;
  }
 
  .video-simulator-container {
    display: flex;
-   height: 100%;
-   width: 100%;
+   flex: 1;
  }
 
  #video-player {
-   flex-grow: 1;
+   flex: 1;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   background: #000;
  }
 
  #buttplug-simulator {
    min-width: 300px;
-   flex: 0;
+   flex-grow: 0;
+   flex-shrink: 1;
  }
 </style>
