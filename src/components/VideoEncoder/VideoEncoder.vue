@@ -43,6 +43,7 @@
  #graph-x-axis {
    flex: 1 1 auto;
    min-height: 20px;
+   max-height: 20px;
    background: #000;
  }
 
