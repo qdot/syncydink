@@ -22,20 +22,28 @@
         <div v-if="!this.hasOpenedMenu" class="select-message">
           <p>Click on the tab on the left or swipe right to select movie/haptics files and connect to Buttplug.</p>
         </div>
-        <video-player-component
-          id="video-player"
-          ref="videoPlayer"
-          v-if="haveVideoFile"
-          :videoFile="this.videoFile"
-          :videoMode="this.videoMode"
-          :videoHeight="this.videoHeight"
-          :loopVideo="this.loopVideo"
-          :desiredPlayTime="this.desiredPlayTime"
-          @videoPlaying="onPlay"
-          @videoPaused="onPause"
-          @timeUpdate="onTimeUpdate"
-          @videoLoaded="onVideoLoaded"
-        />
+        <div class="video-simulator-container">
+          <video-player-component
+            id="video-player"
+            ref="videoPlayer"
+            v-if="haveVideoFile"
+            :videoFile="this.videoFile"
+            :videoMode="this.videoMode"
+            :videoHeight="this.videoHeight"
+            :loopVideo="this.loopVideo"
+            :desiredPlayTime="this.desiredPlayTime"
+            @videoPlaying="onPlay"
+            @videoPaused="onPause"
+            @timeUpdate="onTimeUpdate"
+            @videoLoaded="onVideoLoaded"
+          />
+          <buttplug-simulator-component
+            id="buttplug-simulator"
+            v-if="showSimulator"
+            :paused="this.paused"
+            :currentMessage="this.currentMessage"
+          />
+        </div>
         <video-encoder-component
           id="video-encoder"
           ref="videoEncoder"
@@ -90,6 +98,8 @@
               </md-input-container>
               <md-checkbox
                 @change="onShowTimelineChange($event)">Show Haptics Timeline</md-checkbox>
+              <md-checkbox
+                @change="onShowSimulatorChange($event)">Show Haptics Simulator</md-checkbox>
               <div v-if="this.hapticCommandsSize != 0">
                 <ul class="haptics-info">
                   <li># of Haptic Commands Loaded: {{ this.hapticCommandsSize }}</li>
@@ -375,4 +385,18 @@
    text-align: center;
  }
 
+ .video-simulator-container {
+   display: flex;
+   height: 100%;
+   width: 100%;
+ }
+
+ #video-player {
+   flex-grow: 1;
+ }
+
+ #buttplug-simulator {
+   height: 100%;
+   width: auto;
+ }
 </style>
