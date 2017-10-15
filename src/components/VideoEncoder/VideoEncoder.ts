@@ -42,6 +42,7 @@ export default class VideoEncoder extends Vue {
     for (const i of [...Array(10).keys()]) {
       Mousetrap.bind(i.toString(), () => this.addNodeAtPoint(i * 10));
     }
+    window.addEventListener("resize", this.onResize);
   }
 
   public beforeDestroy() {
