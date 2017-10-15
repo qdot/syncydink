@@ -41,7 +41,7 @@
             id="buttplug-simulator"
             v-if="showSimulator"
             :paused="this.paused"
-            :currentMessage="this.currentMessage"
+            :currentMessages="this.currentMessages"
           />
         </div>
         <video-encoder-component

@@ -42,7 +42,7 @@ export default class App extends Vue {
   private commandTimes: number[] = [];
   private showEncoder: boolean = false;
   private showSimulator: boolean = false;
-  private currentMessage: ButtplugMessage | null = null;
+  private currentMessages: ButtplugMessage[] = [];
 
   public mounted() {
     window.addEventListener("resize", () => this.setVideoHeight());
@@ -112,7 +112,6 @@ export default class App extends Vue {
 
   private onVideoLoaded(duration: number) {
     if (this.hapticsCommands.length === 0) {
-      console.log(duration);
       this.hapticsCommands.push(new FunscriptCommand(0, 0));
       this.hapticsCommands.push(new FunscriptCommand(duration, 0));
     }
@@ -169,10 +168,8 @@ export default class App extends Vue {
       }
       const msgs = this.commands.get(this.commandTimes[this.lastIndexRetrieved]);
       if (msgs !== undefined) {
+        this.currentMessages = msgs!;
         for (const aMsg of msgs) {
-          if (aMsg.getType() === "FleshlightLaunchFW12Cmd") {
-            this.currentMessage = aMsg;
-          }
           for (const device of this.devices) {
             if (device.AllowedMessages.indexOf(aMsg.getType()) === -1) {
               continue;
