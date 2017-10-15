@@ -71,7 +71,7 @@
               <md-subheader>Video</md-subheader>
               <md-input-container class="syncydink-nav-file-input">
                 <md-file
-                  accept="video/*"
+                  accept="video/mp4,video/x-m4v,video/*"
                   placeholder="Click to select video file"
                   @selected="onVideoFileChange" />
               </md-input-container>
