@@ -16,15 +16,12 @@
 
 <style lang="css">
  div.c-fleshlight {
-	 height: 100%;
-	 width: auto;
-	 line-height: 0;
-   background: #fff;
    display: flex;
+   flex: 1;
+   background: #fff;
  }
 
  div.c-fleshlight img {
-	 max-height: 100%;
 	 image-rendering: -moz-crisp-edges;
 	 image-rendering: -o-crisp-edges;
 	 image-rendering: -webkit-optimize-contrast;
@@ -32,14 +29,12 @@
  }
 
  div.c-fleshlight .o-fleshlight {
-	 position: relative;
-	 width: auto;
+   position: relative;
 	 height: 77%;
+   flex-grow: 1;
  }
 
  div.c-fleshlight .o-ruler {
-	 width: auto;
-	 height: 100%;
-	 float: left;
+   flex: 0;
  }
 </style>

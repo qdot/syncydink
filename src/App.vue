@@ -396,7 +396,7 @@
  }
 
  #buttplug-simulator {
-   height: 100%;
-   width: auto;
+   min-width: 300px;
+   flex: 0;
  }
 </style>

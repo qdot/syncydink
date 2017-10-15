@@ -29,18 +29,17 @@
 <style lang="css">
 
  .simulator-component {
-   height: 100%;
-   width: auto;
-   min-width: 300px;
+   flex: 1;
+   width: 300px;
    display: flex;
    flex-direction: column;
    background: #fff;
  }
 
  .simulator-container {
-   height: auto;
-   flex-grow: 1;
+   flex: 1;
    border-bottom: 1px solid #000;
+   display: flex;
  }
 
  .simulator-button-container {
