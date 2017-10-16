@@ -397,7 +397,6 @@
  }
 
  #buttplug-simulator {
-   min-width: 300px;
    flex-grow: 0;
    flex-shrink: 1;
  }

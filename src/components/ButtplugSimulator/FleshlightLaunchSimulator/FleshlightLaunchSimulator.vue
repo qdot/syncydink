@@ -1,13 +1,17 @@
 <template>
   <div class="c-fleshlight">
-    <img
-      src="../../../../static/images/ruler.png"
-      class="o-ruler">
-    <img
-      src="../../../../static/images/fleshlight.png"
-      class="o-fleshlight"
-      id="fleshlight-image"
-      v-bind:style="fleshlightStyle">
+    <div class="fl-div-ruler">
+      <img
+        src="../../../../static/images/ruler.png"
+        class="o-ruler">
+    </div>
+    <div class="fl-div">
+      <img
+        src="../../../../static/images/fleshlight.png"
+        class="o-fleshlight"
+        id="fleshlight-image"
+        v-bind:style="fleshlightStyle">
+    </div>
   </div>
 </template>
 
@@ -22,6 +26,7 @@
  }
 
  div.c-fleshlight img {
+   flex: 1;
 	 image-rendering: -moz-crisp-edges;
 	 image-rendering: -o-crisp-edges;
 	 image-rendering: -webkit-optimize-contrast;
@@ -29,8 +34,20 @@
  }
 
  div.c-fleshlight .o-fleshlight {
+   flex: 1;
    position: relative;
-	 height: 77%;
+   padding-left: 5px;
+   padding-right: 5px;
+   height: 77%;
+ }
+
+ div.c-fleshlight .fl-div {
+   display: flex;
+   flex: 10;
+ }
+
+ div.c-fleshlight .fl-div-ruler {
+   display: flex;
    flex-grow: 1;
  }
 

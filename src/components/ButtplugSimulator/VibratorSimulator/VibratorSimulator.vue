@@ -11,22 +11,23 @@
 
 <style lang="css">
  .vibrator-simulator-component {
-   width: 100%;
-   height: 100%;
    background: #fff;
    display: flex;
    align-items: center;
    justify-content: center;
+   flex: 1;
  }
 
- .vibrator-image-container {
-   width: 100%;
+ .vibrator-image {
+   flex: 1;
+   display: flex;
  }
 
- .vibrator-simulator-component img {
-   position: relative;
-   width: 200px;
-   height: auto;
+ .vibrator-image img {
+   flex: 1;
+   padding: 20px;
+   max-height: 100%;
+   width: auto;
    image-rendering: -moz-crisp-edges;
 	 image-rendering: -o-crisp-edges;
 	 image-rendering: -webkit-optimize-contrast;

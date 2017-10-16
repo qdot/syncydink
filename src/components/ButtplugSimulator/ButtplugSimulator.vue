@@ -13,14 +13,16 @@
         :vibratorImage="this.vibratorImageURL">
       </vibrator-simulator-component>
     </div>
+
     <div class="simulator-button-container">
       <div v-for="mode in this.modes"
            class="simulator-button"
            @click="onModeChange(mode)">
         <img :src="mode.imageurl"
-             class="simulator-image">
+             class="simulator-button-image">
       </div>
     </div>
+
   </div>
 </template>
 
@@ -30,15 +32,17 @@
 <style lang="css">
 
  .simulator-component {
-   flex: 1;
-   width: 300px;
+   flex-grow: 1;
+   flex-shrink: 0;
    display: flex;
    flex-direction: column;
    background: #fff;
+   min-width: 300px;
  }
 
  .simulator-container {
-   flex: 1;
+   flex-grow: 1;
+   flex-shrink: 0;
    border-bottom: 1px solid #000;
    display: flex;
  }
@@ -56,7 +60,7 @@
    width: 48px;
  }
 
- .simulator-image {
+ .simulator-button-image {
    margin: auto;
    min-height: 48px;
    max-height: 48px;
