@@ -124,6 +124,7 @@ export default class VideoEncoder extends Vue {
   private onResize() {
     const graphdiv = document.getElementById("graph")!;
     this.xScale.range([0, graphdiv.clientWidth]);
+    this.buildTimeline();
   }
 
   private updatePlayheadPositionFromEvent() {
