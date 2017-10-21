@@ -80,216 +80,213 @@
 <script lang="ts" src="./App.ts">
 </script>
 
-<style src="vue-material/dist/vue-material.css"></style>
-<style src="../static/css/video-js.5.4.6.min.css"></style>
+<style lang="less">
+  @import "~vue-material/dist/vue-material.css";
+  @import "../static/css/video-js.5.4.6.min.css";
 
-<style lang="css">
- @font-face {
-   font-family: 'Material Icons';
-   font-style: normal;
-   font-weight: 400;
-   src: local('Material Icons'),
-   local('MaterialIcons-Regular'),
-   url(../static/fonts/MaterialIcons-Regular.woff2) format('woff2');
- }
+  @font-face {
+    font-family: 'Material Icons';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Material Icons'),
+        local('MaterialIcons-Regular'),
+        url(../static/fonts/MaterialIcons-Regular.woff2) format('woff2');
+  }
 
  .material-icons {
-   font-family: 'Material Icons';
-   font-weight: normal;
-   font-style: normal;
-   font-size: 24px;  /* Preferred icon size */
-   display: inline-block;
-   line-height: 1;
-   text-transform: none;
-   letter-spacing: normal;
-   word-wrap: normal;
-   white-space: nowrap;
-   direction: ltr;
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;  /* Preferred icon size */
+    display: inline-block;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+    direction: ltr;
 
-   /* Support for all WebKit browsers. */
-   -webkit-font-smoothing: antialiased;
-   /* Support for Safari and Chrome. */
-   text-rendering: optimizeLegibility;
-
-   /* Support for Firefox. */
-   -moz-osx-font-smoothing: grayscale;
-
-   /* Support for IE. */
-   font-feature-settings: 'liga';
+    /* Support for all WebKit browsers. */
+    -webkit-font-smoothing: antialiased;
+    /* Support for Safari and Chrome. */
+    text-rendering: optimizeLegibility;
+    /* Support for Firefox. */
+    -moz-osx-font-smoothing: grayscale;
+    /* Support for IE. */
+    font-feature-settings: 'liga';
  }
 
- html, body {
-   margin: 0;
-   padding: 0;
-   height: 100%;
-   width:100%
- }
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%
+  }
 
- body {
-   background-image:url(../static/images/syncydinklogo.svg);
-   background-repeat: no-repeat;
-   background-attachment: fixed;
-   background-position: center;
- }
+  body {
+    background-image:url(../static/images/syncydinklogo.svg);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+  }
 
  #app {
-   height: 100vh;
-   width: 100vw;
-   font-size: 16px;
-   font-weight: 400;
-   text-align: left;
-   text-transform: none;
-   font-family: Roboto,Noto Sans,Noto,sans-serif;
-   -webkit-font-smoothing: antialiased;
-   -moz-osx-font-smoothing: grayscale;
-   color: #2c3e50;
+    height: 100vh;
+    width: 100vw;
+    font-size: 16px;
+    font-weight: 400;
+    text-align: left;
+    text-transform: none;
+    font-family: Roboto,Noto Sans,Noto,sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: #2c3e50;
  }
 
- /* Make our touch wrapper div take up the whole screen, but also make it
+  /* Make our touch wrapper div take up the whole screen, but also make it
     fixed so that we don't have problems with readjustment snapping */
- #gesture-wrapper {
-   position: fixed;
-   height: 100vh;
-   width: 100vw;
- }
+  #gesture-wrapper {
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+  }
 
- h1, h2 {
-   font-weight: normal;
- }
+  h1,
+  h2 {
+    font-weight: normal;
+  }
 
- ul {
-   list-style-type: none;
-   padding: 0;
- }
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
 
- li {
-   display: inline-block;
-   margin: 0 10px;
- }
+  li {
+    display: inline-block;
+    margin: 0 10px;
+  }
 
- a {
-   color: #42b983;
- }
+  a {
+    color: #42b983;
+  }
 
- .md-input-container.md-has-value input {
-   font-size:10pt;
- }
+  .md-input-container.md-has-value input {
+    font-size: 10pt;
+  }
 
- md-sidenav,
- md-sidenav.md-locked-open,
- md-sidenav.md-closed.md-locked-open-add-active {
-   min-width: 200px !important;
-   width: 85vw !important;
-   max-width: 400px !important;
- }
+  md-sidenav {
+    &.md-locked-open,
+    &.md-closed.md-locked-open-add-active {
+      min-width: 200px !important;
+      width: 85vw !important;
+      max-width: 400px !important;
+    }
+  }
 
- .md-tabs .md-tab  {
-   padding: 0;
- }
+  .md-tabs .md-tab {
+    padding: 0;
+  }
 
- .haptics-info {
-   font-size: 14px;
- }
+  .haptics-info {
+    font-size: 14px;
+  }
 
- #hamburger-start-text {
-   position: fixed;
-   font-size:25px;
-   z-index:50;
-   top: 33px;
-   left: 85px;
- }
+  #hamburger-start-text {
+    position: fixed;
+    font-size: 25px;
+    z-index: 50;
+    top: 33px;
+    left: 85px;
+  }
 
- #swipe-start-text {
-   position: fixed;
-   font-size:25px;
-   z-index:50;
-   top: 50vh;
-   left: 5px;
- }
+  #swipe-start-text {
+    position: fixed;
+    font-size: 25px;
+    z-index: 50;
+    top: 50vh;
+    left: 5px;
+  }
 
- /* Taken from https://codepen.io/designcouch/pen/Atyop */
+  /* Taken from https://codepen.io/designcouch/pen/Atyop */
 
- #nav-icon3 {
-   width: 60px;
-   height: 45px;
-   position: fixed;
-   z-index:50;
-   top: 20px;
-   left: 20px;
-   -webkit-transform: rotate(0deg);
-   -moz-transform: rotate(0deg);
-   -o-transform: rotate(0deg);
-   transform: rotate(0deg);
-   -webkit-transition: .5s ease-in-out;
-   -moz-transition: .5s ease-in-out;
-   -o-transition: .5s ease-in-out;
-   transition: .5s ease-in-out;
-   cursor: pointer;
- }
+  #nav-icon3 {
+    width: 60px;
+    height: 45px;
+    position: fixed;
+    z-index: 50;
+    top: 20px;
+    left: 20px;
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+    -webkit-transition: .5s ease-in-out;
+    -moz-transition: .5s ease-in-out;
+    -o-transition: .5s ease-in-out;
+    transition: .5s ease-in-out;
+    cursor: pointer;
 
- #nav-icon3 span {
-   display: block;
-   position: absolute;
-   height: 9px;
-   width: 100%;
-   background: #3f51b5;
-   border-radius: 9px;
-   opacity: 1;
-   left: 0;
-   -webkit-transform: rotate(0deg);
-   -moz-transform: rotate(0deg);
-   -o-transform: rotate(0deg);
-   transform: rotate(0deg);
-   -webkit-transition: .25s ease-in-out;
-   -moz-transition: .25s ease-in-out;
-   -o-transition: .25s ease-in-out;
-   transition: .25s ease-in-out;
- }
+    /* Icon 3 */
+    span {
+      display: block;
+      position: absolute;
+      height: 9px;
+      width: 100%;
+      background: #3f51b5;
+      border-radius: 9px;
+      opacity: 1;
+      left: 0;
+      -webkit-transform: rotate(0deg);
+      -moz-transform: rotate(0deg);
+      -o-transform: rotate(0deg);
+      transform: rotate(0deg);
+      -webkit-transition: .25s ease-in-out;
+      -moz-transition: .25s ease-in-out;
+      -o-transition: .25s ease-in-out;
+      transition: .25s ease-in-out;
 
- /* Icon 3 */
+      &:nth-child(1) {
+        top: 0px;
+      }
+      &:nth-child(2),
+      &:nth-child(3) {
+        top: 18px;
+      }
+      &:nth-child(4) {
+        top: 36px;
+      }
+    }
 
- #nav-icon3 span:nth-child(1) {
-   top: 0px;
- }
-
- #nav-icon3 span:nth-child(2),#nav-icon3 span:nth-child(3) {
-   top: 18px;
- }
-
- #nav-icon3 span:nth-child(4) {
-   top: 36px;
- }
-
- #nav-icon3.open span:nth-child(1) {
-   top: 18px;
-   width: 0%;
-   left: 50%;
- }
-
- #nav-icon3.open span:nth-child(2) {
-   -webkit-transform: rotate(45deg);
-   -moz-transform: rotate(45deg);
-   -o-transform: rotate(45deg);
-   transform: rotate(45deg);
- }
-
- #nav-icon3.open span:nth-child(3) {
-   -webkit-transform: rotate(-45deg);
-   -moz-transform: rotate(-45deg);
-   -o-transform: rotate(-45deg);
-   transform: rotate(-45deg);
- }
-
- #nav-icon3.open span:nth-child(4) {
-   top: 18px;
-   width: 0%;
-   left: 50%;
- }
-
- .syncydink-nav-file-input {
-   max-width: 95%;
-   margin: auto;
- }
+    &.open span {
+      &:nth-child(1) {
+        top: 18px;
+        width: 0%;
+        left: 50%;
+      }
+      &:nth-child(2) {
+        -webkit-transform: rotate(45deg);
+        -moz-transform: rotate(45deg);
+        -o-transform: rotate(45deg);
+        transform: rotate(45deg);
+      }
+      &:nth-child(3) {
+        -webkit-transform: rotate(-45deg);
+        -moz-transform: rotate(-45deg);
+        -o-transform: rotate(-45deg);
+        transform: rotate(-45deg);
+      }
+      &:nth-child(4) {
+        top: 18px;
+        width: 0%;
+        left: 50%;
+      }
+    }
+  }
+  
+  .syncydink-nav-file-input {
+    max-width: 95%;
+    margin: auto;
+  }
 
  ._2KV-widgets-shared--patreonWidgetWrapper {
    color: #052D49;
