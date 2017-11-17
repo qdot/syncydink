@@ -17,7 +17,7 @@ import * as Mousetrap from "mousetrap";
     VideoPlayerComponent,
     VideoEncoderComponent,
     ButtplugSimulatorComponent,
-    'patreon-button': PatreonButton,
+    "patreon-button": PatreonButton,
   },
 })
 export default class App extends Vue {
