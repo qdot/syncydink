@@ -1,4 +1,4 @@
-import { ButtplugDeviceMessage, FleshlightLaunchFW12Cmd, SingleMotorVibrateCmd } from "buttplug";
+import { ButtplugDeviceMessage, FleshlightLaunchFW12Cmd, SingleMotorVibrateCmd, VorzeA10CycloneCmd } from "buttplug";
 import { FunscriptCommand, HapticFileHandler, HapticCommand, KiirooCommand } from "haptic-movie-file-reader";
 
 export default class HapticCommandToButtplugMessage {
@@ -14,7 +14,11 @@ export default class HapticCommandToButtplugMessage {
         HapticCommandToButtplugMessage.FunScriptToFleshlightLaunchCommands(aCommands as FunscriptCommand[]);
       const vibratorCommands =
         HapticCommandToButtplugMessage.FunscriptToSingleMotorVibrateCommands(aCommands as FunscriptCommand[]);
-      buttplugCommands = HapticCommandToButtplugMessage.ZipCommandMaps([launchCommands, vibratorCommands]);
+      const vorzeCommands =
+        HapticCommandToButtplugMessage.FunscriptToVorzeCommands(aCommands as FunscriptCommand[]);
+      buttplugCommands = HapticCommandToButtplugMessage.ZipCommandMaps([launchCommands,
+                                                                        vibratorCommands,
+                                                                        vorzeCommands]);
       break;
     }
     case "KiirooCommand": {
@@ -176,6 +180,42 @@ export default class HapticCommandToButtplugMessage {
     }
     // Make sure we stop the vibrator at the end
     commands.set(lastTime + 100, [new SingleMotorVibrateCmd(0)]);
+    return commands;
+  }
+
+  private static FunscriptToVorzeCommands(aCommands: FunscriptCommand[]):
+  Map<number, ButtplugDeviceMessage[]> {
+    let lastTime: number = 0;
+    let lastPosition: number = 0;
+
+    let currentTime: number;
+    let currentPosition: number;
+    const commands: Map<number, ButtplugDeviceMessage[]> = new Map();
+
+    let timeDelta: number;
+    let positionDelta: number;
+    let speed: number;
+
+    for (const aCommand of aCommands) {
+      currentTime = aCommand.Time;
+      currentPosition = aCommand.Position;
+
+      timeDelta = currentTime - lastTime;
+      // If more than a certain amount of time exists between 2 commands, add a command to stop after the last
+      if (timeDelta > 1000) {
+        commands.set(lastTime + timeDelta + 1, [new VorzeA10CycloneCmd(0, true)]);
+      }
+
+      // We still need to calulate the Launch speed from the commands to set vorze speed.
+      positionDelta = Math.abs(currentPosition - lastPosition);
+      speed = Math.floor(25000 * Math.pow(((timeDelta * 90) / positionDelta), -1.05));
+
+      commands.set(currentTime, [new VorzeA10CycloneCmd(speed, lastPosition > currentPosition)]);
+      lastTime = currentTime;
+      lastPosition = currentPosition;
+    }
+    // Make sure we stop the Vorze at the end
+    commands.set(lastTime + 100, [new VorzeA10CycloneCmd(0, true)]);
     return commands;
   }
 
