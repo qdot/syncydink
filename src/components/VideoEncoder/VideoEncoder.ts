@@ -76,7 +76,7 @@ export default class VideoEncoder extends Vue {
       .call(d3.drag()
             .on("start", () => this.$emit("dragStart"))
             .on("end", () => this.$emit("dragStop"))
-            .on("drag", this.nodeDragged(this)));
+            .on("drag", () => this.nodeDragged(this)));
   }
 
   private nodeDragged(self: VideoEncoder) {
@@ -192,8 +192,8 @@ export default class VideoEncoder extends Vue {
       .domain([100, 0])
       .range([0, graphdiv.clientHeight]);
 
-    this.xAxis = d3.axisTop(this.xScale)
-      .tickFormat((d: number) => `${d / 1000.0}s`);
+    // Fix tickFormat once we figure out why there's a parameter error.
+    this.xAxis = d3.axisTop(this.xScale); // .tickFormat(`${d / 1000.0}s`);
     this.yAxis = d3.axisRight(this.yScale)
       .tickSize(graphdiv.clientWidth);
 
@@ -240,7 +240,7 @@ export default class VideoEncoder extends Vue {
 
     // Emit events to turn off gestures while dragging playhead.
     const playheadDrag = d3.drag()
-      .on("drag", this.playheadDragged(this))
+      .on("drag", () => this.playheadDragged(this))
       .on("start", () => this.$emit("dragStart"))
       .on("end", () => {
         this.onBodyClick();
