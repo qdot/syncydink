@@ -202,7 +202,7 @@ export default class HapticCommandToButtplugMessage {
 
       timeDelta = currentTime - lastTime;
       // If more than a certain amount of time exists between 2 commands, add a command to stop after the last
-      if (timeDelta > 1000) {
+      if (timeDelta > 10000) {
         commands.set(lastTime + timeDelta + 1, [new VorzeA10CycloneCmd(0, true)]);
       }
 
