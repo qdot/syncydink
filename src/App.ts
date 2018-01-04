@@ -9,7 +9,6 @@ import { Player } from "video.js";
 import VideoPlayerComponent from "./components/VideoPlayer/VideoPlayer.vue";
 import VideoEncoderComponent from "./components/VideoEncoder/VideoEncoder.vue";
 import ButtplugSimulatorComponent from "./components/ButtplugSimulator/ButtplugSimulator.vue";
-import PatreonButton from "./components/PatreonButton/PatreonButton.vue";
 import * as Mousetrap from "mousetrap";
 
 @Component({
@@ -17,7 +16,6 @@ import * as Mousetrap from "mousetrap";
     VideoPlayerComponent,
     VideoEncoderComponent,
     ButtplugSimulatorComponent,
-    "patreon-button": PatreonButton,
   },
 })
 export default class App extends Vue {
