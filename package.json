@@ -19,7 +19,7 @@
     "@tweenjs/tween.js": "^17.2.0",
     "aframe": "^0.7.1",
     "aframe-stereo-component": "^0.6.0",
-    "buttplug": "^0.5.1",
+    "buttplug": "^0.6.0",
     "d3": "^4.12.2",
     "haptic-movie-file-reader": "^0.0.10",
     "mousetrap": "^1.6.1",
