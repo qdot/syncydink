@@ -20,6 +20,6 @@ addons:
 deploy:
   provider: script
   skip_cleanup: true
-  script: rsync -r --quiet --delete-after dist/* buttplugworld@buttplug.world:/home/buttplugworld/buttplug.world/syncydink
+  script: rsync -r --quiet --rsync-path=”mkdir -p /home/buttplugworld/beta.buttplug.world/syncydink && rsync” --delete-after index.html dist buttplugworld@buttplug.world:/home/buttplugworld/beta.buttplug.world/syncydink
   on:
     branch: master
