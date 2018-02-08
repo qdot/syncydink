@@ -14,7 +14,8 @@
     "webpack-defaults": "webpack-defaults",
     "build:main": "yarn trash && tsc -p tsconfig.json",
     "pretest": "yarn build:main",
-    "test": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' mocha --compilers ts:ts-node/register 'tests/**/*.ts'"
+    "test": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' mocha --compilers ts:ts-node/register 'tests/**/*.ts'",
+    "deploy": "trash deploy && mkdir -p deploy && cp index.html deploy && cp -r dist deploy"
   },
   "dependencies": {
     "@tweenjs/tween.js": "^17.2.0",

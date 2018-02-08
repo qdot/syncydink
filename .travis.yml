@@ -20,17 +20,18 @@ addons:
     - buttplug.world
 deploy:
   - provider: script
-    skip_cleanup: true
-    script: rsync -r --quiet --delete-after index.html dist buttplugworld@buttplug.world:/home/buttplugworld/buttplug.world/syncydink
+    skip-cleanup: true
+    script: rsync -r --quiet --delete-after deploy/* buttplugworld@buttplug.world:/home/buttplugworld/buttplug.world/syncydink
     on:
       branch: release
   - provider: script
-    skip_cleanup: true
-    script: rsync -r --quiet --delete-after index.html dist buttplugworld@buttplug.world:/home/buttplugworld/beta.buttplug.world/syncydink
+    skip-cleanup: true
+    script: rsync -r --quiet --delete-after deploy/* buttplugworld@buttplug.world:/home/buttplugworld/beta.buttplug.world/syncydink
     on:
       branch: beta
   - provider: pages
-    skip_cleanup: true
+    skip-cleanup: true
+    local-dir: deploy
     github-token: $GITHUB_TOKEN
     on:
       branch: master

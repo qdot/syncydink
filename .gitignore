@@ -41,3 +41,6 @@ dist
 
 # js in src
 src/**/*.js*
+
+# deploy directory
+deploy
