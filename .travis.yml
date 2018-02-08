@@ -9,6 +9,7 @@ script:
   # Run test before build. Build takes a while due to compression step, so we want to fail fast.
   - yarn test
   - yarn build
+  - yarn deploy
 cache: yarn
 before_deploy:
   - openssl aes-256-cbc -K $encrypted_30952aa550a8_key -iv $encrypted_30952aa550a8_iv -in deploy_rsa.enc -out /tmp/deploy_rsa -d
