@@ -1,159 +1,111 @@
 <template>
-  <div id="app">
-    <v-touch
-      id="gesture-wrapper"
-      @swiperight="SideNavOpen"
-      @swipeleft="SideNavClose">
-      <header>
-        <transition name="slide-fade">
-          <div id="sidetab-aligner" v-if="!this.leftSideNavOpened">
-            <div id="sidetab-arrow" @click="ToggleLeftSideNav">
-              <md-icon>play_arrow</md-icon>
+  <v-app id="app">
+    <v-touch id="gesture-wrapper" @swiperight="SideNavOpen" @swipeleft="SideNavClose">
+      <v-container>
+        <header>
+          <div id="sidetab-aligner"  @click="ToggleLeftSideNav">
+            <div id="sidetab-arrow">
+              <v-icon color="white" class="playicon">play_arrow</v-icon>
             </div>
-            <div id="sidetab" @click="ToggleLeftSideNav">
+            <div id="sidetab">
             </div>
           </div>
-        </transition>
-        <div ref="patreonButton" id="patreon-button" v-if="!haveVideoFile">
-          <div data-reactroot="" class="_2KV-widgets-shared--patreonWidgetWrapper"><a class="sc-bxivhb ffInCX" color="primary" type="button" href="https://www.patreon.com/bePatron?u=2860444&amp;redirect_uri=http%3A%2F%2Fbuttplug.world%2Ftest.html&amp;utm_medium=widget" role="button"><div class="sc-htpNat gdWQYu"><div class="sc-gzVnrw dJCpyC" display="flex" wrap="nowrap" direction="[object Object]"><div class="sc-dnqmqq llsQFn"><span class="sc-htoDjs fqfmvk"><svg viewBox="0 0 569 546" version="1.1" xmlns="http://www.w3.org/2000/svg"><title>Patreon logo</title><g><circle data-color="1" id="Oval" cx="362.589996" cy="204.589996" r="204.589996"></circle><rect data-color="2" id="Rectangle" x="0" y="0" width="100" height="545.799988"></rect></g></svg></span></div><div class="sc-gqjmRU fFOxVX" width="1.5"></div>Give us money</div></div></a></div>
-        </div>
-      </header>
-      <div id="video-container">
-        <div v-if="!this.hasOpenedMenu" class="select-message">
+          <div ref="patreonButton" id="patreon-button">
+            <div data-reactroot="" class="_2KV-widgets-shared--patreonWidgetWrapper"><a class="sc-bxivhb ffInCX" color="primary" type="button" href="https://www.patreon.com/bePatron?u=2860444&amp;redirect_uri=http%3A%2F%2Fbuttplug.world%2Ftest.html&amp;utm_medium=widget" role="button"><div class="sc-htpNat gdWQYu"><div class="sc-gzVnrw dJCpyC" display="flex" wrap="nowrap" direction="[object Object]"><div class="sc-dnqmqq llsQFn"><span class="sc-htoDjs fqfmvk"><svg viewBox="0 0 569 546" version="1.1" xmlns="http://www.w3.org/2000/svg"><title>Patreon logo</title><g><circle data-color="1" id="Oval" cx="362.589996" cy="204.589996" r="204.589996"></circle><rect data-color="2" id="Rectangle" x="0" y="0" width="100" height="545.799988"></rect></g></svg></span></div><div class="sc-gqjmRU fFOxVX" width="1.5"></div>Give us money</div></div></a></div>
+          </div>
+        </header>
+        <v-layout class="select-message">
           <p>Click on the tab on the left or swipe right to select movie/haptics files and connect to Buttplug.</p>
-        </div>
-        <div class="video-simulator-container" v-if="haveVideoFile || showEncoder || showSimulator">
-          <video-player-component
-            id="video-player"
-            ref="videoPlayer"
-            v-if="haveVideoFile"
-            :videoFile="this.videoFile"
-            :videoMode="this.videoMode"
-            :videoHeight="this.videoHeight"
-            :loopVideo="this.loopVideo"
-            :desiredPlayTime="this.desiredPlayTime"
-            @videoPlaying="onPlay"
-            @videoPaused="onPause"
-            @timeUpdate="onTimeUpdate"
-            @videoLoaded="onVideoLoaded"
-          />
-          <buttplug-simulator-component
-            id="buttplug-simulator"
-            v-if="showSimulator"
-            :paused="this.paused"
-            :currentMessages="this.currentMessages"
-          />
-        </div>
-        <video-encoder-component
-          id="video-encoder"
-          ref="videoEncoder"
-          v-if="showEncoder"
-          :hapticsCommands="this.hapticsCommands"
-          :currentPlayTime="this.currentPlayTime"
-          @play="onPlay"
-          @pause="onPause"
-          @timeUpdate="onTimeUpdate"
-          @inputTimeUpdate="onInputTimeUpdate"
-          @dragStart="onDragStart"
-          @dragStop="onDragStop"
-        />
-      </div>
-      <md-sidenav
-        layout="column"
-        class="md-left"
-        id="left-side-nav-element"
-        ref="leftSideNav"
-        @open="OnLeftSideNavOpen"
-        @close="OnLeftSideNavClose">
-        <md-tabs md-centered>
-          <md-tab md-label="Video">
-            <div class="sidebar-form">
-              <md-subheader>Video</md-subheader>
-              <md-input-container class="syncydink-nav-file-input">
-                <md-file
-                  accept="video/mp4,video/x-m4v,video/*"
-                  placeholder="Click to select video file"
-                  @selected="onVideoFileChange" />
-              </md-input-container>
-              <md-checkbox
-                v-model="loopVideo"
-                @change="onLoopVideoChange($event)" checked>Loop Video</md-checkbox>
-              <div>
-                <md-subheader>Video Mode</md-subheader>
-                <md-list>
-                  <md-list-item><md-radio v-model="videoMode" id="video-mode-2d" name="video-mode-group" md-value="2d" class="md-primary" selected>2D</md-radio></md-list-item>
-                  <md-list-item><md-radio v-model="videoMode" id="video-mode-vr" name="video-mode-group" md-value="split" class="md-primary">2D/VR Split (Buggy!)</md-radio></md-list-item>
-                  <md-list-item><md-radio v-model="videoMode" id="video-mode-vr" name="video-mode-group" md-value="vr" class="md-primary">VR</md-radio></md-list-item>
-                </md-list>
-              </div>
-            </div>
-            <md-divider />
-            <div class="sidebar-form">
-              <md-subheader>Haptics</md-subheader>
-              <md-input-container class="syncydink-nav-file-input">
-                <md-file
-                  accept="*"
-                  placeholder="Click to select haptics file"
-                  @selected="onHapticsFileChange" />
-              </md-input-container>
-              <md-checkbox
-                @change="onShowTimelineChange($event)">Show Haptics Timeline</md-checkbox>
-              <md-checkbox
-                @change="onShowSimulatorChange($event)">Show Haptics Simulator</md-checkbox>
-              <div v-if="this.hapticCommandsSize != 0">
-                <ul class="haptics-info">
-                  <li># of Haptic Commands Loaded: {{ this.hapticCommandsSize }}</li>
-                  <li>Haptics Type: {{ this.hapticCommandsType }}</li>
-                </ul>
-              </div>
-            </div>
-          </md-tab>
-          <md-tab md-label="Buttplug">
-            <buttplug-panel
-              ref="buttplugPanel"
-              @deviceconnected="OnDeviceConnected"
-              @devicedisconnected="OnDeviceDisconnected"
-            />
-          </md-tab>
-          <md-tab md-label="About">
-            <md-list class="md-double-line">
-              <md-list-item><b>Syncydink Version 20170829</b></md-list-item>
-              <md-list-item><div class="md-list-text-container">Developed By<a href="https://metafetish.com">Metafetish</a></div></md-list-item>
-              <md-list-item><div class="md-list-text-container">Need help?<a href="https://metafetish.club/t/tutorial-syncydink-v20170821/82">Tutorial available!</a></div></md-list-item>
-              <md-list-item><div class="md-list-text-container">Open Source!<a href="https://github.com/metafetish/syncydink">Code available on Github</a></div></md-list-item>
-              <md-list-item><div class="md-list-text-container">We Like Money!<a href="https://patreon.com/qdot">Visit Our Patreon</a></div></md-list-item>
-            </md-list>
-          </md-tab>
-        </md-tabs>
-      </md-sidenav>
+        </v-layout>
+        <v-navigation-drawer
+          temporary
+          absolute
+          v-model="menuOpened">
+          <v-tabs>
+            <v-tab href="#syncydink">
+              Syncydink
+            </v-tab>
+            <v-tab href="#buttplugpanel">
+              Buttplug
+            </v-tab>
+            <v-tab href="#aboutpanel">
+              About
+            </v-tab>
+            <v-tabs-items>
+              <v-tab-item id="syncydink">
+                <v-layout column class="sidebar-form">
+                  <v-flex>
+                    <v-subheader>Video</v-subheader>
+                    <!-- need file input here -->
+                    <v-file-input label="Choose Movie File"></v-file-input>
+                    <v-checkbox
+                      v-model="loopVideo"
+                      label="Loop Video" checked></v-checkbox>
+                  </v-flex>
+                  <v-flex>
+                    <v-subheader>Video Mode</v-subheader>
+                    <v-radio-group  v-model="videoMode">
+                      <v-radio v-for="n in videoTypes"
+                               name="video-mode-group"
+                               :key="n"
+                               :value="n"
+                               :label="n"></v-radio>
+                    </v-radio-group>
+                  </v-flex>
+                  <v-divider />
+                  <v-flex>
+                    <v-subheader>Haptics</v-subheader>
+                    <!-- need file input here -->
+                    <v-file-input label="Choose Haptics File"></v-file-input>
+                    <v-checkbox
+                      v-model="showHapticsTimeline"
+                      label="Show Haptics Timeline"></v-checkbox>
+                       <v-checkbox
+                         v-model="showSimulator"
+                         label="Show Haptics Simulator"></v-checkbox>
+                  </v-flex>
+                  <!-- <v-flex v-if="this.hapticCommandsSize != 0">
+                       <ul class="haptics-info">
+                       <li># of Haptic Commands Loaded: {{ this.hapticCommandsSize }}</li>
+                       <li>Haptics Type: {{ this.hapticCommandsType }}</li>
+                       </ul>
+                       </v-flex> -->
+                </v-layout>
+              </v-tab-item>
+              <v-tab-item id="buttplugpanel">
+                <buttplug-panel
+                  ref="buttplugPanel"
+                  @deviceconnected="OnDeviceConnected"
+                  @devicedisconnected="OnDeviceDisconnected"
+                />
+              </v-tab-item>
+              <v-tab-item id="aboutpanel">
+                <p><b>Syncydink</b></p>
+                <p>Version: <a :href="'https://github.com/metafetish/syncydink/tree/' + config.build_commit">{{ config.build_commit }}</a></p>
+                <p>Updated: {{ config.build_date }}</p>
+                <p>Buttplug v{{ config.buttplug_version }}</p>
+                <p>Component v{{ config.component_version }}</p>
+                <p>Developed By <a href="https://metafetish.com">Metafetish</a></p>
+                <p>Open Source! <a href="https://github.com/metafetish/syncydink">Code available on Github</a></p>
+                <p>We Like Money! <a href="https://patreon.com/qdot">Visit Our Patreon</a></p>
+              </v-tab-item>
+            </v-tabs-items>
+          </v-tabs>
+        </v-navigation-drawer>
+      </v-container>
     </v-touch>
-    <!-- Matomo -->
-    <script type="text/javascript">
-     var _paq = _paq || [];
-     /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
-     _paq.push(["setCookieDomain", "*.buttplug.world"]);
-     _paq.push(['trackPageView']);
-     _paq.push(['enableLinkTracking']);
-     (function() {
-       var u="//matomo.nonpolynomial.com/";
-       _paq.push(['setTrackerUrl', u+'piwik.php']);
-       _paq.push(['setSiteId', '11']);
-       var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-       g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
-     })();
-    </script>
-    <noscript><p><img src="//matomo.nonpolynomial.com/piwik.php?idsite=11&amp;rec=1" style="border:0;" alt="" /></p></noscript>
-    <!-- End Matomo Code -->
-  </div>
+  </v-app>
 </template>
 
 <script lang="ts" src="./App.ts">
 </script>
 
-<style src="vue-material/dist/vue-material.css"></style>
-<style src="../static/css/video-js.5.4.6.min.css"></style>
-
 <style lang="css">
+
+ /********************************/
+ /* Fonts */
+ /********************************/
+
  @font-face {
    font-family: 'Material Icons';
    font-style: normal;
@@ -188,53 +140,15 @@
    font-feature-settings: 'liga';
  }
 
+ /********************************/
+ /* Basic HTML styles */
+ /********************************/
+
  html, body {
    margin: 0;
    padding: 0;
-   display: flex;
-   flex: 1;
- }
-
- body {
-   background-image:url(../static/images/syncydinklogo.svg);
-   background-repeat: no-repeat;
-   background-position: center;
-   display: flex;
- }
-
- #app {
-   display: flex;
-   flex: 1;
-   font-size: 16px;
-   font-weight: 400;
-   text-align: left;
-   text-transform: none;
-   font-family: Roboto,Noto Sans,Noto,sans-serif;
-   -webkit-font-smoothing: antialiased;
-   -moz-osx-font-smoothing: grayscale;
-   color: #2c3e50;
- }
-
- #video-container {
-   display: flex;
-   flex: 1;
-   flex-direction: column;
-   justify-content: space-between;
- }
-
- #video-player {
-   flex: 1 1 auto;
- }
-
- #video-encoder {
-   flex: 1 0 auto;
- }
-
- /* Make our touch wrapper div take up the whole screen, but also make it
-    fixed so that we don't have problems with readjustment snapping */
- #gesture-wrapper {
-   display: flex;
-   flex: 1;
+   height: 100vh;
+   width: 100vw;
  }
 
  h1, h2 {
@@ -255,42 +169,37 @@
    color: #42b983;
  }
 
- .md-input-container.md-has-value input {
-   font-size:10pt;
+ /********************************/
+ /* App container styles */
+ /********************************/
+
+ #app {
+   background-image:url(../static/images/syncydinklogo.svg);
+   background-repeat: no-repeat;
+   background-position: center;
+   height: 100%;
+   width: 100%;
+   font-size: 16px;
+   font-weight: 400;
+   text-align: left;
+   text-transform: none;
+   font-family: Roboto,Noto Sans,Noto,sans-serif;
+   -webkit-font-smoothing: antialiased;
+   -moz-osx-font-smoothing: grayscale;
+   color: #2c3e50;
  }
 
- md-sidenav,
- md-sidenav.md-locked-open,
- md-sidenav.md-closed.md-locked-open-add-active {
-   min-width: 200px !important;
-   width: 85vw !important;
-   max-width: 400px !important;
+ /* Make our touch wrapper div take up the whole screen, but also make it
+    fixed so that we don't have problems with readjustment snapping */
+ #gesture-wrapper {
+   position: fixed;
+   height: 100%;
+   width: 100%;
  }
 
- .md-tabs .md-tab  {
-   padding: 0;
- }
-
- .haptics-info {
-   font-size: 14px;
- }
-
- .sidebar-form {
-   margin-left: 5px;
- }
-
- .sidebar-form .md-checkbox {
-   margin-left: 10px;
- }
-
- .sidebar-form .md-list-item-container {
-   min-height: 36px;
- }
-
- .sidebar-form .md-radio {
-   margin-top: 8px;
-   margin-bottom: 8px;
- }
+ /********************************/
+ /* Nav Drawer opener styles */
+ /********************************/
 
  #sidetab-aligner {
    height: 100vh;
@@ -299,8 +208,6 @@
    justify-content: center;
 	 left: 0px;
 	 position: fixed;
-   z-index: 1000;
-   pointer-events: none;
  }
 
  #sidetab {
@@ -314,25 +221,19 @@
 	 margin: 0;
 	 padding: 0;
 	 position: fixed;
-	 display: block;
-   z-index: 1001;
+	 display:block;
+   z-index: 9998;
    cursor: pointer;
-   pointer-events: all;
  }
 
  #sidetab-arrow {
-   color: #fff;
-   margin: auto;
-   text-align: right;
-   z-index: 1002;
+   z-index: 9999;
    cursor: pointer;
-   pointer-events: all;
  }
 
- .syncydink-nav-file-input {
-   max-width: 95%;
-   margin: auto;
- }
+ /********************************/
+ /* Intro Message */
+ /********************************/
 
  ._2KV-widgets-shared--patreonWidgetWrapper {
    color: #052D49;
@@ -387,34 +288,22 @@
  }
 
  .select-message {
-   flex: 1;
    display: flex;
+   height: 100vh;
    align-items: center;
    justify-content: center;
    font-size: 25px;
+   width: 100%;
  }
 
  .select-message p {
-   max-width: 30%;
+   width: 50%;
    line-height: 120%;
    text-align: center;
  }
 
- .video-simulator-container {
-   display: flex;
-   flex: 1;
- }
-
- #video-player {
-   flex: 1;
-   display: flex;
-   align-items: center;
-   justify-content: center;
-   background: #000;
- }
-
- #buttplug-simulator {
-   flex-grow: 0;
-   flex-shrink: 1;
- }
+ /********************************/
+ /* Misc application styles */
+ /********************************/
 </style>
+<style src="vuetify/dist/vuetify.min.css"></style>s
