@@ -10,6 +10,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "strictNullChecks": true,
+    "strictPropertyInitialization": false,
     "noImplicitThis": true,
     "outDir": "./dist/build"
   },

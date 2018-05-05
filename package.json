@@ -49,6 +49,7 @@
     "file-loader": "^1.1.6",
     "less": "^3.0.1",
     "less-loader": "^4.0.5",
+    "matomo-tracker": "^2.2.0",
     "mocha": "^5.0.1",
     "noop-loader": "^1.0.0",
     "null-loader": "^0.1.1",
