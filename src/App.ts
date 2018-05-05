@@ -5,11 +5,13 @@ import VFileInput from "./components/VFileInput/VFileInput.vue";
 const AppConfig = require("../dist/appconfig.json");
 
 import { Device } from "buttplug";
+import VideoPlayerComponent from "./components/VideoPlayer/VideoPlayer.vue";
 import PatreonButtonComponent from "./components/PatreonButton/PatreonButton.vue";
 
 @Component({
   components: {
     VFileInput,
+    VideoPlayerComponent,
     "patreon-button": PatreonButtonComponent,
   },
 })
@@ -27,6 +29,8 @@ export default class App extends Vue {
   private loopVideo: boolean = true;
   private videoMode: string = "2D";
   private videoTypes: string[] = ["2D", "Split", "VR"];
+  private videoFile: File | null = null;
+  private currentPlayTime: number = 0;
 
   // Haptic selection properties
   private showHapticsTimeline: boolean = false;
@@ -87,4 +91,7 @@ export default class App extends Vue {
     this.devices = this.devices.filter((device) => device.Index !== aDevice.Index);
   }
 
+  private SetVideoFile(aFile: File) {
+    this.videoFile = aFile;
+  }
 }

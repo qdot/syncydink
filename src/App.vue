@@ -1,11 +1,11 @@
 <template>
   <v-app id="app">
     <v-touch id="gesture-wrapper" @swiperight="SideNavOpen" @swipeleft="SideNavClose">
-      <v-container>
+      <v-container fluid id="appcontainer">
         <header>
           <div id="sidetab-aligner"  @click="ToggleLeftSideNav">
             <div id="sidetab-arrow">
-              <v-icon color="white" class="playicon">play_arrow</v-icon>
+              <v-icon color="white">play_arrow</v-icon>
             </div>
             <div id="sidetab">
             </div>
@@ -14,8 +14,18 @@
             <patreon-button></patreon-button>
           </div>
         </header>
-        <v-layout class="select-message">
+        <v-layout class="select-message" v-if="videoFile === null && !showHapticsTimeline">
           <p>Click on the tab on the left or swipe right to select movie/haptics files and connect to Buttplug.</p>
+        </v-layout>
+        <v-layout id="video-simulator-container" column class="video-simulator-container">
+          <v-flex id="video-container" v-if="videoFile">
+            <video-player-component
+              id="video-player"
+              ref="videoPlayer"
+              :videoFile="videoFile"
+              :loopVideo="loopVideo"
+            />
+          </v-flex>
         </v-layout>
         <v-navigation-drawer
           temporary
@@ -37,14 +47,16 @@
                   <v-flex>
                     <v-subheader>Video</v-subheader>
                     <!-- need file input here -->
-                    <v-file-input label="Choose Movie File"></v-file-input>
+                    <v-file-input
+                      @file="SetVideoFile"
+                      label="Choose Movie File"></v-file-input>
                     <v-checkbox
                       v-model="loopVideo"
                       label="Loop Video" checked></v-checkbox>
                   </v-flex>
                   <v-flex>
                     <v-subheader>Video Mode</v-subheader>
-                    <v-radio-group  v-model="videoMode">
+                    <v-radio-group v-model="videoMode">
                       <v-radio v-for="n in videoTypes"
                                name="video-mode-group"
                                :key="n"
@@ -60,9 +72,9 @@
                     <v-checkbox
                       v-model="showHapticsTimeline"
                       label="Show Haptics Timeline"></v-checkbox>
-                       <v-checkbox
-                         v-model="showSimulator"
-                         label="Show Haptics Simulator"></v-checkbox>
+                    <v-checkbox
+                      v-model="showSimulator"
+                      label="Show Haptics Simulator"></v-checkbox>
                   </v-flex>
                   <!-- <v-flex v-if="this.hapticCommandsSize != 0">
                        <ul class="haptics-info">
@@ -147,8 +159,12 @@
  html, body {
    margin: 0;
    padding: 0;
-   height: 100vh;
-   width: 100vw;
+   height: 100%;
+   width: 100%;
+ }
+
+ body {
+   overflow:hidden;
  }
 
  h1, h2 {
@@ -259,5 +275,25 @@
  /********************************/
  /* Misc application styles */
  /********************************/
+ .video-simulator-container {
+   height: 100%;
+   display: flex;
+   flex: 1;
+ }
+
+ #appcontainer {
+   width: 100%;
+   height: 100%;
+   padding: 0px;
+ }
+
+ #video-player {
+   background: #000;
+   flex: 0 1 auto;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+ }
+
 </style>
 <style src="vuetify/dist/vuetify.min.css"></style>
