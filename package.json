@@ -49,6 +49,7 @@
     "fork-ts-checker-webpack-plugin": "^0.4.1",
     "less": "^3.0.2",
     "less-loader": "^4.1.0",
+    "matomo-tracker": "^2.2.0",
     "mocha": "^5.1.1",
     "noop-loader": "^1.0.0",
     "null-loader": "^0.1.1",
