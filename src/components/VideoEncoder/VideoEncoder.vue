@@ -8,22 +8,22 @@
       <div class="encoder-button-bar">
         <ul>
           <li @click="ToggleHapticsPlayback">
-            <md-icon
-              v-if="!this.hapticsPlaying">play_circle_outline</md-icon>
-            <md-icon
-              v-if="this.hapticsPlaying">pause_circle_outline</md-icon>
+            <v-icon
+              color="white" v-if="!this.hapticsPlaying">play_circle_outline</v-icon>
+            <v-icon
+              color="white" v-if="this.hapticsPlaying">pause_circle_outline</v-icon>
           </li>
           <li @click="ToggleHapticsLooped">
-            <md-icon
-              v-if="this.hapticsLooped">sync</md-icon>
-            <md-icon
-              v-if="!this.hapticsLooped">sync_disabled</md-icon>
+            <v-icon
+              color="white" v-if="this.hapticsLooped">sync</v-icon>
+            <v-icon
+              color="white" v-if="!this.hapticsLooped">sync_disabled</v-icon>
           </li>
           <li @click="ToggleHapticsLocked">
-            <md-icon
-              v-if="this.hapticsLocked">lock_outline</md-icon>
-            <md-icon
-              v-if="!this.hapticsLocked">lock_open</md-icon>
+            <v-icon
+              color="white" v-if="this.hapticsLocked">lock_outline</v-icon>
+            <v-icon
+              color="white" v-if="!this.hapticsLocked">lock_open</v-icon>
           </li>
         </ul>
       </div>
@@ -48,6 +48,7 @@
  }
 
  #graph-x-axis text {
+   color: #fff;
    stroke: #fff;
    fill: #fff;
  }

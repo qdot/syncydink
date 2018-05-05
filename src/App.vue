@@ -24,6 +24,24 @@
               ref="videoPlayer"
               :videoFile="videoFile"
               :loopVideo="loopVideo"
+              :desiredPlayTime="this.desiredPlayTime"
+              @videoPlaying="onPlay"
+              @videoPaused="onPause"
+              @timeUpdate="onTimeUpdate"
+              @videoLoaded="onVideoLoaded"
+            />
+          </v-flex>
+          <v-flex v-if="showHapticsTimeline" id="video-encoder">
+            <video-encoder-component
+              ref="videoEncoder"
+              :hapticsCommands="this.hapticsCommands"
+              :currentPlayTime="this.currentPlayTime"
+              @play="onPlay"
+              @pause="onPause"
+              @timeUpdate="onTimeUpdate"
+              @inputTimeUpdate="onInputTimeUpdate"
+              @dragStart="onDragStart"
+              @dragStop="onDragStop"
             />
           </v-flex>
         </v-layout>
@@ -68,7 +86,9 @@
                   <v-flex>
                     <v-subheader>Haptics</v-subheader>
                     <!-- need file input here -->
-                    <v-file-input label="Choose Haptics File"></v-file-input>
+                    <v-file-input
+                      label="Choose Haptics File"
+                      @file="SetHapticsFile"></v-file-input>
                     <v-checkbox
                       v-model="showHapticsTimeline"
                       label="Show Haptics Timeline"></v-checkbox>

@@ -7,30 +7,30 @@ import * as Mousetrap from "mousetrap";
 @Component({})
 export default class VideoEncoder extends Vue {
 
-  private svgXAxis: any;
-  private svgBody: any;
-  private xScale: d3.ScaleLinear<number, number>;
-  private xDisplayScale: d3.ScaleLinear<number, number>;
-  private yScale: d3.ScaleLinear<number, number>;
-  private line: d3.Line<[number, number]>;
-  private dataExtent: [number, number];
+  private svgXAxis!: any;
+  private svgBody!: any;
+  private xScale!: d3.ScaleLinear<number, number>;
+  private xDisplayScale!: d3.ScaleLinear<number, number>;
+  private yScale!: d3.ScaleLinear<number, number>;
+  private line!: d3.Line<[number, number]>;
+  private dataExtent!: [number, number];
 
   // Everything below is a selection with a complex type, so make them anys and
   // hope we don't regret it later.
-  private circles: any;
-  private path: any;
-  private xAxis: any;
-  private yAxis: any;
-  private xAxisDisplay: any;
-  private playhead: any;
-  private playLine: d3.Line<[number, number]>;
+  private circles!: any;
+  private path!: any;
+  private xAxis!: any;
+  private yAxis!: any;
+  private xAxisDisplay!: any;
+  private playhead!: any;
+  private playLine!: d3.Line<[number, number]>;
 
   @Prop()
-  private hapticsCommands: FunscriptCommand[];
+  private hapticsCommands!: FunscriptCommand[];
   private hapticsValues: Array<[number, number]> = [];
 
-  @Prop()
-  private currentPlayTime: number = 0;
+  @Prop({default: 0})
+  private currentPlayTime!: number;
   private lastUpdateTime: number = 0;
 
   private hapticsPlaying: boolean = false;
@@ -167,8 +167,10 @@ export default class VideoEncoder extends Vue {
   private buildTimeline() {
 
     this.hapticsValues = [];
-    for (const cmd of this.hapticsCommands) {
-      this.hapticsValues.push([cmd.Time, cmd.Position]);
+    if (this.hapticsCommands) {
+      for (const cmd of this.hapticsCommands) {
+        this.hapticsValues.push([cmd.Time, cmd.Position]);
+      }
     }
 
     const graphdiv = document.getElementById("graph-body")!;
