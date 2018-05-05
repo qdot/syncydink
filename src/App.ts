@@ -5,10 +5,12 @@ import VFileInput from "./components/VFileInput/VFileInput.vue";
 const AppConfig = require("../dist/appconfig.json");
 
 import { Device } from "buttplug";
+import PatreonButtonComponent from "./components/PatreonButton/PatreonButton.vue";
 
 @Component({
   components: {
     VFileInput,
+    "patreon-button": PatreonButtonComponent,
   },
 })
 export default class App extends Vue {
