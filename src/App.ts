@@ -13,6 +13,8 @@ import VideoPlayerComponent from "./components/VideoPlayer/VideoPlayer.vue";
 import VideoEncoderComponent from "./components/VideoEncoder/VideoEncoder.vue";
 import PatreonButtonComponent from "./components/PatreonButton/PatreonButton.vue";
 
+import * as Mousetrap from "mousetrap";
+
 @Component({
   components: {
     VFileInput,
@@ -67,6 +69,7 @@ export default class App extends Vue {
     if (/Android/i.test(navigator.userAgent)) {
       document.getElementById("gesture-wrapper")!.style.height = "84vh";
     }
+    Mousetrap.bind("esc", () => this.ToggleLeftSideNav());
     // this.loadHapticsTestData();
   }
 
