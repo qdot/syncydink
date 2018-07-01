@@ -19,7 +19,8 @@ module.exports = {
   output: {
     path: path.resolve('./dist'),
     publicPath: '/dist/',
-    filename: 'build.js'
+    filename: 'build.js',
+    chunkFilename: "[name].chunk.js"
   },
   module: {
     rules: [

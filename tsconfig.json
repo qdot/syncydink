@@ -2,7 +2,7 @@
   "compilerOptions" : {
     "lib": ["es5", "ES2015", "ES2015.promise", "dom", "es6"],
     "target": "es6",
-    "module": "es2015",
+    "module": "esNext",
     "moduleResolution": "node",
     "strict": true,
     "sourceMap": true,

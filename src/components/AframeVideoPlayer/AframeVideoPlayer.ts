@@ -107,4 +107,3 @@ export default class AframeVideoPlayer extends Vue {
     document.querySelector("a-scene").enterVR();
   }
 }
-Vue.component("aframe-video-player", AframeVideoPlayer);

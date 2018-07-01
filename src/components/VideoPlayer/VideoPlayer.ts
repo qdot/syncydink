@@ -2,12 +2,10 @@ import Vue from "vue";
 import { Component, Model, Prop, Watch } from "vue-property-decorator";
 const videoPlayer = require("vue-video-player").videoPlayer;
 import videojs from "video.js";
-import AframeVideoPlayerComponent from "../AframeVideoPlayer/AframeVideoPlayer.vue";
 
 @Component({
   components: {
     videoPlayer,
-    AframeVideoPlayerComponent,
   },
 })
 export default class VideoPlayer extends Vue {
@@ -131,3 +129,8 @@ export default class VideoPlayer extends Vue {
     });
   }
 }
+
+// Since aframe-video-player is a subcomponent, we can register it as part of
+// our component here, then delay load it as needed.
+Vue.component("aframe-video-player",
+              () => import (/* webpackChunkName: "syncydinkvr" */ "../AframeVideoPlayer/AframeVideoPlayer.vue" ));
