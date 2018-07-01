@@ -6,8 +6,9 @@
   "private": true,
   "scripts": {
     "trash": "trash dist dist-bundle",
-    "start": "yarn build:config && webpack-dev-server --open --hot --config build/webpack.base.js",
-    "start:secure": "yarn build:config && webpack-dev-server --open --hot --https  --config build/webpack.base.js",
+    "start": "yarn build:config && webpack-dev-server --hot --config build/webpack.base.js",
+    "start:remote": "yarn build:config && webpack-dev-server --hot --config build/webpack.base.js --host 192.168.123.3",
+    "start:secure": "yarn build:config && webpack-dev-server --hot --https  --config build/webpack.base.js",
     "build:config": "node build/generate_config.js",
     "build:dev": "yarn trash && yarn build:config && webpack --progress --hide-modules --config build/webpack.base.js",
     "build": "yarn trash && yarn build:config && webpack --progress --hide-modules  --config build/webpack.production.js",
