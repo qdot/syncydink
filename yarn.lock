@@ -100,6 +100,13 @@
   version "17.2.0"
   resolved "https://registry.yarnpkg.com/@tweenjs/tween.js/-/tween.js-17.2.0.tgz#21f89b709bafc4b303adae7a83b4f35a0d9e4796"
 
+"@types/aframe@^0.7.2":
+  version "0.7.2"
+  resolved "https://registry.yarnpkg.com/@types/aframe/-/aframe-0.7.2.tgz#665b3520886b7c30615b25de2c4f2cce1002e425"
+  dependencies:
+    "@types/three" "*"
+    "@types/tween.js" "*"
+
 "@types/chai@^4.1.4":
   version "4.1.4"
   resolved "https://registry.yarnpkg.com/@types/chai/-/chai-4.1.4.tgz#5ca073b330d90b4066d6ce18f60d57f2084ce8ca"
@@ -308,13 +315,23 @@
   version "10.5.1"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-10.5.1.tgz#d578446f4abff5c0b49ade9b4e5274f6badaadfc"
 
-"@types/tween.js@^16.9.0":
+"@types/three@*":
+  version "0.92.11"
+  resolved "https://registry.yarnpkg.com/@types/three/-/three-0.92.11.tgz#9b5e80a2259dc0853748aafae443be9a631aa013"
+  dependencies:
+    "@types/webvr-api" "*"
+
+"@types/tween.js@*", "@types/tween.js@^16.9.0":
   version "16.9.0"
   resolved "https://registry.yarnpkg.com/@types/tween.js/-/tween.js-16.9.0.tgz#af25067f86e15d2cba89b26776fc273ff7f55650"
 
 "@types/video.js@^6.2.7":
   version "6.2.7"
   resolved "https://registry.yarnpkg.com/@types/video.js/-/video.js-6.2.7.tgz#ef6f965746c10928dd68c80ad8e50c433b35d49a"
+
+"@types/webvr-api@*":
+  version "0.0.34"
+  resolved "https://registry.yarnpkg.com/@types/webvr-api/-/webvr-api-0.0.34.tgz#8fa49028de925c7b8bce3d559d3374ce2c89ee28"
 
 "@vue/component-compiler-utils@^1.2.1":
   version "1.2.1"
