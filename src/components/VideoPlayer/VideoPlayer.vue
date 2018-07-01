@@ -13,8 +13,9 @@
         </video-player>
       </v-flex>
       <v-flex v-if="this.vrMode">
-        <a-scene embedded vr-mode-ui="enabled: false">
-        </a-scene>
+        <aframe-video-player
+          :currentPlayer="this.currentPlayer">
+        </aframe-video-player>
       </v-flex>
     </v-layout>
   </div>
