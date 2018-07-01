@@ -23,6 +23,7 @@
               id="video-player"
               ref="videoPlayer"
               :videoFile="videoFile"
+              :vrMode="vrMode"
               :loopVideo="loopVideo"
               :desiredPlayTime="this.desiredPlayTime"
               @videoPlaying="onPlay"
@@ -71,16 +72,9 @@
                     <v-checkbox
                       v-model="loopVideo"
                       label="Loop Video" checked></v-checkbox>
-                  </v-flex>
-                  <v-flex>
-                    <v-subheader>Video Mode</v-subheader>
-                    <v-radio-group v-model="videoMode">
-                      <v-radio v-for="n in videoTypes"
-                               name="video-mode-group"
-                               :key="n"
-                               :value="n"
-                               :label="n"></v-radio>
-                    </v-radio-group>
+                    <v-checkbox
+                      v-model="vrMode"
+                      label="Enable VR"></v-checkbox>
                   </v-flex>
                   <v-divider />
                   <v-flex>

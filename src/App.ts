@@ -35,8 +35,7 @@ export default class App extends Vue {
 
   // Video selection properties
   private loopVideo: boolean = true;
-  private videoMode: string = "2D";
-  private videoTypes: string[] = ["2D", "Split", "VR"];
+  private vrMode: boolean = false;
   private videoFile: File | null = null;
   private currentPlayTime: number = 0;
 
