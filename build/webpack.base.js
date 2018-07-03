@@ -56,6 +56,10 @@ module.exports = {
       {
         test: /\.less$/,
         loader: 'less-loader'
+      },
+      {
+        test: /\.html$/,
+        loader: 'html-loader'
       }
     ]
   },
