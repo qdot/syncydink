@@ -1,7 +1,7 @@
 <template>
   <v-app id="app">
     <v-touch id="gesture-wrapper" @swiperight="SideNavOpen" @swipeleft="SideNavClose">
-      <v-container fluid id="appcontainer">
+      <v-container fluid fill-height id="appcontainer">
         <header>
           <div id="sidetab-aligner"  @click="ToggleLeftSideNav">
             <div id="sidetab-arrow">
@@ -14,8 +14,33 @@
             <patreon-button></patreon-button>
           </div>
         </header>
-        <v-layout class="select-message" v-if="videoFile === null && !showHapticsTimeline">
-          <p>Click on the tab on the left or swipe right to select movie/haptics files and connect to Buttplug.</p>
+        <v-layout
+          class="intro-layout"
+          v-if="videoFile === null && !showHapticsTimeline"
+          justify-center
+          align-center
+          align-content-center>
+          <v-flex xs10 lg8>
+            <v-card class="intro-card">
+              <v-layout row wrap>
+                <v-flex class="intro-flex">
+                  <v-card-media src="../static/images/syncydinklogo.svg" height="200px">
+                  </v-card-media>
+                  <v-card-title primary-title>
+                    <div class="headline">Syncydink (Updated {{ config.short_build_date }})</div>
+                  </v-card-title>
+                  <v-card-text class="intro-text">
+                    <p>Welcome to Syncydink! To start:</p>
+                    <ul>
+                      <li>Click on the tab on the left</li>
+                      <li>Hit the "Esc" key on your keyboard</li>
+                      <li>(mobile only) Swipe right</li>
+                    </ul>
+                  </v-card-text>
+                </v-flex>
+              </v-layout>
+            </v-card>
+          </v-flex>
         </v-layout>
         <v-layout id="video-encoder-container" column class="video-encoder-container">
           <v-flex id="video-container" v-if="videoFile">
@@ -170,8 +195,8 @@
  html, body {
    margin: 0;
    padding: 0;
-   height: 100%;
-   width: 100%;
+   height: 100vh;
+   width: 100vw;
  }
 
  body {
@@ -180,16 +205,6 @@
 
  h1, h2 {
    font-weight: normal;
- }
-
- ul {
-   list-style-type: none;
-   padding: 0;
- }
-
- li {
-   display: inline-block;
-   margin: 0 10px;
  }
 
  a {
@@ -201,11 +216,8 @@
  /********************************/
 
  #app {
-   background-image:url(../static/images/syncydinklogo.svg);
    background-repeat: no-repeat;
    background-position: center;
-   height: 100%;
-   width: 100%;
    font-size: 16px;
    font-weight: 400;
    text-align: left;
@@ -240,6 +252,7 @@
    align-items: center;
    justify-content: center;
 	 left: 0px;
+   top: 0px;
 	 position: fixed;
  }
 
@@ -268,19 +281,33 @@
  /* Intro Message */
  /********************************/
 
- .select-message {
-   display: flex;
-   height: 100vh;
-   align-items: center;
-   justify-content: center;
-   font-size: 25px;
+ .headline {
+   text-align: center;
    width: 100%;
  }
+ .intro-layout {
+   min-width: 100vw;
+   width: 100vw;
+ }
+ .intro-card {
+   min-width: 100%;
+   min-height: 0;
+   max-height: 80vh;
+   width: 100%;
+ }
+ .intro-flex {
+   height: auto;
+   min-height: 0;
+   max-height: 80vh;
+   width: 100%;
+   overflow-y: auto;
+   overflow-x: hidden;
+ }
 
- .select-message p {
-   width: 50%;
-   line-height: 120%;
-   text-align: center;
+ .intro-text {
+   max-height: 100%;
+   height:100%;
+   font-size:16px;
  }
 
  /********************************/
