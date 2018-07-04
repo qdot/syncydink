@@ -17,7 +17,7 @@
         <v-layout class="select-message" v-if="videoFile === null && !showHapticsTimeline">
           <p>Click on the tab on the left or swipe right to select movie/haptics files and connect to Buttplug.</p>
         </v-layout>
-        <v-layout id="video-simulator-container" column class="video-simulator-container">
+        <v-layout id="video-encoder-container" column class="video-encoder-container">
           <v-flex id="video-container" v-if="videoFile">
             <video-player-component
               id="video-player"
@@ -86,9 +86,6 @@
                     <v-checkbox
                       v-model="showHapticsTimeline"
                       label="Show Haptics Timeline"></v-checkbox>
-                    <v-checkbox
-                      v-model="showSimulator"
-                      label="Show Haptics Simulator"></v-checkbox>
                   </v-flex>
                   <!-- <v-flex v-if="this.hapticCommandsSize != 0">
                        <ul class="haptics-info">
@@ -289,7 +286,7 @@
  /********************************/
  /* Misc application styles */
  /********************************/
- .video-simulator-container {
+ .video-encoder-container {
    height: 100%;
    display: flex;
    flex: 1;

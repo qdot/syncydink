@@ -38,9 +38,11 @@ export default class VideoPlayer extends Vue {
     // If we're mounted, it means a video file has been loaded, but that won't
     // trigger the options update. Do it manually.
     this.onVideoFileChange();
-    window.addEventListener("resize", () => {
-      this.onHeightUpdate();
-    });
+    window.addEventListener("resize", this.onHeightUpdate);
+  }
+
+  public beforeDestroy() {
+    window.removeEventListener("resize", this.onHeightUpdate);
   }
 
   // There has to be a CSS way of doing this, but I can't figure out the right
@@ -50,7 +52,7 @@ export default class VideoPlayer extends Vue {
     if (!this.currentPlayer) {
       return;
     }
-    const containerHeight = document.getElementById("video-simulator-container")!.clientHeight;
+    const containerHeight = document.getElementById("video-encoder-container")!.clientHeight;
     if (document.getElementById("video-encoder") !== null) {
       this.currentPlayer.height(containerHeight - document.getElementById("video-encoder")!.clientHeight);
     } else {

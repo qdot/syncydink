@@ -49,6 +49,7 @@ export default class VideoEncoder extends Vue {
     for (const i of [...Array(10).keys()]) {
       Mousetrap.unbind(i.toString());
     }
+    window.removeEventListener("resize", this.onResize);
   }
 
   private addNodeAtPoint(value: number) {
@@ -123,6 +124,9 @@ export default class VideoEncoder extends Vue {
 
   private onResize() {
     const graphdiv = document.getElementById("graph")!;
+    if (!graphdiv) {
+      return;
+    }
     this.xScale.range([0, graphdiv.clientWidth]);
     this.buildTimeline();
   }

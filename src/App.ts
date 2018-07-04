@@ -1,5 +1,5 @@
 import Vue from "vue";
-import { Component } from "vue-property-decorator";
+import { Component, Watch } from "vue-property-decorator";
 import VFileInput from "./components/VFileInput/VFileInput.vue";
 
 const AppConfig = require("../dist/appconfig.json");
@@ -96,6 +96,11 @@ export default class App extends Vue {
 
   private onDragStop() {
     this.isDragging = false;
+  }
+
+  @Watch("showHapticsTimeline")
+  private OnShowHapticsTimeline() {
+    process.nextTick(() => window.dispatchEvent(new Event("resize")));
   }
 
   /////////////////////////////////////
