@@ -24,7 +24,7 @@
             <v-card class="intro-card">
               <v-layout row wrap>
                 <v-flex class="intro-flex">
-                  <v-card-media src="../static/images/syncydinklogo.svg" height="200px">
+                  <v-card-media :src="require('../static/images/syncydinklogo.svg')" height="200px">
                   </v-card-media>
                   <v-card-title primary-title>
                     <div class="headline">Syncydink (Updated {{ config.short_build_date }})</div>
