@@ -24,17 +24,27 @@
             <v-card class="intro-card">
               <v-layout row wrap>
                 <v-flex class="intro-flex">
-                  <v-card-media :src="require('../static/images/syncydinklogo.svg')" height="200px">
+                  <v-card-media :src="require('../static/images/syncydinklogo.svg')" height="150px">
                   </v-card-media>
                   <v-card-title primary-title>
                     <div class="headline">Syncydink (Updated {{ config.short_build_date }})</div>
                   </v-card-title>
                   <v-card-text class="intro-text">
-                    <p>Welcome to Syncydink! To start:</p>
+                    <p>Welcome to Syncydink, the hardware synced movie player by <a href="https://buttplug.io">Team Buttplug</a>! (More info and documentation coming soon!)</p>
+                    <p>To start:</p>
                     <ul>
                       <li>Click on the tab on the left</li>
                       <li>Hit the "Esc" key on your keyboard</li>
                       <li>(mobile only) Swipe right</li>
+                    </ul>
+                    <br/>
+                    <p><b>Note:</b> VR Mode now requires two steps. Choose <i>Enable VR</i> on the side panel, then hit the <i>VR</i> button on the video controls to bring up VR mode.</p>
+                    <br/>
+                    <p>Have problems or questions? Try...</p>
+                    <ul>
+                      <li><a href="https://metafetish.club">Our forums!</a></li>
+                      <li><a href="https://discord.buttplug.io">Our discord server!</a></li>
+                      <li><a href="https://twitter.com/buttplugio">Our twitter account!</a></li>
                     </ul>
                   </v-card-text>
                 </v-flex>
@@ -292,13 +302,14 @@
  .intro-card {
    min-width: 100%;
    min-height: 0;
-   max-height: 80vh;
+   max-height: 75vh;
    width: 100%;
  }
+
  .intro-flex {
    height: auto;
    min-height: 0;
-   max-height: 80vh;
+   max-height: 75vh;
    width: 100%;
    overflow-y: auto;
    overflow-x: hidden;
