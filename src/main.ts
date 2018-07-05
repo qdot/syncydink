@@ -9,20 +9,20 @@ const MatomoTracker = require("matomo-tracker");
 // Fix viewport scaling on iOS
 require("viewport-units-buggyfill").init();
 
-// // Initialize with your site ID and Matomo URL
-// const matomo = new MatomoTracker(11, "https://matomo.nonpolynomial.com/", true);
+// Initialize with your site ID and Matomo URL
+const matomo = new MatomoTracker(11, "https://matomo.nonpolynomial.com/", true);
 
-// // Optional: Respond to tracking errors
+// Optional: Respond to tracking errors
 // matomo.on("error", function(err: string) {
 //   console.log("error tracking request: ", err);
 // });
 
-// // Track a request URL:
-// // Either as a simple string …
-// matomo.track({
-//   url: "https://buttplug.world/syncydink",
-//   action_name: "Syncydink",
-// });
+// Track a request URL:
+// Either as a simple string …
+matomo.track({
+  url: "https://buttplug.world/syncydink",
+  action_name: "Syncydink",
+});
 
 Vue.use(VueTouch);
 Vue.use(Vuetify);
