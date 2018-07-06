@@ -77,11 +77,13 @@ export default class VideoEncoder extends Vue {
       .call(d3.drag()
             .on("start", () => this.$emit("dragStart"))
             .on("end", () => this.$emit("dragStop"))
-            .on("drag", () => this.nodeDragged(this)));
+            .on("drag", this.nodeDragged(this)));
   }
 
   private nodeDragged(self: VideoEncoder) {
-    return function(this: SVGCircleElement, d: [number, number], i: number) {
+    // d should be [number, number] but is any because of the expected type of
+    // the drag event in typings. Whatever works I guess.
+    return function(this: Element, d: any, i: number) {
       if (self.hapticsLocked) {
         return;
       }
