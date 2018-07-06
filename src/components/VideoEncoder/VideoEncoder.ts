@@ -196,8 +196,11 @@ export default class VideoEncoder extends Vue {
 
     this.xDisplayScale = this.xScale.copy();
 
+    const hapticExtent = d3.extent(this.hapticsValues,
+                                   function(d: [number, number]) { return d[1]; }) as [number, number];
+
     this.yScale = d3.scaleLinear()
-      .domain([100, 0])
+      .domain([hapticExtent[1], 0])
       .range([0, graphdiv.clientHeight]);
 
     this.xAxis = d3.axisTop(this.xScale)
