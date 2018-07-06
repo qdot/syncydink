@@ -187,8 +187,8 @@ export default class VideoEncoder extends Vue {
       .attr("width", "100%")
       .on("dblclick", () => this.onBodyDblClick())
       .on("click", () => this.onBodyClick());
-    // Typing definition for d3.extent is wrong
-    this.dataExtent = (d3 as any).extent(this.hapticsValues, function(d: [number, number]) { return d[0]; });
+    this.dataExtent = d3.extent(this.hapticsValues,
+                                function(d: [number, number]) { return d[0]; }) as [number, number];
 
     this.xScale = d3.scaleLinear()
       .domain(this.dataExtent)
@@ -200,8 +200,9 @@ export default class VideoEncoder extends Vue {
       .domain([100, 0])
       .range([0, graphdiv.clientHeight]);
 
-    // Fix tickFormat once we figure out why there's a parameter error.
-    this.xAxis = d3.axisTop(this.xScale); // .tickFormat(`${d / 1000.0}s`);
+    this.xAxis = d3.axisTop(this.xScale)
+      .ticks(Math.min(this.dataExtent[1] / 1000, 50))
+      .tickFormat((d) => `${(d as number) / 1000}s`);
     this.yAxis = d3.axisRight(this.yScale)
       .tickSize(graphdiv.clientWidth);
 
