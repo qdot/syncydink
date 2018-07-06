@@ -10,7 +10,7 @@ const MatomoTracker = require("matomo-tracker");
 require("viewport-units-buggyfill").init();
 
 // Initialize with your site ID and Matomo URL
-const matomo = new MatomoTracker(11, "https://matomo.nonpolynomial.com/", true);
+const matomo = new MatomoTracker(11, "https://matomo.nonpolynomial.com/piwik.php", true);
 
 // Optional: Respond to tracking errors
 // matomo.on("error", function(err: string) {
