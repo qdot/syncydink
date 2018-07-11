@@ -34,7 +34,7 @@
     "vue-buttplug-material-component": "^0.2.5",
     "vue-touch": "next",
     "vue-video-player": "^5.0.2",
-    "vuetify": "^1.1.1"
+    "vuetify": "^1.1.4"
   },
   "devDependencies": {
     "@types/aframe": "^0.7.2",
@@ -46,10 +46,10 @@
     "@types/tween.js": "^16.9.0",
     "@types/video.js": "^6.2.7",
     "chai": "^4.1.2",
-    "codecov": "^3.0.3",
+    "codecov": "^3.0.4",
     "css-loader": "^1.0.0",
     "file-loader": "^1.1.11",
-    "fork-ts-checker-webpack-plugin": "^0.4.2",
+    "fork-ts-checker-webpack-plugin": "^0.4.3",
     "html-loader": "^0.5.5",
     "mocha": "^5.2.0",
     "noop-loader": "^1.0.0",
