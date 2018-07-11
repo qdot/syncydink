@@ -36,7 +36,7 @@ export default class App extends Vue {
   // Video selection properties
   private loopVideo: boolean = true;
   private vrMode: boolean = false;
-  private videoFile: File | null = null;
+  private videoFile: File | string | null = null;
   private currentPlayTime: number = 0;
 
   // Haptic selection properties
@@ -117,6 +117,10 @@ export default class App extends Vue {
 
   private SetVideoFile(aFile: File) {
     this.videoFile = aFile;
+  }
+
+  private SetVideoURL(aURL: string) {
+    this.videoFile = aURL;
   }
 
   /////////////////////////////////////

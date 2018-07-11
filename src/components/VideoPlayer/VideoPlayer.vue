@@ -9,6 +9,7 @@
           :options="playerOptions"
           @play="onPlayerPlay($event)"
           @pause="onPlayerPause($event)"
+          @canplay="onPlayerReady($event)"
           @loadeddata="onPlayerReady($event)">
         </video-player>
       </v-flex>

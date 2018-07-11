@@ -1,7 +1,8 @@
 import Vue from "vue";
 import { Component, Model, Prop, Watch } from "vue-property-decorator";
-const videoPlayer = require("vue-video-player").videoPlayer;
 import videojs from "video.js";
+const vjsyoutube = require("./videojs-youtube");
+const videoPlayer = require("vue-video-player").videoPlayer;
 
 @Component({
   components: {
@@ -10,7 +11,7 @@ import videojs from "video.js";
 })
 export default class VideoPlayer extends Vue {
   @Prop({default: null})
-  private videoFile!: File | null;
+  private videoFile!: File | string | null;
   @Prop({default: 0})
   private desiredPlayTime!: number;
   @Prop({default: false})
@@ -21,10 +22,12 @@ export default class VideoPlayer extends Vue {
   private vrMode: boolean;
 
   private vrControlButton: videojs.Component | null = null;
-  private videoElementId: string | null = null;
   private currentPlayer: videojs.Player | null = null;
 
-  private playerOptions = {
+  // This is a combination of videojs's Playback options plus some extra stuff
+  // from vue-video-player, so it has to be an any instead of a
+  // videojs.PlaybackOptions until we derive something that supports both.
+  private playerOptions: any = {
     language: "en",
     muted: true,
     playbackRates: [0.7, 1.0, 1.5, 2.0],
@@ -39,6 +42,7 @@ export default class VideoPlayer extends Vue {
     // trigger the options update. Do it manually.
     this.onVideoFileChange();
     window.addEventListener("resize", this.onHeightUpdate);
+    vjsyoutube.addYoutubePlugin(videojs);
   }
 
   public beforeDestroy() {
@@ -89,35 +93,53 @@ export default class VideoPlayer extends Vue {
     if (this.videoFile === null) {
       return;
     }
-    this.playerOptions.sources = [{
-      src: URL.createObjectURL(this.videoFile),
-      type: "video/mp4",
-    }];
+    if (typeof(this.videoFile) === "string") {
+      this.playerOptions.techOrder = ["youtube", "html5"];
+      this.playerOptions.sources = [{
+        type: "video/youtube",
+        src: this.videoFile,
+      }];
+    } else {
+      this.playerOptions.techOrder = ["html5"];
+      this.playerOptions.sources = [{
+        src: URL.createObjectURL(this.videoFile),
+        type: "video/mp4",
+      }];
+    }
+    // The videojs-youtube plugin never fires loadeddata, and vue-video-player
+    // doesn't expose loadedmetadata, so here we are, handling it ourselves.
+    process.nextTick(() => {
+      this.currentPlayer = (this.$refs.videoPlayer as any).player;
+      this.currentPlayer!.on("durationchange", () => {
+        this.onPlayerReady();
+      });
+    });
   }
 
   private onPlayerReady() {
+    console.log("vue player ready!");
     // Get the ID for our video tag, so we can add it as a material source to
     // aframe if VR is selected.
     const playerElement = (this.$refs.videoPlayer as Vue).$el;
     this.currentPlayer = (this.$refs.videoPlayer as any).player;
-    const videoElement = playerElement.querySelector("video");
-    if (videoElement === undefined || videoElement === null) {
-      console.log("Can't find video element for aframe setup?");
-      return;
-    }
-    this.videoElementId = videoElement.id;
     this.currentPlayer!.height(document.getElementById("video-container")!.offsetHeight);
     this.$emit("videoLoaded", this.currentPlayer!.duration() * 1000);
+    console.log(`duration: ${this.currentPlayer!.duration() * 1000}`);
+    this.onHeightUpdate();
   }
 
   private onPlayerPlay(player: videojs.Player) {
-    this.currentPlayer = player;
+    if (this.currentPlayer !== player) {
+      this.onPlayerReady();
+    }
     this.$emit("videoPlaying");
     this.runTimeUpdateLoop();
   }
 
   private onPlayerPause(player: videojs.Player) {
-    this.currentPlayer = player;
+    if (this.currentPlayer !== player) {
+      this.onPlayerReady();
+    }
     this.$emit("videoPaused");
   }
 

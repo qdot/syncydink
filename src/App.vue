@@ -104,6 +104,11 @@
                     <v-file-input
                       @file="SetVideoFile"
                       label="Choose Movie File"></v-file-input>
+                    <v-text-field
+                      clearable
+                      prepend-icon="video_library"
+                      @change="SetVideoURL"
+                      label="Youtube URL"></v-text-field>
                     <v-checkbox
                       v-model="loopVideo"
                       label="Loop Video" checked></v-checkbox>
