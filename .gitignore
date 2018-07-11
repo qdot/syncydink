@@ -39,8 +39,5 @@ jspm_packages
 # webpack output
 dist
 
-# js in src
-src/**/*.js*
-
 # deploy directory
 deploy
