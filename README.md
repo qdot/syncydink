@@ -7,7 +7,6 @@ SyncyDink is (going to be) a web based video player and encoder (once we're done
 - [vue.js](http://vuejs.org) for frontend
 - [video.js](http://videojs.com) for 2D movies
 - [aframe](http://aframe.io) for 180SBS/360 Spherical movies
-- [giftic](http://github.com/metafetish/giftic) for animated gifs
 
 On top of these systems, Syncydink provides a way for users to load
 haptics files to synchronize with movies. Supported haptics hardware
@@ -33,15 +32,15 @@ Supported Haptic File Formats:
 
 ## Support The Project
 
-If you find this project helpful, you
-can [support Metafetish projects via Patreon](http://patreon.com/qdot)! Every donation helps
-us afford more hardware to reverse, document, and write code for!
+If you find this project helpful, you can [support our projects via
+Patreon](http://patreon.com/qdot)! Every donation helps us afford more
+hardware to reverse, document, and write code for!
 
 ## License
 
 Syncydink is BSD licensed.
 
-    Copyright (c) 2017, Metafetish
+    Copyright (c) 2017-2018, Nonpolynomial Labs LLC
     All rights reserved.
     
     Redistribution and use in source and binary forms, with or without
