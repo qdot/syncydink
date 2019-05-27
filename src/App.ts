@@ -4,7 +4,7 @@ import VFileInput from "./components/VFileInput/VFileInput.vue";
 
 const AppConfig = require("../dist/appconfig.json");
 
-import { Device, ButtplugDeviceMessage, ButtplugMessage } from "buttplug";
+import { ButtplugClientDevice, ButtplugDeviceMessage, ButtplugMessage } from "buttplug";
 import { HapticCommand, KiirooCommand, HapticFileHandler, LoadFile, LoadString,
          FunscriptCommand } from "haptic-movie-file-reader";
 
@@ -14,6 +14,7 @@ import VideoEncoderComponent from "./components/VideoEncoder/VideoEncoder.vue";
 import PatreonButtonComponent from "./components/PatreonButton/PatreonButton.vue";
 
 import * as Mousetrap from "mousetrap";
+import { ButtplugPanelComponent } from "vue-buttplug-material-component";
 
 @Component({
   components: {
@@ -55,7 +56,7 @@ export default class App extends Vue {
   private currentMessages: ButtplugMessage[] = [];
 
   // Buttplug properties
-  private devices: Device[] = [];
+  private devices: ButtplugClientDevice[] = [];
 
   /////////////////////////////////////
   // Component and UI methods
@@ -107,11 +108,11 @@ export default class App extends Vue {
   // Buttplug Event Handlers
   /////////////////////////////////////
 
-  private OnDeviceConnected(aDevice: Device) {
+  private OnDeviceConnected(aDevice: ButtplugClientDevice) {
     this.devices.push(aDevice);
   }
 
-  private OnDeviceDisconnected(aDevice: Device) {
+  private OnDeviceDisconnected(aDevice: ButtplugClientDevice) {
     this.devices = this.devices.filter((device) => device.Index !== aDevice.Index);
   }
 
@@ -211,10 +212,10 @@ export default class App extends Vue {
         this.currentMessages = msgs!;
         for (const aMsg of msgs) {
           for (const device of this.devices) {
-            if (device.AllowedMessages.indexOf(aMsg.getType()) === -1) {
+            if (device.AllowedMessages.indexOf(aMsg.Type.name) === -1) {
               continue;
             }
-            (Vue as any).Buttplug.SendDeviceMessage(device, aMsg);
+            (this.$refs.buttplugPanel as any).SendDeviceMessage(device, aMsg);
           }
         }
       }
