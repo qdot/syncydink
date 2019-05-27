@@ -11,12 +11,11 @@ function pad(str, amount) {
 }
 
 const currentDate = new Date();
-const currentDateString = `${currentDate.getUTCFullYear()}/${pad(currentDate.getMonth(), 2)}/${pad(currentDate.getDay(), 2)} ${pad(currentDate.getHours(), 2)}:${pad(currentDate.getMinutes(), 2)} PT`;
 
 const config = {
   build_commit: revision,
   build_date: Date(),
-  short_build_date: currentDateString,
+  short_build_date: currentDate.toDateString(),
   buttplug_version: buttplug.version,
   component_version: vuecomponent.version
 };
