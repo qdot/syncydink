@@ -23,7 +23,7 @@
     "@tweenjs/tween.js": "^17.3.5",
     "aframe": "^0.9.2",
     "aframe-stereo-component": "^0.6.0",
-    "buttplug": "^0.11.6",
+    "buttplug": "^0.12.2",
     "d3": "^5.9.2",
     "haptic-movie-file-reader": "^0.0.10",
     "matomo-tracker": "^2.2.1",
