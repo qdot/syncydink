@@ -125,13 +125,15 @@ export default class App extends Vue {
 
   private OnFileDropped(event: DragEvent) {
     event.preventDefault();
-
-    if (!event.dataTransfer.items) {
+    if (!event || !event.dataTransfer) {
       return;
     }
-
     const aFile = event.dataTransfer.items[0].getAsFile();
+    if (!aFile) {
+      return;
+    }
     const isVideoFile = /video/.test(aFile.type);
+    // Load as a video file when the file MIME type matches
     if (isVideoFile) {
       this.SetVideoFile(aFile);
     } else {
