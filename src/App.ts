@@ -70,6 +70,9 @@ export default class App extends Vue {
       document.getElementById("gesture-wrapper")!.style.height = "84vh";
     }
     Mousetrap.bind("esc", () => this.ToggleLeftSideNav());
+    const $app = document.querySelector("#app");
+    $app.ondragover = this.OnDragOver;
+    $app.ondrop = this.OnFileDropped;
     // this.loadHapticsTestData();
   }
 
@@ -114,6 +117,26 @@ export default class App extends Vue {
 
   private OnDeviceDisconnected(aDevice: ButtplugClientDevice) {
     this.devices = this.devices.filter((device) => device.Index !== aDevice.Index);
+  }
+
+  private OnDragOver(event: DragEvent) {
+    event.preventDefault();
+  }
+
+  private OnFileDropped(event: DragEvent) {
+    event.preventDefault();
+
+    if (!event.dataTransfer.items) {
+      return;
+    }
+
+    const aFile = event.dataTransfer.items[0].getAsFile();
+    const isVideoFile = /video/.test(aFile.type);
+    if (isVideoFile) {
+      this.SetVideoFile(aFile);
+    } else {
+      this.SetHapticsFile(aFile);
+    }
   }
 
   private SetVideoFile(aFile: File) {
