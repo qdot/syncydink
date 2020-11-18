@@ -157,6 +157,20 @@
         </v-navigation-drawer>
       </v-container>
     </v-touch>
+    <section v-if="showHapticsAlert" class="alert-modal" @click="showHapticsAlert = false">
+      <div class="alert-card">
+        <h2>Haptics File Error</h2>
+        <br>
+        <p>An HTML file was uploaded for haptics. Please make sure that you use a supported haptics file format.</p>
+        <p>Commonly used file extension for haptics are <b>.json</b>, <b>.funscript</b>, <b>.csv</b>, etc.</p>
+        <br>
+        <p>For a more complete list of accepted file formats see this page of <a href="https://stpihkal.docs.buttplug.io/video-encoding-formats/feelme.html" target="blank">Video Encoding Formats</a></p>
+        <br>
+        <button @click="showHapticsAlert = false">
+          OK
+        </button>
+      </div>
+    </section>
   </v-app>
 </template>
 
@@ -346,6 +360,32 @@
    display: flex;
    align-items: center;
    justify-content: center;
+ }
+
+ .alert-modal {
+   height: 100vh;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   z-index: 1;
+   outline: 1000vw;
+   background-color: rgba(0, 0, 0, 50%);
+ }
+
+ .alert-modal button {
+   background-color: lightgray;
+   padding: 10px 20px;
+   margin-right: 5%;
+   float: right;
+ }
+
+ .alert-modal button:hover {
+   background-color: darkgray;
+ }
+
+ .alert-card {
+   background-color: white;
+   padding: 30px;
  }
 
 </style>

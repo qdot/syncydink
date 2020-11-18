@@ -54,6 +54,7 @@ export default class App extends Vue {
   private lastTimeChecked: number = 0;
   private desiredPlayTime: number = 0;
   private currentMessages: ButtplugMessage[] = [];
+  private showHapticsAlert: boolean = false;
 
   // Buttplug properties
   private devices: ButtplugClientDevice[] = [];
@@ -129,6 +130,10 @@ export default class App extends Vue {
   /////////////////////////////////////
 
   private SetHapticsFile(aFile: File) {
+    if (/html$/.test(aFile.name)) {
+      this.showBadHapticsAlert();
+      return;
+    }
     this.hapticsFile = aFile;
     LoadFile(this.hapticsFile).then((h: HapticFileHandler) => {
       this.hapticsCommands = h.Commands as FunscriptCommand[];
@@ -223,6 +228,10 @@ export default class App extends Vue {
         this.runHapticsLoop();
       }
     });
+  }
+
+  private showBadHapticsAlert() {
+    this.showHapticsAlert = true;
   }
 
   private loadHapticsTestData() {
