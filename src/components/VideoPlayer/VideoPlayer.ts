@@ -41,6 +41,7 @@ export default class VideoPlayer extends Vue {
     loop: this.loopVideo,
     plugins: {
       hotkeys: {
+        enableNumbers: false,
         enableVolumeScroll: false,
         skipInitialFocus: true,
         enableInactiveFocus: false,
