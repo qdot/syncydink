@@ -203,7 +203,7 @@ export default class VideoPlayer extends Vue {
       this.showPlaybackSpeed = true;
 
       // hide the speed notification after 3 seconds
-      const id = setInterval(() => this.showPlaybackSpeed = true, 10);
+      const id = setInterval(() => this.showPlaybackSpeed = true, 1);
       setTimeout(() => {
         clearInterval(id);
         this.showPlaybackSpeed = false;
