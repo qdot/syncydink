@@ -19,6 +19,7 @@
         </aframe-video-player>
       </v-flex>
     </v-layout>
+    <span v-if="showPlaybackSpeed" class="speed-notification">Speed: {{ playbackSpeed }}</span>
   </div>
 </template>
 
@@ -26,6 +27,14 @@
  #videojs-player {
    display: flex;
    max-width: 100vw;
+ }
+
+ .speed-notification {
+   color: white;
+   font-size: 24px;
+   position: absolute;
+   top: 15px;
+   left: 15px;
  }
 </style>
 

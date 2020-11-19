@@ -25,6 +25,9 @@ export default class VideoPlayer extends Vue {
   private vrControlButton: videojs.Component | null = null;
   private currentPlayer: videojs.Player | null = null;
 
+  private showPlaybackSpeed: boolean = false;
+  private playbackSpeed: number = 1;
+
   // This is a combination of videojs's Playback options plus some extra stuff
   // from vue-video-player, so it has to be an any instead of a
   // videojs.PlaybackOptions until we derive something that supports both.
@@ -62,6 +65,18 @@ export default class VideoPlayer extends Vue {
           } else {
             return 5;
           }
+        },
+
+        customKeys: {
+          // mimic mpv the playback behavior, change playback rate by 10%
+          incPlayback: {
+            key: ({ key }: KeyboardEvent) => key === "]",
+            handler: () => this.setPlaybackSpeed(0.1),
+          },
+          decPlayback: {
+            key: ({ key }: KeyboardEvent) => key === "[",
+            handler: () => this.setPlaybackSpeed(-0.1),
+          },
         },
       },
     },
@@ -171,6 +186,29 @@ export default class VideoPlayer extends Vue {
       this.onPlayerReady();
     }
     this.$emit("videoPaused");
+  }
+
+  private setPlaybackSpeed(playbackSpeedChange: number) {
+    const player = this.currentPlayer;
+    if (!player) {
+      return;
+    }
+    // not a great way to handle the playback type here
+    const currentSpeed = player.playbackRate() as any;
+    if (currentSpeed > 0.1 || playbackSpeedChange > 0) {
+      // set the playback speed, then show a speed notification over the video
+      const newSpeed = +(currentSpeed + playbackSpeedChange).toPrecision(2);
+      player.playbackRate(newSpeed);
+      this.playbackSpeed = newSpeed;
+      this.showPlaybackSpeed = true;
+
+      // hide the speed notification after 3 seconds
+      const id = setInterval(() => this.showPlaybackSpeed = true, 10);
+      setTimeout(() => {
+        clearInterval(id);
+        this.showPlaybackSpeed = false;
+      }, 3000);
+    }
   }
 
   private runTimeUpdateLoop() {
