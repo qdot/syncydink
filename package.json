@@ -28,6 +28,7 @@
     "haptic-movie-file-reader": "^0.0.10",
     "matomo-tracker": "^2.2.1",
     "mousetrap": "^1.6.3",
+    "videojs-hotkeys": "^0.2.27",
     "videojs-youtube": "^2.6.0",
     "viewport-units-buggyfill": "^0.6.2",
     "vue": "^2.6.10",

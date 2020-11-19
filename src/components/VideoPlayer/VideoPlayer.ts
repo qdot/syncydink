@@ -1,6 +1,7 @@
 import Vue from "vue";
 import { Component, Model, Prop, Watch } from "vue-property-decorator";
 import videojs from "video.js";
+import "videojs-hotkeys";
 const vjsyoutube = require("./videojs-youtube");
 const videoPlayer = require("vue-video-player").videoPlayer;
 
@@ -35,6 +36,35 @@ export default class VideoPlayer extends Vue {
     sources: [{}],
     start: 0,
     loop: this.loopVideo,
+    plugins: {
+      hotkeys: {
+        enableVolumeScroll: false,
+        skipInitialFocus: true,
+        enableInactiveFocus: false,
+        captureDocumentHotkeys: true,
+        documentHotkeysFocusElementFilter: (e: HTMLElement) => {
+          const tagName = e.tagName.toLowerCase();
+          return e.id === "content" || tagName === "body" || tagName === "video";
+        },
+
+        forwardKey: ({ key }: KeyboardEvent) => {
+          return key === "ArrowRight" || key === "ArrowUp";
+        },
+        rewindKey: ({ key }: KeyboardEvent) => {
+          return key === "ArrowLeft" || key === "ArrowDown";
+        },
+
+        seekStep: ({ key }: KeyboardEvent) => {
+          console.log("key - - - - - ", key);
+          // mimic mpv seek behavior, 5s for left/right, 60s for up/down
+          if (key === "ArrowUp" || key === "ArrowDown") {
+            return 60;
+          } else {
+            return 5;
+          }
+        },
+      },
+    },
   };
 
   public mounted() {
