@@ -123,8 +123,10 @@ export default class VideoPlayer extends Vue {
     const playerElement = (this.$refs.videoPlayer as Vue).$el;
     this.currentPlayer = (this.$refs.videoPlayer as any).player;
     this.currentPlayer!.height(document.getElementById("video-container")!.offsetHeight);
-    this.$emit("videoLoaded", this.currentPlayer!.duration() * 1000);
-    console.log(`duration: ${this.currentPlayer!.duration() * 1000}`);
+    const duration = this.currentPlayer!.duration() * 1000;
+    const currentTime = this.currentPlayer!.currentTime() * 1000;
+    this.$emit("videoLoaded", duration, currentTime);
+    console.log(`duration: ${duration}`);
     this.onHeightUpdate();
   }
 

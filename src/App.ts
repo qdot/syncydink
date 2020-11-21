@@ -142,11 +142,13 @@ export default class App extends Vue {
     });
   }
 
-  private onVideoLoaded(duration: number) {
+  private onVideoLoaded(duration: number, currentTime: number) {
     if (this.hapticsCommands.length === 0) {
       this.hapticsCommands.push(new FunscriptCommand(0, 0));
       this.hapticsCommands.push(new FunscriptCommand(duration, 0));
     }
+    // seeking the time with hotkeys sends a video loaded event
+    this.advanceFrame(currentTime);
   }
 
   private onHapticsFileChange(hapticsFile: FileList) {
@@ -184,15 +186,14 @@ export default class App extends Vue {
     this.currentPlayTime = this.desiredPlayTime;
   }
 
-  private advanceFrame(direction: number) {
-    this.desiredPlayTime = (this.currentPlayTime) + (((1.0 / 60.0) * direction) * 1000);
-    this.currentPlayTime = this.desiredPlayTime;
+  private advanceFrame(currentTime: number) {
+    this.currentPlayTime = currentTime;
+    this.runHapticsLoop();
   }
 
   private runHapticsLoop() {
     window.requestAnimationFrame(() => {
-      // If we paused before this fired, just return
-      if (this.paused || this.commands.size === 0) {
+      if (this.commands.size === 0) {
         return;
       }
       // Backwards seek. Reset index retreived.
