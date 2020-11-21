@@ -25,6 +25,10 @@
             <v-icon
               color="white" v-if="!this.hapticsLocked" title="haptics editing disabled" alt="">lock_open</v-icon>
           </li>
+          <li @click="ExportHaptics">
+            <v-icon
+              color="white" title="export haptics script" alt="">import_export</v-icon>
+          </li>
         </ul>
       </div>
     </div>

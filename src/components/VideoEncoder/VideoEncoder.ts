@@ -334,6 +334,10 @@ export default class VideoEncoder extends Vue {
     this.hapticsLocked = !this.hapticsLocked;
   }
 
+  private ExportHaptics() {
+    this.$emit("export");
+  }
+
   private runTimeUpdateLoop() {
     window.requestAnimationFrame(() => {
       if (!this.hapticsPlaying) {

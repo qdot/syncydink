@@ -55,6 +55,7 @@ export default class App extends Vue {
   private desiredPlayTime: number = 0;
   private currentMessages: ButtplugMessage[] = [];
   private showHapticsAlert: boolean = false;
+  private showFileDownload: boolean = false;
 
   // Buttplug properties
   private devices: ButtplugClientDevice[] = [];
@@ -189,6 +190,37 @@ export default class App extends Vue {
   private advanceFrame(currentTime: number) {
     this.currentPlayTime = currentTime;
     this.runHapticsLoop();
+  }
+
+  private onExport() {
+    if (!this.hapticsCommands.length) {
+      alert("Error: No haptics events set. \n\nPlease enter haptics into timeline before exporting.");
+    }
+
+    const actions = this.hapticsCommands.map((command) => ({
+      at: command.Time,
+      pos: command.Position,
+    }));
+    const script = {
+        version: "1.0",
+        inverted: false,
+        range: 90,
+        actions,
+    };
+
+    const file = new Blob(
+      [JSON.stringify(script)],
+      { type: "application/json" },
+    );
+    const fileURL = URL.createObjectURL(file);
+
+    this.showFileDownload = true;
+
+    setTimeout(() => {
+      const $downloadBtn = document.querySelector(".download-link");
+      $downloadBtn.setAttribute("href", fileURL);
+      $downloadBtn.setAttribute("download", "new-script.funscript");
+    }, 500);
   }
 
   private runHapticsLoop() {

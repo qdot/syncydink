@@ -76,6 +76,7 @@
               @pause="onPause"
               @timeUpdate="onTimeUpdate"
               @inputTimeUpdate="onInputTimeUpdate"
+              @export="onExport"
               @dragStart="onDragStart"
               @dragStop="onDragStop"
             />
@@ -157,8 +158,8 @@
         </v-navigation-drawer>
       </v-container>
     </v-touch>
-    <section v-if="showHapticsAlert" class="alert-modal" @click="showHapticsAlert = false">
-      <div class="alert-card">
+    <section v-if="showHapticsAlert" class="modal" @click="showHapticsAlert = false">
+      <div class="modal-card">
         <h2>Haptics File Error</h2>
         <br>
         <p>An HTML file was uploaded for haptics. Please make sure that you use a supported haptics file format.</p>
@@ -166,9 +167,20 @@
         <br>
         <p>For a more complete list of accepted file formats see this page of <a href="https://stpihkal.docs.buttplug.io/video-encoding-formats/feelme.html" target="blank">Video Encoding Formats</a></p>
         <br>
-        <button @click="showHapticsAlert = false">
+        <button class="alert-button">
           OK
         </button>
+      </div>
+    </section>
+    <section v-if="showFileDownload" class="modal" @click="showFileDownload = false">
+      <div class="modal-card">
+        <h2>Haptics File Download</h2>
+        <br>
+        <p>Click the download button to save the file and enjoy!</p>
+        <br>
+        <a class="download-link">
+          Download
+        </a>
       </div>
     </section>
   </v-app>
@@ -362,7 +374,7 @@
    justify-content: center;
  }
 
- .alert-modal {
+ .modal {
    height: 100vh;
    display: flex;
    align-items: center;
@@ -372,18 +384,25 @@
    background-color: rgba(0, 0, 0, 50%);
  }
 
- .alert-modal button {
+ .download-link {
+   text-decoration: none;
+   color: #2c3e50;
+ }
+
+ .download-link,
+ .alert-button {
    background-color: lightgray;
    padding: 10px 20px;
    margin-right: 5%;
    float: right;
  }
 
- .alert-modal button:hover {
+ .download-link:hover,
+ .alert-button:hover {
    background-color: darkgray;
  }
 
- .alert-card {
+ .modal-card {
    background-color: white;
    padding: 30px;
  }
