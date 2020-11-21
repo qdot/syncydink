@@ -348,5 +348,9 @@
    justify-content: center;
  }
 
+ /* disable the duplicate vr button */
+ .a-enter-vr {
+   display: none;
+ }
 </style>
 <style src="vuetify/dist/vuetify.min.css"></style>
