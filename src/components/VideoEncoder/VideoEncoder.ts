@@ -42,6 +42,7 @@ export default class VideoEncoder extends Vue {
     for (const i of [...Array(10).keys()]) {
       Mousetrap.bind(i.toString(), () => this.addNodeAtPoint(i * 10));
     }
+    Mousetrap.bind("backspace", () => this.removeNodeAtPoint());
     window.addEventListener("resize", this.onResize);
   }
 
@@ -49,11 +50,19 @@ export default class VideoEncoder extends Vue {
     for (const i of [...Array(10).keys()]) {
       Mousetrap.unbind(i.toString());
     }
+    Mousetrap.unbind("backspace");
     window.removeEventListener("resize", this.onResize);
   }
 
   private addNodeAtPoint(value: number) {
     // Clear any previous values at the current play time before adding the new one
+    this.removeNodeAtPoint();
+    this.hapticsValues.push([this.currentPlayTime, value]);
+    this.hapticsValues.sort((a, b) => a[0] > b[0] ? 1 : -1);
+    this.updateGraph();
+  }
+
+  private removeNodeAtPoint() {
     this.hapticsValues = this.hapticsValues.filter(([time, val]) => {
       // Remove for nodes within 999ms of the current position
       return !(
@@ -61,8 +70,6 @@ export default class VideoEncoder extends Vue {
         this.currentPlayTime + 999 >= time
       );
     });
-    this.hapticsValues.push([this.currentPlayTime, value]);
-    this.hapticsValues.sort((a, b) => a[0] > b[0] ? 1 : -1);
     this.updateGraph();
   }
 
