@@ -53,6 +53,14 @@ export default class VideoEncoder extends Vue {
   }
 
   private addNodeAtPoint(value: number) {
+    // Clear any previous values at the current play time before adding the new one
+    this.hapticsValues = this.hapticsValues.filter(([time, val]) => {
+      // Remove for nodes within 999ms of the current position
+      return !(
+        this.currentPlayTime - 999 <= time &&
+        this.currentPlayTime + 999 >= time
+      );
+    });
     this.hapticsValues.push([this.currentPlayTime, value]);
     this.hapticsValues.sort((a, b) => a[0] > b[0] ? 1 : -1);
     this.updateGraph();
