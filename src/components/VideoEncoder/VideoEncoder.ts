@@ -219,7 +219,7 @@ export default class VideoEncoder extends Vue {
       .range([0, graphdiv.clientHeight]);
 
     this.xAxis = d3.axisTop(this.xScale)
-      .ticks(Math.min(this.dataExtent[1] / 1000, 50))
+      .ticks(Math.min(this.dataExtent[1] / 1000, 25))
       .tickFormat((d) => `${(d as number) / 1000}s`);
     this.yAxis = d3.axisRight(this.yScale)
       .tickSize(graphdiv.clientWidth);
