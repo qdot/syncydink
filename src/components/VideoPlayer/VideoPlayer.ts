@@ -58,11 +58,13 @@ export default class VideoPlayer extends Vue {
           return key === "ArrowLeft" || key === "ArrowDown";
         },
 
-        seekStep: ({ key }: KeyboardEvent) => {
-          console.log("key - - - - - ", key);
+        seekStep: ({ key, shiftKey }: KeyboardEvent) => {
           // mimic mpv seek behavior, 5s for left/right, 60s for up/down
           if (key === "ArrowUp" || key === "ArrowDown") {
             return 60;
+          } else if (shiftKey && (key === "ArrowLeft" || key === "ArrowRight")) {
+            // might be helpful to use while scripting
+            return 1;
           } else {
             return 5;
           }
