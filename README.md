@@ -1,3 +1,7 @@
+# SYNCYDINK IS NO LONGER MAINTAINED
+
+This repo has been archived and neither it or the app will be updated anymore. If you would like to fork and create your own version, feel free. There's more info in [this github issue.](https://github.com/metafetish/syncydink/issues/85)
+
 # SyncyDink
 
 [![npm](https://img.shields.io/npm/v/syncydink.svg)](https://npmjs.com/package/syncydink) [![Patreon donate button](https://img.shields.io/badge/patreon-donate-yellow.svg)](https://www.patreon.com/qdot)

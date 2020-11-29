@@ -30,6 +30,7 @@
                     <div class="headline">Syncydink (Updated {{ config.short_build_date }})</div>
                   </v-card-title>
                   <v-card-text class="intro-text">
+                    <p><b>AS OF 2020/11/28, SYNCYDINK WILL NO LONGER BE UPDATED. No new hardware support or features will be added. <a href="https://github.com/metafetish/syncydink/issues/85">See here for further information.</a></b></p>
                     <p>Welcome to Syncydink, the hardware synced movie player by <a href="https://buttplug.io">Team Buttplug</a>! (More info and documentation coming soon!)</p>
                     <p>To start:</p>
                     <ul>
