@@ -1,6 +1,7 @@
 import Vue from "vue";
 import { Component, Model, Prop, Watch } from "vue-property-decorator";
 import videojs from "video.js";
+import "videojs-hotkeys";
 const vjsyoutube = require("./videojs-youtube");
 const videoPlayer = require("vue-video-player").videoPlayer;
 
@@ -24,6 +25,9 @@ export default class VideoPlayer extends Vue {
   private vrControlButton: videojs.Component | null = null;
   private currentPlayer: videojs.Player | null = null;
 
+  private showPlaybackSpeed: boolean = false;
+  private playbackSpeed: number = 1;
+
   // This is a combination of videojs's Playback options plus some extra stuff
   // from vue-video-player, so it has to be an any instead of a
   // videojs.PlaybackOptions until we derive something that supports both.
@@ -35,6 +39,50 @@ export default class VideoPlayer extends Vue {
     sources: [{}],
     start: 0,
     loop: this.loopVideo,
+    plugins: {
+      hotkeys: {
+        enableNumbers: false,
+        enableVolumeScroll: false,
+        skipInitialFocus: true,
+        enableInactiveFocus: false,
+        captureDocumentHotkeys: true,
+        documentHotkeysFocusElementFilter: (e: HTMLElement) => {
+          const tagName = e.tagName.toLowerCase();
+          return e.id === "content" || tagName === "body" || tagName === "video";
+        },
+
+        forwardKey: ({ key }: KeyboardEvent) => {
+          return key === "ArrowRight" || key === "ArrowUp";
+        },
+        rewindKey: ({ key }: KeyboardEvent) => {
+          return key === "ArrowLeft" || key === "ArrowDown";
+        },
+
+        seekStep: ({ key, shiftKey }: KeyboardEvent) => {
+          // mimic mpv seek behavior, 5s for left/right, 60s for up/down
+          if (key === "ArrowUp" || key === "ArrowDown") {
+            return 60;
+          } else if (shiftKey && (key === "ArrowLeft" || key === "ArrowRight")) {
+            // might be helpful to use while scripting
+            return 1;
+          } else {
+            return 5;
+          }
+        },
+
+        customKeys: {
+          // mimic mpv the playback behavior, change playback rate by 10%
+          incPlayback: {
+            key: ({ key }: KeyboardEvent) => key === "]",
+            handler: () => this.setPlaybackSpeed(0.1),
+          },
+          decPlayback: {
+            key: ({ key }: KeyboardEvent) => key === "[",
+            handler: () => this.setPlaybackSpeed(-0.1),
+          },
+        },
+      },
+    },
   };
 
   public mounted() {
@@ -141,6 +189,29 @@ export default class VideoPlayer extends Vue {
       this.onPlayerReady();
     }
     this.$emit("videoPaused");
+  }
+
+  private setPlaybackSpeed(playbackSpeedChange: number) {
+    const player = this.currentPlayer;
+    if (!player) {
+      return;
+    }
+    // not a great way to handle the playback type here
+    const currentSpeed = player.playbackRate() as any;
+    if (currentSpeed > 0.1 || playbackSpeedChange > 0) {
+      // set the playback speed, then show a speed notification over the video
+      const newSpeed = +(currentSpeed + playbackSpeedChange).toPrecision(2);
+      player.playbackRate(newSpeed);
+      this.playbackSpeed = newSpeed;
+      this.showPlaybackSpeed = true;
+
+      // hide the speed notification after 3 seconds
+      const id = setInterval(() => this.showPlaybackSpeed = true, 1);
+      setTimeout(() => {
+        clearInterval(id);
+        this.showPlaybackSpeed = false;
+      }, 3000);
+    }
   }
 
   private runTimeUpdateLoop() {
