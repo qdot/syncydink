@@ -9,21 +9,25 @@
         <ul>
           <li @click="ToggleHapticsPlayback">
             <v-icon
-              color="white" v-if="!this.hapticsPlaying">play_circle_outline</v-icon>
+              color="white" v-if="!this.hapticsPlaying" title="play haptics script" alt="">play_circle_outline</v-icon>
             <v-icon
-              color="white" v-if="this.hapticsPlaying">pause_circle_outline</v-icon>
+              color="white" v-if="this.hapticsPlaying" title="pause haptics script" alt="">pause_circle_outline</v-icon>
           </li>
           <li @click="ToggleHapticsLooped">
             <v-icon
-              color="white" v-if="this.hapticsLooped">sync</v-icon>
+              color="white" v-if="this.hapticsLooped" title="haptics synced" alt="">sync</v-icon>
             <v-icon
-              color="white" v-if="!this.hapticsLooped">sync_disabled</v-icon>
+              color="white" v-if="!this.hapticsLooped" title="haptics syncing disabled" alt="">sync_disabled</v-icon>
           </li>
           <li @click="ToggleHapticsLocked">
             <v-icon
-              color="white" v-if="this.hapticsLocked">lock_outline</v-icon>
+              color="white" v-if="this.hapticsLocked" title="haptics editing enabled" alt="">lock_outline</v-icon>
             <v-icon
-              color="white" v-if="!this.hapticsLocked">lock_open</v-icon>
+              color="white" v-if="!this.hapticsLocked" title="haptics editing disabled" alt="">lock_open</v-icon>
+          </li>
+          <li @click="ExportHaptics">
+            <v-icon
+              color="white" title="export haptics script" alt="">import_export</v-icon>
           </li>
         </ul>
       </div>
@@ -101,6 +105,7 @@
    clear: both;
    padding: 0px;
    margin: 0px;
+   z-index: 1;
  }
 
  .encoder-button-bar ul > li {

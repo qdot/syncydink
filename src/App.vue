@@ -77,6 +77,7 @@
               @pause="onPause"
               @timeUpdate="onTimeUpdate"
               @inputTimeUpdate="onInputTimeUpdate"
+              @export="onExport"
               @dragStart="onDragStart"
               @dragStop="onDragStop"
             />
@@ -158,6 +159,31 @@
         </v-navigation-drawer>
       </v-container>
     </v-touch>
+    <section v-if="showHapticsAlert" class="modal" @click="showHapticsAlert = false">
+      <div class="modal-card">
+        <h2>Haptics File Error</h2>
+        <br>
+        <p>An HTML file was uploaded for haptics. Please make sure that you use a supported haptics file format.</p>
+        <p>Commonly used file extension for haptics are <b>.json</b>, <b>.funscript</b>, <b>.csv</b>, etc.</p>
+        <br>
+        <p>For a more complete list of accepted file formats see this page of <a href="https://stpihkal.docs.buttplug.io/video-encoding-formats/feelme.html" target="blank">Video Encoding Formats</a></p>
+        <br>
+        <button class="alert-button">
+          OK
+        </button>
+      </div>
+    </section>
+    <section v-if="showFileDownload" class="modal" @click="showFileDownload = false">
+      <div class="modal-card">
+        <h2>Haptics File Download</h2>
+        <br>
+        <p>Click the download button to save the file and enjoy!</p>
+        <br>
+        <a class="download-link">
+          Download
+        </a>
+      </div>
+    </section>
   </v-app>
 </template>
 
@@ -347,6 +373,39 @@
    display: flex;
    align-items: center;
    justify-content: center;
+ }
+
+ .modal {
+   height: 100vh;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   z-index: 1;
+   outline: 1000vw;
+   background-color: rgba(0, 0, 0, 50%);
+ }
+
+ .download-link {
+   text-decoration: none;
+   color: #2c3e50;
+ }
+
+ .download-link,
+ .alert-button {
+   background-color: lightgray;
+   padding: 10px 20px;
+   margin-right: 5%;
+   float: right;
+ }
+
+ .download-link:hover,
+ .alert-button:hover {
+   background-color: darkgray;
+ }
+
+ .modal-card {
+   background-color: white;
+   padding: 30px;
  }
 
 </style>
